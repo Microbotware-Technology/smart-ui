@@ -2838,57 +2838,40 @@ updateServiceSameLock();
             const cakeQtyPlus = document.getElementById('cakeQtyPlus');
             const cakePhotoSection = document.getElementById('cakePhotoSection');
 
-            function updateCakeUI() {
-                if (!cakeDD || !cakeOptions) return;
-                const qtyWrap = document.getElementById('cakeQtyWrap');
-                if (!cakeDD.value) {
-                    cakeOptions.style.display = 'none';
-                    if (qtyWrap) qtyWrap.style.display = 'none';
-                    updateCakeCalcLine();
-                    return;
-                }
-                cakeOptions.style.display = '';
-                if (qtyWrap) qtyWrap.style.display = '';
-                updateCakeCalcLine();
-
-                const opt = cakeDD.options[cakeDD.selectedIndex];
-                const defaultShape = opt.dataset.defaultShape || 'Round';
-
-                // Set shape radio
-                const target = document.querySelector('input[name="cake_shape"][value="' + defaultShape + '"]');
-                if (target) target.checked = true;
-
-                // Photo cake → show photo section
-                const isPhotoCake = (cakeDD.value === '24');
-                if (cakePhotoSection) cakePhotoSection.style.display = isPhotoCake ? '' : 'none';
-
-                calculateTotal();
-            }
 function updateCakeUI() {
     if (!cakeDD || !cakeOptions) return;
     const qtyWrap = document.getElementById('cakeQtyWrap');
+
     if (!cakeDD.value) {
         cakeOptions.style.display = 'none';
         if (qtyWrap) qtyWrap.style.display = 'none';
+        if (cakePhotoSection) cakePhotoSection.style.display = 'none';
+
+        if (typeof cakePhoto !== 'undefined' && cakePhoto) {
+            if (cakePhoto.url) URL.revokeObjectURL(cakePhoto.url);
+            cakePhoto = null;
+            if (typeof renderCakePhotoThumb === 'function') renderCakePhotoThumb();
+        }
+
+        if (cakeQtyEl) cakeQtyEl.value = 1;
         updateCakeCalcLine();
+        calculateTotal();
         return;
     }
+
     cakeOptions.style.display = '';
     if (qtyWrap) qtyWrap.style.display = '';
     updateCakeCalcLine();
 
     const opt = cakeDD.options[cakeDD.selectedIndex];
     const defaultShape = opt.dataset.defaultShape || 'Round';
-
     const target = document.querySelector('input[name="cake_shape"][value="' + defaultShape + '"]');
     if (target) target.checked = true;
 
-    const isPhotoCake = (cakeDD.value === '24');
+    const isPhotoCake = cakeDD.value === '24';
     if (cakePhotoSection) cakePhotoSection.style.display = isPhotoCake ? '' : 'none';
 
-   
     renderCakePhotoThumb();
-
     calculateTotal();
 }
             if (cakeDD) cakeDD.addEventListener('change', updateCakeUI);
