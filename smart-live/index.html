@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Smart Help Foundation">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <title>Smart Help Foundation</title>
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
+    <link href="assets/css/flaticon_aidus.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.css" rel="stylesheet">
+    <link href="assets/css/slick.css" rel="stylesheet">
+    <link href="assets/css/slick-theme.css" rel="stylesheet">
+    <link href="assets/css/swiper.min.css" rel="stylesheet">
+    <link href="assets/css/owl.transitions.css" rel="stylesheet">
+    <link href="assets/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="assets/sass/style.css" rel="stylesheet">
+</head>
+<style>
+    .google-review-summary {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 0 auto 30px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .google-review-rating {
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .google-review-text {
+        font-weight: 500;
+    }
+
+    /* About Donation Video */
+    .about-image .about-video {
+        position: relative;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .about-image .about-video video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        background: #000;
+    }
+
+    /* Orange Play Button */
+    .about-image .about-video .mp4-video-btn {
+        width: 72px;
+        height: 72px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        border: 0;
+        border-radius: 50%;
+        background: #F74F22;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+    }
+
+    .about-image .about-video .mp4-video-btn:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        background: #fff;
+        color: #F74F22;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-image .about-video .mp4-video-btn i {
+        font-size: 25px;
+        margin-left: 3px;
+    }
+.about-section .about-image .img-1 {
+    overflow: hidden;
+}
+
+.about-section .about-image .img-1 .about-donation-video {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: block;
+    object-fit:cover;
+    object-position: center 30%; 
+    mix-blend-mode: lighten;
+}
+    /* Hide controls before playing */
+    .about-image .about-video video {
+        cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+        .about-image .about-video .mp4-video-btn {
+            width: 60px;
+            height: 60px;
+        }
+
+        .about-image .about-video .mp4-video-btn i {
+            font-size: 21px;
+        }
+    }
+    .project-section {
+    display: none !important;
+}
+/* Testimonial section fix */
+.testimonial-section {
+    position: relative;
+    z-index: 2;
+    padding-top: 90px;
+    padding-bottom: 140px;  
+    background: #fff;
+}
+
+.testimonial-section .section-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.testimonial-section .section-title span {
+    color: #F74F22;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.testimonial-section .section-title h2 {
+    color: #061408;
+}
+
+.testimonial-section .section-title h2 span {
+    color: #F74F22;
+}
+/* ============================================================
+   HERO SLIDER — MOBILE FIX (Desktop look preserve)
+   Text LEFT (dark) + Photo RIGHT (transparent)
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+    /* 1. Parallax transform off — crop fix */
+    .wpo-hero-slider [data-swiper-parallax] {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    /* 2. Swiper containers height auto */
+    .wpo-hero-slider .swiper-container,
+    .wpo-hero-slider .swiper-wrapper,
+    .wpo-hero-slider .swiper-slide {
+        height: auto !important;
+    }
+
+    /* 3. Hero slide — moderate height, photo right-ல  */
+    .wpo-hero-slider .slide-inner {
+        height: auto !important;
+        min-height: 620px;
+        padding: 110px 0 70px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        background-position: 80% center !important;
+        background-size: cover !important;
+    }
+
+    /* 4. Content — LEFT align (desktop like) */
+    .wpo-hero-slider .slide-content {
+        position: relative !important;
+        z-index: 5;
+        width: 100% !important;
+        max-width: 100% !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        padding: 0 20px !important;
+        box-sizing: border-box;
+        text-align: left;               
+        overflow: visible !important;
+    }
+
+    .wpo-hero-slider .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* 5. Text styles */
+    .wpo-hero-slider .slide-title span {
+        display: block;
+        font-size: 15px;
+        line-height: 1.5;
+        white-space: normal;
+        word-break: break-word;
+        margin-bottom: 10px;
+    }
+
+    .wpo-hero-slider .slide-sub-title h2 {
+        font-size: 30px;
+        line-height: 1.3;
+        margin: 0 0 24px;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        max-width: 65%;                 
+    }
+
+    /* 6. Buttons — left align- stack */
+    .wpo-hero-slider .slide-btns {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;        /* ← LEFT */
+        justify-content: flex-start;
+        gap: 18px;
+        width: 100%;
+    }
+
+    .wpo-hero-slider .slide-btns .theme-btn {
+        margin: 0 !important;
+    }
+
+    .wpo-hero-slider .slide-btns .call {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: 100%;
+    }
+
+    .wpo-hero-slider .slide-btns .call .text h3 {
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
+
+    .wpo-hero-slider .slide-btns .call .text span {
+        font-size: 15px;
+        white-space: nowrap;
+    }
+
+    /* 7. bg-shape — full cover (SVG- slice behavior) */
+    .wpo-hero-slider .bg-shape {
+        display: block !important;
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .wpo-hero-slider .bg-shape picture,
+    .wpo-hero-slider .bg-shape img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* 8. other decorative shapes hide */
+    .wpo-hero-slider .shape-1,
+    .wpo-hero-slider .shape-2,
+    .wpo-hero-slider .shape-3,
+    .wpo-hero-slider .shape-4,
+    .wpo-hero-slider .shape-5 {
+        display: none !important;
+    }
+
+    /* 9. Arrows hide */
+    .wpo-hero-slider .swiper-button-next,
+    .wpo-hero-slider .swiper-button-prev {
+        display: none !important;
+    }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    .wpo-hero-slider .slide-inner          { min-height: 560px; padding: 95px 0 55px; }
+    .wpo-hero-slider .slide-title span     { font-size: 13px; }
+    .wpo-hero-slider .slide-sub-title h2   { font-size: 24px; line-height: 1.3; max-width: 70%; }
+    .wpo-hero-slider .slide-btns .call .text span { font-size: 14px; }
+}
+/* ============================================================
+   TABLET / SMALL LAPTOP (768px - 1200px)
+   Match desktop hero exactly
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1200px) {
+
+    /* 1. Hide theme's solid green fallback */
+    .wpo-hero-slider .bg-shape::before {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* 2. bg-shape container - full overlay */
+    .wpo-hero-slider .bg-shape {
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
+
+    /* 3. SVG cover, anchored LEFT (preserves aspect ratio) */
+    .wpo-hero-slider .bg-shape img {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important; 
+        max-width: none !important;
+        transform: translateX(-30%) !important;
+    }
+
+    /* 4. Photo background - match desktop (center) */
+    .wpo-hero-slider .slide-inner {
+        min-height: 620px;
+        height: auto !important;
+        padding: 80px 0 60px;
+        align-items: center;
+        background-position: center center !important;
+        background-size: cover !important;
+    }
+
+    /* 5. Content - left align */
+    .wpo-hero-slider .slide-content {
+        padding-left: 60px !important;
+        padding-right: 60px !important;
+        padding-top: 0 !important;
+        text-align: left;
+        max-width: 100% !important;
+    }
+
+    /* 6. Text sizes */
+    .wpo-hero-slider .slide-title span {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .wpo-hero-slider .slide-sub-title h2 {
+        font-size: 52px !important;
+        line-height: 1.2 !important;
+        max-width: 65%;
+    }
+
+    /* 7. Buttons - horizontal like desktop */
+    .wpo-hero-slider .slide-btns {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 24px;
+        max-width: 100%;
+    }
+
+    /* 8. Hide decorative icon shapes */
+    .wpo-hero-slider .shape-1,
+    .wpo-hero-slider .shape-2,
+    .wpo-hero-slider .shape-3,
+    .wpo-hero-slider .shape-4,
+    .wpo-hero-slider .shape-5 {
+        display: none !important;
+    }
+
+    /* 9. Arrows + pagination */
+    .wpo-hero-slider .swiper-button-next,
+    .wpo-hero-slider .swiper-button-prev {
+        display: none !important;
+    }
+    .wpo-hero-slider .swiper-pagination {
+        display: block;
+    }
+}
+
+/* ============================================================
+   SMALL TABLET (768px - 991px) - Extra sizing
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 991px) {
+    .wpo-hero-slider .slide-inner {
+        min-height: 580px;
+        padding: 70px 0 50px;
+    }
+    .wpo-hero-slider .slide-content {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+    .wpo-hero-slider .slide-sub-title h2 {
+        font-size: 44px !important;
+        max-width: 68%;
+    }
+    .wpo-hero-slider .slide-title span {
+        font-size: 16px;
+    }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+
+    /* Photo background - object-fit: cover equivalent */
+    .wpo-hero-slider .slide-inner {
+        min-height: 620px;
+        height: auto !important;
+        padding: 80px 0 60px;
+        align-items: center;
+
+        /* ✅ object-fit: cover  →  background-size: cover */
+        background-size: cover !important;
+
+        /* ✅ object-position: 50% center  →  background-position: 50% center */
+        background-position: 50% center !important;
+    }
+}
+/* ============================================================
+   2. DONATE NOW BUTTON — 992px to 1200px visible
+   ============================================================ */
+@media (min-width: 992px) and (max-width: 1200px) {
+
+    /* Theme-ன் display:none- override */
+    .wpo-site-header .header-right .close-form {
+        display: block !important;
+        margin-left: 10px;
+    }
+
+    .wpo-site-header .header-right .close-form .theme-btn,
+    .wpo-site-header .header-right .close-form .view-cart-btn {
+        display: inline-block !important;
+        padding: 10px 18px !important;
+        font-size: 13px !important;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+    }
+}
+    /* ============================================================
+   TESTIMONIAL CARDS - SAME SIZE + HOVER SHADOW + ROUNDED CORNERS
+   ============================================================ */
+
+/* 1. Force equal height for all cards */
+.testimonial-section .testimonial-slider .owl-stage {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.testimonial-section .testimonial-slider .owl-item {
+    display: flex !important;
+    align-items: stretch !important;
+    height: auto !important;
+}
+
+/* 2. Card base styling */
+.testimonial-section .testimonial-card {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
+    height: 100%;
+    min-height: 380px; /* Ithu dhaan ellaa card aayum same size ah aakkum */
+    box-sizing: border-box;
+    padding: 30px 25px 35px 25px; /* Top Right Bottom Left */
+    background: #fff;
+    border-radius: 15px; /* Rounded corners */
+    
+    /* IMPORTANT: overflow: hidden ah remove panniten. Adhu dhaan shadow ah cut pannitu irundhuchu */
+    
+    /* Shadow starts invisible */
+    box-shadow: none; 
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth animation */
+    position: relative;
+    z-index: 1;
+}
+
+/* 3. Add shadow and lift effect ONLY on hover */
+.testimonial-section .testimonial-card:hover {
+    /* Ippo shadow nalla veliya varum, corner ellam round ah irukkum */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.20), 
+                0 5px 15px rgba(0, 0, 0, 0.10); 
+    transform: translateY(-5px); /* Lifts the card up slightly */
+    z-index: 10; /* Brings the hovered card to the front */
+}
+
+/* 4. Make the paragraph stretch to fill empty space */
+.testimonial-section .testimonial-card p {
+    flex-grow: 1 !important;
+    margin-bottom: 20px;
+}
+
+/* 5. Ensure the author block sits at the bottom */
+.testimonial-section .testimonial-card .autr-name {
+    margin-top: auto !important;
+    padding-top: 20px;
+    border-top: 1px solid #eaeaea;
+}
+.testimonial-section .testimonial-wrap,
+.testimonial-section .testimonial-slider,
+.testimonial-section .owl-stage-outer {
+    background: transparent !important;
+}
+
+.testimonial-section .owl-stage-outer {
+    overflow: visible !important;
+}
+
+.testimonial-section .owl-stage {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.testimonial-section .testimonial-card {
+    position: relative !important;
+    z-index: 3 !important;
+}
+/* ============================================================
+   CAUSES CARDS - SAME SIZE + EQUAL HEIGHT
+   ============================================================ */
+
+.causes-section .causes-slider {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.causes-section .causes-slider .owl-stage {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.causes-section .causes-slider .owl-item {
+    display: flex !important;
+    align-items: stretch !important;
+    height: auto !important;
+}
+
+.causes-section .causes-card {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.causes-section .causes-card .image {
+    width: 100%;
+    height: 240px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.causes-section .causes-card .image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.causes-section .causes-card .text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.causes-section .causes-card .text h2 {
+    margin-bottom: 15px;
+}
+
+.causes-section .causes-card .text p {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.causes-section .causes-slider .owl-stage-outer {
+    overflow: visible !important;
+}
+
+.causes-section .causes-slider {
+    background: transparent !important;
+}
+
+.causes-section .causes-slider .owl-stage {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.causes-section .causes-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.20),
+                0 5px 15px rgba(0, 0, 0, 0.10);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    z-index: 3;
+}
+
+@media (max-width: 767px) {
+    .causes-section .causes-card {
+        min-height: 400px;
+    }
+
+    .causes-section .causes-card .image {
+        height: 220px;
+    }
+}
+/* Hide MV Section */
+.MV-section,
+/* Hide Causes Section */
+.causes-section.section-padding.pt-0 {
+    display: none !important;
+}
+/* ============================================================
+   TESTIMONIAL AVATAR — First letter avatar (image replace)
+   ============================================================ */
+.testimonial-section .testimonial-card .autr-name .image.avatar {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--avatar-bg, #F74F22);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    font-family: inherit;
+    user-select: none;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    flex-shrink: 0;
+}
+
+.testimonial-section .testimonial-card .autr-name .image.avatar::before {
+    content: attr(data-letter);
+    display: block;
+}
+
+/* Mobile size */
+@media (max-width: 767px) {
+    .testimonial-section .testimonial-card .autr-name .image.avatar {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 19px;
+    }
+}
+@media (max-width: 767px) {
+    .wpo-hero-slider .bg-shape::before {
+        display: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        content: none !important;
+    }
+}
+</style>
+<body>
+
+    <!-- start page-wrapper -->
+    <div class="page-wrapper">
+
+        <!-- start preloader -->
+        <!-- <div class="preloader">
+            <div class="vertical-centered-box">
+                <div class="content">
+                    <div class="loader-circle"></div>
+                    <div class="loader-line-mask">
+                        <div class="loader-line"></div>
+                    </div>
+                    <img src="assets/images/icon.png" alt="">
+                </div>
+            </div>
+        </div> -->
+        <!-- end preloader -->
+
+        <!-- Start header -->
+<div id="site-header"></div>
+<!-- end of header -->
+
+
+        <!-- start of wpo-hero-slide-section-->
+        <section class="wpo-hero-slider">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slader_1.jpg">
+                            <div class="container-fluid">
+                                <div class="slide-content">
+                                    <div data-swiper-parallax="300" class="slide-title">
+                                        <span>We can brighten every child's future.</span>
+                                    </div>
+                                    <div data-swiper-parallax="400" class="slide-sub-title">
+                                        <h2>Give support
+                                            to <span>poverties</span> & <span class="text">Old</span>
+                                            non profit Care</h2>
+                                    </div>
+                                    <div data-swiper-parallax="500" class="slide-btns">
+                                        <a href="about.html" class="theme-btn">About Us</a>
+                                        <div class="call">
+                                            <div class="icon">
+                                                <i class="flaticon-phone"></i>
+                                            </div>
+                                            <div class="text">
+                                                <h3>Call Us Now</h3>
+                                                <span>+91 7601866602 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-shape">
+                                <picture>
+        <source media="(max-width: 767px)" srcset="assets/images/slider/shape-mobile.svg">
+        <img src="assets/images/slider/shape-1.svg" alt="">
+    </picture>
+                            </div>
+                            <div class="shape-1">
+                                <img src="assets/images/slider/shape-2.svg" alt="">
+                            </div>
+                            <div class="shape-2">
+                                <img src="assets/images/slider/shape-3.svg" alt="">
+                            </div>
+                            <div class="shape-3">
+                                <img src="assets/images/slider/shape-4.png" alt="">
+                            </div>
+                            <div class="shape-4">
+                                <img src="assets/images/slider/shape-5.svg" alt="">
+                            </div>
+                            <div class="shape-5">
+                                <img src="assets/images/slider/shape-6.svg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slider_2.jpg">
+                            <div class="container-fluid">
+                                <div class="slide-content">
+                                    <div data-swiper-parallax="300" class="slide-title">
+                                        <span>We are always open for children</span>
+                                    </div>
+                                    <div data-swiper-parallax="400" class="slide-sub-title">
+                                        <h2>Give support
+                                            to <span>poverties</span> & <span class="text">Old</span>
+                                            non profit Care</h2>
+                                    </div>
+                                    <div data-swiper-parallax="500" class="slide-btns">
+                                        <a href="about.html" class="theme-btn">About Us</a>
+                                        <div class="call">
+                                            <div class="icon">
+                                                <i class="flaticon-phone"></i>
+                                            </div>
+                                            <div class="text">
+                                                <h3>Call Us Now</h3>
+                                                <span>+91 7601866602</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-shape">
+                                <picture>
+        <source media="(max-width: 767px)" srcset="assets/images/slider/shape-mobile.svg">
+        <img src="assets/images/slider/shape-1.svg" alt="">
+    </picture>
+                            </div>
+                            <div class="shape-1">
+                                <img src="assets/images/slider/shape-2.svg" alt="">
+                            </div>
+                            <div class="shape-2">
+                                <img src="assets/images/slider/shape-3.svg" alt="">
+                            </div>
+                            <div class="shape-3">
+                                <img src="assets/images/slider/shape-4.png" alt="">
+                            </div>
+                            <div class="shape-4">
+                                <img src="assets/images/slider/shape-5.svg" alt="">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end swiper-wrapper -->
+
+                <!-- swipper controls -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+
+
+        <!-- Start partners -->
+       <!--<section class="partners-section">
+            <h2 class="d-none">No Content</h2>
+            <ul class="partners-slider">
+                <li>
+                    <div>
+                        <img src="assets/images/partners/1.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/2.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/3.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/4.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/5.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/6.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/7.png" alt="">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <img src="assets/images/partners/4.png" alt="">
+                    </div>
+                </li>
+
+            </ul>
+        </section>-->
+        <!-- end partners -->
+
+        <!-- start funfact -->
+        <section class="funfact-section section-padding">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-12 wow fadeInLeft" data-wow-delay="0.1s">
+                        <div class="content">
+                            <h2>Hope, Support, and Love for All</h2>
+                            <h3>We work together
+                                & never <span>give</span> up</h3>
+                            <p>We work together to make a lasting difference, helping people. With kindness and hard work, we bring hope and make positive changes for those in need.</p>
+                            <a href="tel:+917601866602">
+                                <i class="flaticon-phone-call"></i>
+                                <span>+91 7601866602</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 wow fadeInRight" data-wow-delay="0.1s">
+                        <div class="funfact">
+                            <ul>
+                                <li>
+                                    <div class="count">
+                                        <h3><span class="odometer" data-count="500">00</span>+</h3>
+                                    </div>
+                                    <span>Cities we have connected</span>
+                                </li>
+                                <li>
+                                    <div class="count">
+                                        <h3><span class="odometer" data-count="1.2">00</span>m</h3>
+                                    </div>
+                                    <span>Raise funds every month</span>
+                                </li>
+                                <li>
+                                    <div class="count">
+                                        <h3><span class="odometer" data-count="100">00 </span>+</h3>
+                                    </div>
+                                    <span>We have monthly donor</span>
+                                </li>
+                                <li>
+                                    <div class="count">
+                                        <h3><span class="odometer" data-count="95">00</span>%</h3>
+                                    </div>
+                                    <span>Successful campains</span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shape">
+                <img src="assets/images/funfuck-shape.svg" alt="">
+            </div>
+        </section>
+        <!-- end funfact -->
+
+        <!-- start about -->
+        <section class="about-section section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="about-image">
+    <div class="img-1">
+        
+    <video
+         id="aboutDonationVideo"
+        class="about-donation-video"
+        src="assets/videos/donation-video1.mp4"
+        muted
+        loop
+        playsinline
+        preload="metadata">
+    </video>
+
+    <button
+        type="button"
+        class="video-btn mp4-video-btn"
+        id="aboutVideoPlayBtn"
+        aria-label="Play video">
+        <i class="flaticon-play"></i>
+    </button>
+</div>
+
+    <div class="img-2">
+        <img src="assets/images/about/about-2.jpg" alt="">
+    </div>
+</div>
+                    </div>
+                    <div class="col-lg-6 col-12 wow fadeInRight" data-wow-delay="0.1s">
+                        <div class="about-content">
+                            <h2>Building Brighter Futures Through Kindness.</h2>
+                            <h3>Helping each other can
+                                make <span>world</span> better</h3>
+                            <p>Helping each other creates a stronger, kinder world. We build trust, spread compassion, and inspire others to do the same. Together, we can overcome challenges and make lasting positive changes.</p>
+
+                            <div class="inner-content">
+                                <div class="inner-item">
+                                    <div class="icon">
+                                        <i class="flaticon-charity"></i>
+                                    </div>
+                                    <div class="content">
+                                        <h4>Trusted organization</h4>
+                                        <span>Smart Help Foundation is a trusted and reliable organization dedicated to making real, positive change.</span>
+                                    </div>
+                                </div>
+                                <div class="inner-item">
+                                    <div class="icon">
+                                        <i class="flaticon-medal"></i>
+                                    </div>
+                                    <div class="content">
+                                        <h4>Awarded services</h4>
+                                        <span>We are known for its awarded services, recognized for impactful solutions.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul>
+                                <li><i class="flaticon-check"></i>We support children, families, and people in need through compassionate community initiatives.</li>
+<li><i class="flaticon-check"></i>We work together with volunteers and supporters to create meaningful social impact.</li>
+                            </ul>
+                            <div class="about-btn">
+                                <a href="about.html" class="theme-btn">About Us</a>
+                                <div class="ceo">
+                                    <div class="image">
+                                        <img src="assets/images/about/ceo.jpg" alt="">
+                                    </div>
+                                    <div class="text">
+                                        <h4>SIVARANJANI</h4>
+                                        <span>Founder</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shape-1">
+                <img src="assets/images/about/shape1.svg" alt="">
+            </div>
+            <div class="shape-2">
+                <img src="assets/images/about/shape2.svg" alt="">
+            </div>
+            <div class="shape-3">
+                <img src="assets/images/about/shape3.svg" alt="">
+            </div>
+            <div class="shape-4">
+                <img src="assets/images/about/shape4.svg" alt="">
+            </div>
+            <div class="shape-5">
+                <img src="assets/images/about/shape5.svg" alt="">
+            </div>
+            <div class="shape-6">
+                <img src="assets/images/about/shape6.svg" alt="">
+            </div>
+        </section>
+        <!-- end about -->
+
+        <!-- start mission vission -->
+        <section class="MV-section">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+                        <div class="card-mv wow fadeInUp" data-wow-delay="0.1s">
+                            <img src="assets/images/mission-vission/1.jpg" alt="">
+                            <div class="icon">
+                                <a href="event.html" data-skip-popup="true"><i>+</i>
+                                    <div class="shape">
+                                        <svg viewBox="0 0 98 99" fill="none">
+                                            <path
+                                                d="M0 0H98V99C98 99 61.8947 91.6967 42.5526 55.9918C23.2105 20.2869 0 0 0 0Z"
+                                                fill="#F74F22" />
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="text">
+                                <h2><a href="event.html"  data-skip-popup="true">Food & Water Support.</a></h2>
+                                <i class="flaticon-tap"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+                        <div class="card-mv wow fadeInUp" data-wow-delay="0.2s">
+                            <img src="assets/images/mission-vission/2.jpg" alt="">
+                            <div class="icon">
+                                <a href="event.html" data-skip-popup="true"><i>+</i>
+                                    <div class="shape">
+                                        <svg viewBox="0 0 98 99" fill="none">
+                                            <path
+                                                d="M0 0H98V99C98 99 61.8947 91.6967 42.5526 55.9918C23.2105 20.2869 0 0 0 0Z"
+                                                fill="#F74F22" />
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="text">
+                                <h2><a href="event.html"  data-skip-popup="true">A hand for Children</a></h2>
+                                <i class="flaticon-handshake"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+                        <div class="card-mv wow fadeInUp" data-wow-delay="0.1s">
+                            <img src="assets/images/mission-vission/3.jpg" alt="">
+                            <div class="icon">
+                                <a href="event.html" data-skip-popup="true"><i>+</i>
+                                    <div class="shape">
+                                        <svg viewBox="0 0 98 99" fill="none">
+                                            <path
+                                                d="M0 0H98V99C98 99 61.8947 91.6967 42.5526 55.9918C23.2105 20.2869 0 0 0 0Z"
+                                                fill="#F74F22" />
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="text">
+                                <h2><a href="event.html"  data-skip-popup="true">Send gift for children</a></h2>
+                                <i class="flaticon-gift"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end mission vission -->
+
+        <!-- start service 
+        <section class="service-section section-padding">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-12">
+                        <div class="section-title">
+                            <span>Together, We Can Change Lives Forever.</span>
+                            <h2>our non-profit services
+                                you must love</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="all-Service-btn">
+                            <a href="service.html" class="theme-btn">All Services</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-wrap">
+                    <div class="row">
+                        <div class="col-lg-5 col-12">
+                            <div class="service-left">
+                                <ul>
+                                    <li>
+                                        <a href="service-single.html"><i class="flaticon-fund"></i>Fund Raised &
+                                            Donation</a>
+                                    </li>
+                                    <li>
+                                        <a href="service-single.html" class="active"><i
+                                                class="flaticon-first-aid-kit"></i>Medical
+                                            Treatment Help</a>
+                                    </li>
+                                    <li>
+                                        <a href="service-single.html"><i class="flaticon-charity"></i>development
+                                            programs</a>
+                                    </li>
+                                    <li>
+                                        <a href="service-single.html"><i class="flaticon-cardiogram"></i>Child medical
+                                            research</a>
+                                    </li>
+                                    <li>
+                                        <a href="service-single.html"><i class="flaticon-gift-box"></i>Corporate Gifts
+                                            donate</a>
+                                    </li>
+                                </ul>
+                                <div class="s-more">
+                                    <a href="service.html">More Services</a>
+                                </div>
+                                <div class="shape">
+                                    <svg width="58" height="59" viewBox="0 0 58 59" fill="none">
+                                        <path
+                                            d="M54.2137 14.9275C54.2946 23.4127 50.103 33.234 41.2272 34.6262C37.1014 35.2805 32.7028 33.2479 30.8405 29.3128C29.3958 26.2582 30.6579 22.3036 34.283 22.3228L34.2834 22.3229C36.8308 22.4389 39.1016 23.8711 40.3776 26.1666C45.2298 34.7562 35.5413 42.6647 28.2657 43.9192C19.8266 45.3851 11.4459 42.0345 5.84436 35.6938C5.03073 34.7748 3.55462 36.121 4.36829 37.04C10.4434 43.9139 19.4507 47.4913 28.578 45.8928C36.012 44.5998 43.8881 38.6038 43.3965 29.7439C43.2909 27.8559 42.7123 26.0594 41.7215 24.5411C40.7307 23.0228 39.363 21.8381 37.7608 21.1094C35.1648 19.9251 31.342 19.8652 29.3149 22.5945C26.9759 25.7034 28.6092 30.1415 30.6692 32.6273C33.0047 35.3931 36.3868 36.8987 39.9684 36.7675C50.3966 36.3523 56.1943 24.9281 56.0937 15.0108C56.0797 13.7323 54.2016 13.6272 54.2143 14.9274L54.2137 14.9275Z"
+                                            fill="#F74F22" />
+                                        <path
+                                            d="M8.63745 45.0051C7.10278 41.9681 5.74123 38.8277 4.55951 35.6002L3.84907 37.0423C7.72181 36.3585 11.5486 35.3144 15.2857 33.9219C16.4345 33.49 16.1333 31.5058 14.9742 31.9486C11.2394 33.3434 7.4142 34.3881 3.5432 35.0709C3.25617 35.1419 3.00764 35.3474 2.86862 35.6295C2.73 35.9117 2.71602 36.2392 2.83057 36.5193C4.00526 39.7433 5.35851 42.8809 6.88467 45.9158C7.44574 47.0269 9.18094 46.1094 8.60779 44.9946L8.63745 45.0051Z"
+                                            fill="#F74F22" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-12">
+                            <div class="service-image">
+                                <ul>
+                                    <li><img src="assets/images/service/1.jpg" alt="">
+                                        <a href="https://www.youtube.com/embed/VqmFKnHG5q8?si=YcvnY_zzMv21k4iM"
+                                            class="video-btn" data-type="iframe">
+                                            <i class="flaticon-play"></i>
+                                        </a>
+                                    </li>
+                                    <li><img src="assets/images/service/2.jpg" alt=""></li>
+                                    <li><img src="assets/images/service/3.jpg" alt=""></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shape-1">
+                <img src="assets/images/service/shape-1.svg" alt="">
+            </div>
+            <div class="shape-2">
+                <img src="assets/images/service/shape-2.svg" alt="">
+            </div>
+        </section>
+        end service -->
+
+        <!-- start causes -->
+        <section class="causes-section section-padding pt-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="section-title">
+                            <span>Charity makes no decrease in property.</span>
+                            <h2>Helping each other can
+                                make <span>world</span> better</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="causes-slider owl-carousel">
+                <div class="causes-card">
+                    <div class="image">
+                       
+                        <img src="assets/images/Imgs/water.webp" alt="">
+                    </div>
+                    <div class="text">
+                        <h2><a href="donate.html">Bringing Clean Water to Rural Communities</a></h2>
+                        <p>Our initiative provides clean water to rural communities, improving health</p>
+                    </div>
+                   <!-- <div class="progress-wrap">
+                        <div class="progress-item">
+                            <div class="progress">
+                                <div class="bar" style="width: 90%;"></div>
+                            </div>
+                            <span class="cssProgress-label">90%</span>
+                         <!/--</div>
+                        <ul>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Raised:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div class="causes-card">
+                    <div class="image">
+                 
+                        <img src="assets/images/Imgs/teach.avif" alt="">
+                    </div>
+                    <div class="text">
+                        <h2><a href="donate.html">Lifeskills for Children</a></h2>
+<p>Teaching life skills to children empowers them for a brighter future.</p>
+                    </div>
+                     <!--<div class="progress-wrap">
+                        <div class="progress-item">
+                            <div class="progress">
+                                <div class="bar" style="width: 90%;"></div>
+                            </div>
+                            <span class="cssProgress-label">90%</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Raised:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div class="causes-card">
+                    <div class="image">
+                       
+                        <img src="assets/images/Imgs/img14.webp" alt="">
+                    </div>
+                    <div class="text">
+                        <h2><a href="donate.html">Providing Healthy Food for the children</a></h2>
+                        <p>We provide healthy food for children, ensuring they grow strong.</p>
+                    </div>
+                     <!--<div class="progress-wrap">
+                        <div class="progress-item">
+                            <div class="progress">
+                                <div class="bar" style="width: 90%;"></div>
+                            </div>
+                            <span class="cssProgress-label">90%</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Raised:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div class="causes-card">
+                    <div class="image">
+                     
+                        <img src="assets/images/Imgs/med.avif" alt="">
+                    </div>
+                    <div class="text">
+                        <h2><a href="donate.html">Improving Access to Medical Care in Remote Areas</a></h2>
+                        <p>Bringing healthcare closer to those in need, we reduce disparities.</p>
+                    </div>
+                     <!--<div class="progress-wrap">
+                        <div class="progress-item">
+                            <div class="progress">
+                                <div class="bar" style="width: 90%;"></div>
+                            </div>
+                            <span class="cssProgress-label">90%</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Raised:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div class="causes-card">
+                    <div class="image">
+                        
+                        <img src="assets/images/causes/4.jpg" alt="">
+                    </div>
+                    <div class="text">
+                        <h2><a href="donate.html">Help Children Rise out of Poverty</a></h2>
+                        <p>We help children rise out of poverty by providing education and support.</p>
+                    </div>
+                     <!--<div class="progress-wrap">
+                        <div class="progress-item">
+                             <div class="progress">
+                               <div class="bar" style="width: 90%;"></div>
+                            </div>
+                            <span class="cssProgress-label">90%</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Raised:</span>
+                                <span>$20.000</span>
+                            </li>
+                            <li>
+                                <span class="title">Goal:</span>
+                                <span>$20.000</span>
+                            </li>
+                        </ul>-->
+                    </div>
+                </div>
+           
+         <!--<div class="shape">
+                <img src="assets/images/causes/shape.svg" alt="">
+            </div>-->
+            <div class="shape-2">
+                <img src="assets/images/causes/bg.jpg" >
+            </div>
+        </section>
+        <!-- end causes -->
+
+        <!-- start cta -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="content">
+                    <span>Compassion in Action: Join Us Today</span>
+                    <h3>children need your help
+                        by donating today</h3>
+                    <a href="donate.html" class="theme-btn">Donate Now</a>
+                </div>
+            </div>
+            <div class="shape">
+                <img src="assets/images/cta-shap.svg" alt="">
+            </div>
+            <div class="shape-1">
+                <img src="assets/images/curved_shape.svg" alt="">
+            </div>
+            <div class="shape-2">
+                <img src="assets/images/arrow1.svg" alt="">
+            </div>
+        </section>
+        <!-- end cta -->
+
+        <!-- start project -->
+        <section class="project-section section-padding">
+            <div class="container">
+                <div class="section-title">
+                    <span>We are here to support people in need</span>
+                    <h2>our case study about helping people</h2>
+                </div>
+            </div>
+            <div class="project-slider owl-carousel">
+                <div class="project-card">
+                    <img src="assets/images/project/1.jpg" alt="">
+                    <div class="content">
+                        <h2><a href="project-single.html">Shelter for the Homeless</a></h2>
+                        <span>Child & Family Care</span>
+                        <div class="icon"><a href="project-single.html"><i class="flaticon-arrow-up"></i></a></div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="assets/images/project/2.jpg" alt="">
+                    <div class="content">
+                        <h2><a href="project-single.html">Empowering Through Food</a></h2>
+                        <span>Child & Family Care</span>
+                        <div class="icon"><a href="project-single.html"><i class="flaticon-arrow-up"></i></a></div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="assets/images/project/3.jpg" alt="">
+                    <div class="content">
+                        <h2><a href="project-single.html">old people & Child trouble</a></h2>
+                        <span>Support for Children & Elderly</span>
+                        <div class="icon"><a href="project-single.html"><i class="flaticon-arrow-up"></i></a></div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="assets/images/project/2.jpg" alt="">
+                    <div class="content">
+                        <h2><a href="project-single.html">Clean Water to Rural</a></h2>
+                        <span>Child & Family Care</span>
+                        <div class="icon"><a href="project-single.html"><i class="flaticon-arrow-up"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end project -->
+
+       <!-- start testimonial -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-12">
+                <div class="section-title">
+                    <span>Real Experiences From Our Donors</span>
+                    <h2>What Our <span>Donors</span> Say</h2>
+                </div>
+            </div>
+        </div>
+<div class="google-review-summary">
+    <span class="google-review-rating">4.92 ★</span>
+    <span class="google-review-text">from 2,275 Google reviews</span>
+</div>
+        <div class="testimonial-wrap">
+            <div class="testimonial-slider owl-carousel">
+
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I celebrated a special occasion by donating through Smart Help Foundation.
+                        The process was smooth and trustworthy, and I really appreciated the updates
+                        and video shared after the donation.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Shalwin Benvita Gonsalves">
+                        </div>
+                        <div class="text">
+                            <h3>Shalwin Benvita Gonsalves</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        Smart Help Foundation is doing great work for people in need.
+                        Their efforts to support the community are truly appreciated.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Nani">
+                        </div>
+                        <div class="text">
+                            <h3>Nani</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I contacted the foundation from Bangalore, and they organized everything
+                        beautifully. The entire experience was well coordinated, and they also
+                        shared a video of the event.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Sindhu Geetha">
+                        </div>
+                        <div class="text">
+                            <h3>Sindhu Geetha</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        A wonderful initiative where food is provided with kindness, care and dignity.
+                        Truly meaningful work for people who need support.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Md Shamer">
+                        </div>
+                        <div class="text">
+                            <h3>Md Shamer</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        My first donation after discovering Smart Help Foundation through Instagram
+                        was for my husband's birthday. It was a wonderful and meaningful experience.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Sri world">
+                        </div>
+                        <div class="text">
+                            <h3>Sri world</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 6 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I truly appreciated the transparency, dedication and compassionate work
+                        of the foundation. They helped turn a birthday celebration into an act of kindness.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Anjum">
+                        </div>
+                        <div class="text">
+                            <h3>Anjum</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 7 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I sponsored a meal for my birthday, and seeing elderly people and children
+                        receive food made me genuinely happy. A meaningful way to celebrate.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Sankar">
+                        </div>
+                        <div class="text">
+                            <h3>Sankar</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 8 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        Happy to be part of such a good cause. I really appreciate the effort,
+                        dedication and service provided by the team.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Nithish Kumar B">
+                        </div>
+                        <div class="text">
+                            <h3>Nithish Kumar B</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 9 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I initially had some doubts, but I am glad I trusted the foundation.
+                        They delivered on their promises, and the birthday video made the occasion special.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Amal Xavier">
+                        </div>
+                        <div class="text">
+                            <h3>Amal Xavier</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 10 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The foundation organized a birthday celebration beautifully for children
+                        and elderly people, including food, arrangements, a banner and a special wish video.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Gundubilli Prabhash">
+                        </div>
+                        <div class="text">
+                            <h3>Gundubilli Prabhash</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 11 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The team is supportive, professional and dedicated. I appreciated the
+                        smooth coordination, transparency and regular updates throughout the process.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Sravanthi Mattaparthi">
+                        </div>
+                        <div class="text">
+                            <h3>Sravanthi Mattaparthi</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 12 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        Food distribution and stationery donation were organized beautifully.
+                        The team was supportive and transparent, and regular updates made the experience special.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Poornachandra Bughavarapu">
+                        </div>
+                        <div class="text">
+                            <h3>Poornachandra Bughavarapu</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 13 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The foundation made my birthday meaningful by helping me spread happiness
+                        through food donation. It was a beautiful experience.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Sameena Syed">
+                        </div>
+                        <div class="text">
+                            <h3>Sameena Syed</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 14 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The team handled everything with care and attention. Seeing the happiness
+                        of children and elderly people made the experience deeply meaningful.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Deva Roopika">
+                        </div>
+                        <div class="text">
+                            <h3>Deva Roopika</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 15 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The team coordinated my food donation smoothly and professionally.
+                        Their dedication, transparency and care made the entire experience positive.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Swathi Chirra">
+                        </div>
+                        <div class="text">
+                            <h3>Swathi Chirra</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 16 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The foundation helped make my son's first birthday memorable.
+                        The arrangements were handled perfectly and the experience was smooth.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Sumanjali Parla">
+                        </div>
+                        <div class="text">
+                            <h3>Sumanjali Parla</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 17 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        I celebrated my wife's birthday by donating food through the foundation.
+                        The team was genuine and trustworthy, and they shared a beautiful video afterwards.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Prashanth Swathi">
+                        </div>
+                        <div class="text">
+                            <h3>Prashanth Swathi</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 18 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The team helped make a special day meaningful by arranging cake and food
+                        for children. Everyone was supportive, kind and helpful.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/3.jpg" alt="Nayana Pravallika">
+                        </div>
+                        <div class="text">
+                            <h3>Nayana Pravallika</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 19 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        A genuine and trustworthy foundation for food donations.
+                        Their work and commitment to helping people in need are truly appreciated.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/1.jpg" alt="Sindhu Chary">
+                        </div>
+                        <div class="text">
+                            <h3>Sindhu Chary</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 20 -->
+                <div class="testimonial-card">
+                    <ul>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                        <li><i class="flaticon-star"></i></li>
+                    </ul>
+                    <p>
+                        The smiles of the children made my special day even more meaningful.
+                        I am grateful to the foundation for helping create such a memorable experience.
+                    </p>
+                    <div class="autr-name">
+                        <div class="image">
+                            <img src="assets/images/testimonial/2.jpg" alt="Me Balaji">
+                        </div>
+                        <div class="text">
+                            <h3>Me Balaji</h3>
+                            <span>Donor</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end testimonial -->
+
+        <!-- start process -->
+        <section class="process-section">
+            <div class="container">
+                <div class="wrape">
+                    <div class="item">
+                        <div class="icon">
+                            <i class="flaticon-order"></i>
+                            <span>01</span>
+                        </div>
+                        <h2>Identify needs</h2>
+                        <div class="shape">
+                            <img src="assets/images/process-arrow-shape.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon">
+                            <i class="flaticon-shield"></i>
+                            <span>02</span>
+                        </div>
+                        <h2>Collect Money</h2>
+                        <div class="shape">
+                            <img src="assets/images/process-arrow-shape.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon">
+                            <i class="flaticon-return-box"></i>
+                            <span>03</span>
+                        </div>
+                        <h2>Engage Volunteers</h2>
+                        <div class="shape">
+                            <img src="assets/images/process-arrow-shape.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon">
+                            <i class="flaticon-delivery-truck"></i>
+                            <span>04</span>
+                        </div>
+                        <h2>Distribute Goods</h2>
+                        <div class="shape">
+                            <img src="assets/images/process-arrow-shape.svg" alt="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="shape-1">
+                <img src="assets/images/process/shape1.svg" alt="">
+            </div>
+            <div class="shape-2">
+                <img src="assets/images/process/shape2.svg" alt="">
+            </div>
+            <div class="shape-3">
+                <img src="assets/images/process/shape3.svg" alt="">
+            </div>
+            <div class="shape-4">
+                <img src="assets/images/process/shape4.svg" alt="">
+            </div>
+            <div class="shape-5">
+                <img src="assets/images/process/shape5.svg" alt="">
+            </div>
+        </section>
+        <!-- end process -->
+
+        <!-- start instagam -->
+        <!--<section class="instagam-section section-padding pb-0">
+            <div class="shape">
+                <img src="assets/images/instagam/shape.png" alt="">
+                <div class="shape-2">
+                    <img src="assets/images/instagam/shape-2.svg" alt="">
+                </div>-->
+            <!--</div>-->
+            <!--<div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="section-title">
+                            <span>We are always open for children</span>
+                            <h2>Recent Instagram Post</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-main-wrap">
+                <div class="sortable-gallery">
+                    <div class="grid wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="img-holder">
+                            <a href="assets/images/instagam/1.jpg" class="fancybox" data-fancybox-group="gall-1">
+                                <img src="assets/images/instagam/1.jpg" alt class="img img-responsive">
+                                <div class="hover-content">
+                                    <i class="flaticon-camera"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid wow fadeInUp" data-wow-delay="0.0s">
+                        <div class="img-holder">
+                            <a href="assets/images/instagam/2.jpg" class="fancybox" data-fancybox-group="gall-1">
+                                <img src="assets/images/instagam/2.jpg" alt class="img img-responsive">
+                                <div class="hover-content">
+                                    <i class="flaticon-camera"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="img-holder">
+                            <a href="assets/images/instagam/3.jpg" class="fancybox" data-fancybox-group="gall-1">
+                                <img src="assets/images/instagam/3.jpg" alt class="img img-responsive">
+                                <div class="hover-content">
+                                    <i class="flaticon-camera"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid wow fadeInUp" data-wow-delay="0.0s">
+                        <div class="img-holder">
+                            <a href="assets/images/instagam/4.jpg" class="fancybox" data-fancybox-group="gall-1">
+                                <img src="assets/images/instagam/4.jpg" alt class="img img-responsive">
+                                <div class="hover-content">
+                                    <i class="flaticon-camera"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="img-holder">
+                            <a href="assets/images/instagam/5.jpg" class="fancybox" data-fancybox-group="gall-1">
+                                <img src="assets/images/instagam/5.jpg" alt class="img img-responsive">
+                                <div class="hover-content">
+                                    <i class="flaticon-camera"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>-->
+        <!--</section>-->
+        <!--end instagam -->
+
+        <!-- start blog 
+        <section class="blog-section section-padding">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-12">
+                        <div class="section-title">
+                            <span>Hope, Support, and Love for All.</span>
+                            <h2>our latest article news
+                                & blogs you need</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="blog-card wow fadeInUp" data-wow-delay="0.0s">
+                            <div class="image">
+                                <img src="assets/images/blog/img-1.jpg" alt="">
+                                <img src="assets/images/blog/img-1.jpg" alt="">
+                            </div>
+                            <ul>
+                                <li><i class="flaticon-calendar"></i>02 Apr 2021</li>
+                                <li><i class="flaticon-chat"></i>2 Comments</li>
+                            </ul>
+                            <div class="content">
+                                <h3><a href="blog-single.html">Stories of Hope: Celebrating Our Community Impact</a></h3>
+                                <p>Business is the activity of making one's liv
+                                    cing or buying and selling products</p>
+                                <div class="content_bottom">
+                                    <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
+                                    <span><a href="blog-single.html">
+                                            <img src="assets/images/blog/business.svg" alt="">
+                                            Business</a></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="blog-card wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="image">
+                                <img src="assets/images/blog/img-2.jpg" alt="">
+                                <img src="assets/images/blog/img-2.jpg" alt="">
+                            </div>
+                            <ul>
+                                <li><i class="flaticon-calendar"></i>02 Apr 2021</li>
+                                <li><i class="flaticon-chat"></i>2 Comments</li>
+                            </ul>
+                            <div class="content">
+                                <h3><a href="blog-single.html">How Your Generous Support Makes a Difference</a></h3>
+                                <p>Business is the activity of making one's liv
+                                    cing or buying and selling products</p>
+                                <div class="content_bottom">
+                                    <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
+                                    <span><a href="blog-single.html">
+                                            <img src="assets/images/blog/business.svg" alt="">
+                                            Business</a></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="blog-card wow fadeInUp" data-wow-delay="0.3s">
+                            <div class="image">
+                                <img src="assets/images/blog/img-3.jpg" alt="">
+                                <img src="assets/images/blog/img-3.jpg" alt="">
+                            </div>
+                            <ul>
+                                <li><i class="flaticon-calendar"></i>02 Apr 2021</li>
+                                <li><i class="flaticon-chat"></i>2 Comments</li>
+                            </ul>
+                            <div class="content">
+                                <h3><a href="blog-single.html">Our Goal Is Help The Poor Child Around The World</a></h3>
+                                <p>Business is the activity of making one's liv
+                                    cing or buying and selling products</p>
+                                <div class="content_bottom">
+                                    <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
+                                    <span><a href="blog-single.html">
+                                            <img src="assets/images/blog/business.svg" alt="">
+                                            Business</a></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!/--<div class="shape">
+                <img src="assets/images/blog/bg-shape.png" alt="">
+            </div>-->
+        </section>
+       <!--end blog-->
+
+
+        <!-- start footer -->
+<div id="site-footer"></div>
+<!-- end footer -->
+
+    </div>
+    <!-- end of page-wrapper -->
+
+    <!-- All JavaScript files
+    ================================================== -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugins for this template -->
+    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="assets/js/jquery.dlmenu.js"></script>
+    <script src="assets/js/jquery-plugin-collection.js"></script>
+    <script src="assets/js/common-includes.js"></script>
+    <!-- Custom script for this template -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/api-client.js?v=20260903-2"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const video = document.getElementById('aboutDonationVideo');
+    const playButton = document.getElementById('aboutVideoPlayBtn');
+
+    if (!video || !playButton) {
+        return;
+    }
+
+    playButton.addEventListener('click', function () {
+        video.play().then(function () {
+            playButton.style.opacity = '0';
+            playButton.style.pointerEvents = 'none';
+        }).catch(function () {
+            playButton.style.opacity = '1';
+            playButton.style.pointerEvents = 'auto';
+        });
+    });
+
+    video.addEventListener('pause', function () {
+        playButton.style.opacity = '1';
+        playButton.style.pointerEvents = 'auto';
+    });
+
+    video.addEventListener('ended', function () {
+        playButton.style.opacity = '1';
+        playButton.style.pointerEvents = 'auto';
+    });
+
+    video.addEventListener('play', function () {
+        playButton.style.opacity = '0';
+        playButton.style.pointerEvents = 'none';
+    });
+});
+document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[data-skip-popup="true"]');
+    if (link) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.location.href = link.getAttribute('href');
+    }
+}, true);
+document.addEventListener('DOMContentLoaded', function () {
+    function setTestimonialAutoplay() {
+        var $slider = jQuery('.testimonial-slider');
+        if ($slider.length && $slider.data('owl.carousel')) {
+            var owl = $slider.data('owl.carousel');
+            var opts = jQuery.extend({}, owl.options);
+            opts.autoplay = true;
+            opts.autoplayTimeout = 3000;
+            opts.autoplayHoverPause = true;
+            opts.smartSpeed = 700;
+
+            $slider.trigger('destroy.owl.carousel');
+            $slider.owlCarousel(opts);
+        } else {
+            setTimeout(setTestimonialAutoplay, 500);
+        }
+    }
+    setTimeout(setTestimonialAutoplay, 1500);
+});
+/* Auto-convert testimonial images to first-letter avatars */
+document.addEventListener('DOMContentLoaded', function () {
+    var colors = ['#F74F22', '#0A6E4A', '#1E5AA8', '#8B3A9E', '#D4A017', '#C0392B'];
+    var cards = document.querySelectorAll('.testimonial-section .testimonial-card');
+
+    cards.forEach(function (card, i) {
+        var imgWrap = card.querySelector('.autr-name .image');
+        var nameEl  = card.querySelector('.autr-name .text h3');
+        if (!imgWrap || !nameEl) return;
+
+        var name = (nameEl.textContent || '').trim();
+        if (!name) return;
+
+        var letter = name.charAt(0).toUpperCase();
+
+        // Remove <img> if exists
+        var img = imgWrap.querySelector('img');
+        if (img) img.remove();
+
+        // Add avatar class + data attribute
+        imgWrap.classList.add('avatar');
+        imgWrap.setAttribute('data-letter', letter);
+        imgWrap.style.setProperty('--avatar-bg', colors[i % colors.length]);
+    });
+});
+</script>
+</body>
+</html>

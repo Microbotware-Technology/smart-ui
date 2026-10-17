@@ -1,0 +1,239 @@
+.env
+venv/
+__pycache__/
+*.pyc
+*.db
+# Never commit admin tools
+backend/add_admin.py
+backend/*.db
+backend/.env
+backend/uploads/
+smart-live/admin_dashboard.html
+smart-live/admin.html.bak
+smart-live/become-volunteer.html
+smart-live/blog-fullwidth.html
+smart-live/blog-left-sidebar.html
+smart-live/blog-single-fullwidth.html
+smart-live/blog-single-left-sidebar.html
+smart-live/blog-single.html
+smart-live/blog.html
+smart-live/cart.html
+smart-live/causes-single.html
+smart-live/causes.html
+smart-live/checkout.html
+smart-live/donate.html.bak
+smart-live/event-single.html
+smart-live/event.html
+smart-live/gallery.html
+smart-live/portfolio.html
+smart-live/project-flow.html
+smart-live/project-single.html
+smart-live/service-single.html
+smart-live/service.html
+smart-live/shop-single.html
+smart-live/shop.html
+smart-live/volunteer-1.html
+smart-live/volunteer-2.html
+smart-live/volunteer-single.html
+smart-live/volunteer.html
+uploads/
+
+# ════════════════════════════════════════════════════════════
+# Smart Help Foundation — Unused Assets
+# Rule: Not referenced in HTML, CSS, or JS anywhere
+# ════════════════════════════════════════════════════════════
+
+# ────────────────────────────────────────────────────────────
+# CSS folder artifacts
+# ────────────────────────────────────────────────────────────
+assets/css/owl.video.play.html
+assets/css/*.map
+
+# ────────────────────────────────────────────────────────────
+# Root images — unused (not in HTML/CSS/JS)
+# ────────────────────────────────────────────────────────────
+assets/images/at-single.jpg
+assets/images/click_To_register.jpg
+assets/images/cta-shap-2.svg
+assets/images/curved_shape2.svg
+assets/images/donate-1.svg
+assets/images/donate-3.svg
+assets/images/donate-shape.svg
+assets/images/donate.png
+assets/images/f-shape5.svg
+assets/images/f-shape6.svg
+assets/images/f-shape7.png
+assets/images/f-shape8.png
+assets/images/f-shape9.png
+assets/images/favicon.png
+assets/images/gq-shap.svg
+assets/images/gq-shap-2.svg
+assets/images/hand.png
+assets/images/healthcare-icon1.svg
+assets/images/healthcare-icon2.svg
+assets/images/healthcare-white.svg
+assets/images/healthcare-with.svg
+assets/images/image_1.png
+assets/images/image_3.png
+assets/images/line-ing.svg
+assets/images/logo.svg
+assets/images/logo-2.svg
+assets/images/register-shape.svg
+assets/images/title-shape.html
+assets/images/up-arrow1.svg
+assets/images/volunteer.jpg
+
+# ────────────────────────────────────────────────────────────
+# Fully unused folders
+# ────────────────────────────────────────────────────────────
+assets/images/banck/
+assets/images/blog/
+assets/images/blog-details/
+assets/images/cart/
+assets/images/cause-single/
+assets/images/checkout/
+assets/images/event/
+assets/images/events-single/
+assets/images/feature/
+assets/images/funfact/
+assets/images/gallery/
+assets/images/image-gallery/
+assets/images/language/
+assets/images/project-details/
+assets/images/recent-posts/
+assets/images/service-single/
+assets/images/shop/
+
+# ────────────────────────────────────────────────────────────
+# Unused files inside used folders
+# ────────────────────────────────────────────────────────────
+
+# about/
+assets/images/about/about-1.jpg
+assets/images/about/about-8.jpg
+assets/images/about/about-9.jpg
+assets/images/about/about-10.jpg
+assets/images/about/about-11.jpg
+assets/images/about/about-12.jpg
+assets/images/about/about-13.jpg
+assets/images/about/about-14.jpg
+assets/images/about/about-15.jpg
+assets/images/about/about-16.jpg
+assets/images/about/about-17.jpg
+assets/images/about/about-18.jpg
+assets/images/about/about-19.jpg
+assets/images/about/dog-sid-img.png
+assets/images/about/shape.png
+assets/images/about/shape13.png
+assets/images/about/shape15.png
+assets/images/about/shape916.png
+
+# causes/ (only 4.jpg + bg.jpg are HTML-referenced)
+assets/images/causes/1.jpg
+assets/images/causes/2.jpg
+assets/images/causes/3.jpg
+assets/images/causes/5.jpg
+assets/images/causes/6.jpg
+assets/images/causes/7.jpg
+assets/images/causes/8.jpg
+assets/images/causes/9.jpg
+assets/images/causes/10.jpg
+assets/images/causes/11.jpg
+assets/images/causes/12.jpg
+assets/images/causes/13.jpg
+assets/images/causes/bg-5.jpg
+assets/images/causes/shape.svg
+assets/images/causes/shape2.svg
+
+# Imgs/ (only water.webp, teach.avif, img14.webp, med.avif are HTML-referenced)
+assets/images/Imgs/care.jpg
+assets/images/Imgs/food.jpg
+assets/images/Imgs/img1.avif
+assets/images/Imgs/img2.avif
+assets/images/Imgs/img3.avif
+assets/images/Imgs/img4.avif
+assets/images/Imgs/img5.avif
+assets/images/Imgs/img6.avif
+assets/images/Imgs/img7.avif
+assets/images/Imgs/img8.avif
+assets/images/Imgs/img9.avif
+assets/images/Imgs/img10.avif
+assets/images/Imgs/img11.avif
+assets/images/Imgs/img12.avif
+assets/images/Imgs/img13.avif
+assets/images/Imgs/teach1.webp
+assets/images/Imgs/water1.webp
+assets/images/Imgs/women.jpg
+
+# mission-vission/ (only 1,2,3.jpg are HTML-referenced)
+assets/images/mission-vission/4.jpg
+assets/images/mission-vission/5.jpg
+assets/images/mission-vission/6.jpg
+
+# process/
+assets/images/process/icon-1.svg
+assets/images/process/icon-2.svg
+assets/images/process/icon-3.svg
+assets/images/process/process-right.png
+
+# project/ (only 1-6.jpg + shapebg-3.svg are HTML-referenced)
+assets/images/project/7.jpg
+assets/images/project/8.jpg
+assets/images/project/9.jpg
+assets/images/project/albam/
+
+# service/ (only PNGs referenced by HTML + shape-4.png by CSS)
+assets/images/service/1.jpg
+assets/images/service/2.jpg
+assets/images/service/3.jpg
+assets/images/service/bg-img.jpg
+assets/images/service/childrenService.svg
+assets/images/service/communityService.svg
+assets/images/service/dove.svg
+assets/images/service/elephant.svg
+assets/images/service/essentialService.svg
+assets/images/service/foodService.svg
+assets/images/service/icon-1.svg
+assets/images/service/icon-2.svg
+assets/images/service/icon-3.svg
+assets/images/service/icon-4.svg
+assets/images/service/icon-5.svg
+assets/images/service/icon-6.svg
+assets/images/service/icon-7.svg
+assets/images/service/icon-8.svg
+assets/images/service/initiativesService.svg
+assets/images/service/liine-s2.svg
+assets/images/service/liine-s3.svg
+assets/images/service/shape-1.svg
+assets/images/service/shape-2.svg
+assets/images/service/shape-3.svg
+assets/images/service/target2.svg
+assets/images/service/tiger.svg
+
+# slider/ (only shape-1 to shape-6 + shape-mobile + slader_1 + slider_2 used)
+assets/images/slider/img-1.jpg
+assets/images/slider/img-shape2.png
+assets/images/slider/shape-9.svg
+assets/images/slider/shape-10.svg
+assets/images/slider/slide-1.jpg
+assets/images/slider/slide-2.jpg
+assets/images/slider/slide-3.jpg
+assets/images/slider/slide-4.jpg
+assets/images/slider/slide-5.jpg
+assets/images/slider/slide-6.jpg
+assets/images/slider/slide-7.jpg
+assets/images/slider/slide-8.jpg
+assets/images/slider/slide-9.jpg
+assets/images/slider/slide-10.jpg
+assets/images/slider/slide-11.jpg
+assets/images/slider/slide-12.jpg
+
+# testimonial/ (1-3.jpg HTML-referenced, shape.svg + shape-2.svg CSS-referenced)
+assets/images/testimonial/left-img.jpg
+assets/images/testimonial/side-img-1.jpg
+assets/images/testimonial/side-img-2.jpg
+
+# volunteer/ (only 1-4.jpg HTML-referenced)
+assets/images/volunteer/5.jpg
+assets/images/volunteer/6.jpg
+assets/images/volunteer/7.jpg

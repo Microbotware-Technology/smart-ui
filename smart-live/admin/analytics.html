@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Analytics</h1>
+            <p>Deep-dive insights into donations and donor behaviour</p>
+        </div>
+        <div class="page-head-actions">
+            <label class="live-toggle" title="Auto-refresh every 30s">
+                <input type="checkbox" id="liveToggle">
+                <span class="live-dot"></span>
+                <span>Live</span>
+            </label>
+            <button class="btn btn-primary" onclick="Analytics.refresh()">
+                <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="an-filter-bar">
+        <div class="an-filter-group">
+            <label>Date Range</label>
+            <div class="an-preset-btns">
+                <button type="button" class="an-preset" data-range="7d">7D</button>
+                <button type="button" class="an-preset" data-range="30d">30D</button>
+                <button type="button" class="an-preset" data-range="90d">90D</button>
+                <button type="button" class="an-preset" data-range="1y">1Y</button>
+                <button type="button" class="an-preset" data-range="custom">Custom</button>
+            </div>
+        </div>
+
+        <div class="an-filter-group an-custom-dates" id="customDates" style="display:none;">
+            <label>From</label>
+            <input type="date" id="dateFrom">
+            <label>To</label>
+            <input type="date" id="dateTo">
+        </div>
+
+        <div class="an-filter-group">
+            <label>Status</label>
+            <select id="statusFilter" class="filter-select">
+                <option value="">All</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="an-kpi-grid" id="kpiGrid">
+        <button type="button" class="an-kpi clickable" data-action="scroll-trend">
+            <div class="an-kpi-icon orange"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-total">—</div>
+                <div class="an-kpi-label" data-kpi-label="total">Total Raised</div>
+            </div>
+            <i class="fa-solid fa-arrow-down an-kpi-arrow"></i>
+        </button>
+
+        <button type="button" class="an-kpi clickable" data-action="go-donations">
+            <div class="an-kpi-icon pink"><i class="fa-solid fa-receipt"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-count">—</div>
+                <div class="an-kpi-label">Donations</div>
+            </div>
+            <i class="fa-solid fa-arrow-right an-kpi-arrow"></i>
+        </button>
+
+        <div class="an-kpi">
+            <div class="an-kpi-icon blue"><i class="fa-solid fa-chart-simple"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-avg">—</div>
+                <div class="an-kpi-label">Avg Amount</div>
+            </div>
+        </div>
+
+        <button type="button" class="an-kpi clickable" data-action="open-top-donors">
+            <div class="an-kpi-icon purple"><i class="fa-solid fa-users"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-donors">—</div>
+                <div class="an-kpi-label">Top Donors</div>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square an-kpi-arrow"></i>
+        </button>
+
+        <button type="button" class="an-kpi clickable" data-action="open-highest">
+            <div class="an-kpi-icon green"><i class="fa-solid fa-trophy"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-highest">—</div>
+                <div class="an-kpi-label">Highest</div>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square an-kpi-arrow"></i>
+        </button>
+
+        <div class="an-kpi">
+            <div class="an-kpi-icon teal"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="an-kpi-body">
+                <div class="an-kpi-value" id="kpi-rate">—</div>
+                <div class="an-kpi-label">Success Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="an-charts-row">
+        <div class="an-card" style="grid-column: span 2;" id="trendCard">
+            <div class="an-card-title">
+                <span>
+                    <i class="fa-solid fa-chart-line"></i> Donation Trend
+                    <span class="an-note">Showing completed donations only</span>
+                </span>
+                <span class="an-chip" id="granularityChip">—</span>
+            </div>
+            <div class="an-chart-wrap"><canvas id="chartTrend"></canvas></div>
+        </div>
+        <div class="an-card">
+            <div class="an-card-title">
+                <span><i class="fa-solid fa-chart-pie"></i> Status Breakdown</span>
+            </div>
+            <div class="an-chart-wrap an-donut"><canvas id="chartStatus"></canvas></div>
+        </div>
+    </div>
+
+    <!-- YoY -->
+    <div class="an-card">
+        <div class="an-card-title">
+            <span>
+                <i class="fa-solid fa-calendar-days"></i> Year-over-Year
+                <span class="an-note">Showing completed donations only</span>
+            </span>
+        </div>
+        <div class="an-chart-wrap"><canvas id="chartYoY"></canvas></div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div class="an-card an-comparison-card">
+        <div class="an-card-title">
+            <span><i class="fa-solid fa-arrow-trend-up"></i> This Month vs Last Month</span>
+        </div>
+        <div class="an-comparison-body">
+            <div class="an-cmp-item">
+                <div class="an-cmp-label">This Month</div>
+                <div class="an-cmp-value" id="cmp-this">—</div>
+            </div>
+            <div class="an-cmp-divider"></div>
+            <div class="an-cmp-item">
+                <div class="an-cmp-label">Last Month</div>
+                <div class="an-cmp-value" id="cmp-last">—</div>
+            </div>
+            <div class="an-cmp-divider"></div>
+            <div class="an-cmp-item">
+                <div class="an-cmp-label">Change</div>
+                <div class="an-cmp-value an-cmp-change" id="cmp-change">—</div>
+            </div>
+        </div>
+    </div>
+
+        <!-- CTA: View in Donations + Recent Preview -->
+    <div class="an-card an-cta-card">
+        <div class="an-cta-body">
+            <div class="an-cta-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="an-cta-text">
+                <h3>Need full transaction details?</h3>
+                <p>Search, filter, sort, and export all donations with payment methods on the Donations page.</p>
+            </div>
+            <a href="#" class="btn btn-primary" id="openDonationsBtn">
+                <i class="fa-solid fa-arrow-right"></i> Open Donations Page
+            </a>
+        </div>
+
+        <!-- Recent 10 donations preview -->
+        <div class="an-preview-wrap" id="recentPreviewWrap" style="display:none;">
+            <div class="an-preview-head">
+                <span><i class="fa-solid fa-clock-rotate-left"></i> Recent 10 Donations</span>
+            </div>
+            <div class="an-preview-table-wrap">
+                <table class="an-preview-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Donor</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentPreviewBody">
+                        <tr><td colspan="6" class="an-empty">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    var STORAGE_KEY = "shf_analytics_filters_v1";
+
+    var state = {
+        range: "30d",
+        start: null,
+        end: null,
+        status: "",
+        liveTimer: null,
+        summary: null,
+    };
+
+    var charts = {};
+
+    // ---------- Helpers ----------
+    function fmtINR(n) {
+        return "₹" + Number(n || 0).toLocaleString("en-IN", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+    }
+
+    function fmtDate(iso) {
+        if (!iso) return "—";
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(" ", "T") + "Z";
+        }
+        var d = new Date(str);
+        if (isNaN(d.getTime())) return "—";
+        return d.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            day: "2-digit", month: "short", year: "numeric",
+            hour: "2-digit", minute: "2-digit", hour12: true,
+        });
+    }
+
+    function escapeHtml(t) {
+        if (t == null) return "";
+        return String(t)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    // ---------- Filters ----------
+    function saveFilters() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                range: state.range, start: state.start, end: state.end, status: state.status,
+            }));
+        } catch (_) {}
+    }
+
+    function loadFilters() {
+    try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        var obj = JSON.parse(raw);
+
+        if (obj.range) state.range = obj.range;
+
+        if (obj.range === "custom" && obj.start && obj.end) {
+            var startMs = new Date(obj.start + "T00:00:00Z").getTime();
+            var endMs   = new Date(obj.end   + "T23:59:59Z").getTime();
+            var nowMs   = Date.now();
+            var twoYearsMs = 2 * 365 * 24 * 60 * 60 * 1000;
+
+            var invalid =
+                isNaN(startMs) || isNaN(endMs) ||
+                startMs > nowMs ||
+                endMs > nowMs ||
+                startMs > endMs ||
+                (nowMs - startMs) > twoYearsMs;
+
+            if (invalid) {
+                state.range = "30d";
+                state.start = null;
+                state.end = null;
+            } else {
+                state.start = obj.start;
+                state.end = obj.end;
+            }
+        } else {
+            if (obj.start) state.start = obj.start;
+            if (obj.end)   state.end   = obj.end;
+        }
+
+        if (obj.status) state.status = obj.status;
+    } catch (_) {}
+}
+
+    function syncFilterUI() {
+    document.querySelectorAll(".an-preset").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-range") === state.range);
+    });
+    var customBox = document.getElementById("customDates");
+    customBox.style.display = state.range === "custom" ? "flex" : "none";
+    if (state.start) document.getElementById("dateFrom").value = state.start;
+    if (state.end)   document.getElementById("dateTo").value = state.end;
+    document.getElementById("statusFilter").value = state.status || "";
+
+    if (state.range === "custom") {
+        updateDateConstraints();
+    }
+}
+
+    function updateDateConstraints() {
+    var fromEl = document.getElementById('dateFrom');
+    var toEl   = document.getElementById('dateTo');
+    if (!fromEl || !toEl) return;
+
+    var now = new Date();
+    var today = now.getFullYear() + '-' +
+                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                String(now.getDate()).padStart(2, '0');
+
+    var twoYearsAgo = new Date(now);
+    twoYearsAgo.setFullYear(now.getFullYear() - 2);
+    var minDate = twoYearsAgo.getFullYear() + '-' +
+                  String(twoYearsAgo.getMonth() + 1).padStart(2, '0') + '-' +
+                  String(twoYearsAgo.getDate()).padStart(2, '0');
+
+    fromEl.min = minDate;
+    fromEl.max = toEl.value ? toEl.value : today;
+    toEl.min = fromEl.value || minDate;
+    toEl.max = today;
+}
+
+    function qs() {
+        var p = ["range=" + encodeURIComponent(state.range)];
+        if (state.range === "custom" && state.start && state.end) {
+            p.push("start=" + encodeURIComponent(state.start));
+            p.push("end=" + encodeURIComponent(state.end));
+        }
+        if (state.status) p.push("status=" + encodeURIComponent(state.status));
+        return p.join("&");
+    }
+
+    // ---------- Load ----------
+        function loadAll() {
+        return Promise.all([
+            API.get("/admin/analytics/summary?" + qs()),
+            API.get("/admin/analytics/trend?" + qs()),
+            API.get("/admin/analytics/status?" + qs()),
+            API.get("/admin/analytics/yoy"),
+            API.get("/admin/analytics/donations?" + qs() + "&page=1&limit=10"),
+        ]).then(function (results) {
+            state.summary = results[0];
+            renderKPIs(results[0]);
+            renderTrend(results[1]);
+            renderStatus(results[2]);
+            renderYoY(results[3]);
+            renderRecentPreview(results[4]);
+        }).catch(function (err) {
+            console.error("Analytics error:", err);
+        });
+    }
+
+        // ---------- Recent 10 Donations Preview ----------
+    function renderRecentPreview(res) {
+        var wrap = document.getElementById("recentPreviewWrap");
+        var body = document.getElementById("recentPreviewBody");
+        if (!wrap || !body) return;
+
+        var items = (res && res.items) || [];
+
+        if (!items.length) {
+            wrap.style.display = "none";
+            return;
+        }
+
+        wrap.style.display = "block";
+
+        body.innerHTML = items.map(function (d) {
+            var s = (d.status || "Pending").toLowerCase();
+            var cls = "warning";
+            if (s.indexOf("complet") !== -1 || s.indexOf("success") !== -1 || s.indexOf("paid") !== -1) cls = "success";
+            else if (s.indexOf("fail") !== -1 || s.indexOf("cancel") !== -1) cls = "danger";
+
+            return '<tr>' +
+                '<td>#' + d.id + '</td>' +
+                '<td><div class="ap-name">' + escapeHtml(d.donor_name || "Anonymous") + '</div>' +
+                    (d.email ? '<div class="ap-email">' + escapeHtml(d.email) + '</div>' : '') + '</td>' +
+                '<td><span class="ap-amount">' + fmtINR(d.amount) + '</span></td>' +
+                '<td><span class="ap-method">' + escapeHtml(d.payment_method || "—") + '</span></td>' +
+                '<td><span class="pill ' + cls + '">' + escapeHtml(d.status || "Pending") + '</span></td>' +
+                '<td class="ap-date">' + fmtDate(d.created_at) + '</td>' +
+                '</tr>';
+        }).join("");
+    }
+    
+    // ---------- KPI ----------
+function renderKPIs(s) {
+    // ── Dynamic "amount" KPI based on active status filter ──
+    var statusKey = (state.status || "").toLowerCase();
+    var amountValue, amountLabel;
+
+    if (statusKey === "pending") {
+        amountValue = s.filtered_amount || 0;
+        amountLabel = "Pending Amount";
+    } else if (statusKey === "failed") {
+        amountValue = s.filtered_amount || 0;
+        amountLabel = "Failed Amount";
+    } else {
+        // "" or "completed"
+        amountValue = s.total_raised || 0;
+        amountLabel = "Total Raised";
+    }
+
+    document.getElementById("kpi-total").textContent = fmtINR(amountValue);
+
+    // Update the label span (add id="kpi-total-label" in HTML)
+    var labelEl = document.querySelector('[data-kpi-label="total"]');
+    if (labelEl) labelEl.textContent = amountLabel;
+
+    // Rest same as before
+    document.getElementById("kpi-count").textContent   = s.total_count || 0;
+    var avgValue = (statusKey === "pending" || statusKey === "failed")
+    ? (s.filtered_avg || 0)
+    : (s.avg_amount || 0);
+    document.getElementById("kpi-avg").textContent = fmtINR(avgValue);
+    document.getElementById("kpi-donors").textContent  = s.top_donors_count || 0;
+    document.getElementById("kpi-highest").textContent = fmtINR(s.highest_donation);
+    document.getElementById("kpi-rate").textContent    = (s.success_rate || 0) + "%";
+
+    document.getElementById("cmp-this").textContent = fmtINR(s.this_month);
+    document.getElementById("cmp-last").textContent = fmtINR(s.last_month);
+
+    var change = s.change_pct || 0;
+    var arrow = change > 0 ? "▲" : (change < 0 ? "▼" : "—");
+    var cls = change > 0 ? "up" : (change < 0 ? "down" : "flat");
+    var el = document.getElementById("cmp-change");
+    el.className = "an-cmp-value an-cmp-change " + cls;
+    el.textContent = arrow + " " + Math.abs(change) + "%";
+    syncDonorKpiVisibility();
+}
+
+function syncDonorKpiVisibility() {
+    var statusKey = (state.status || "").toLowerCase();
+    var donorCard = document.querySelector('[data-action="open-top-donors"]');
+    if (!donorCard) return;
+
+    if (statusKey === "failed") {
+        donorCard.style.display = "none";
+        return;
+    }
+
+    donorCard.style.display = "";
+
+    // Label only dynamic
+    var labelEl = donorCard.querySelector(".an-kpi-label");
+    if (labelEl) {
+        labelEl.textContent = (statusKey === "pending") ? "Top Pending" : "Top Donors";
+    }
+}
+
+    // ---------- Trend ----------
+    function renderTrend(data) {
+        var canvas = document.getElementById("chartTrend");
+        if (!canvas) return;
+        var old = Chart.getChart(canvas); if (old) old.destroy();
+
+        document.getElementById("granularityChip").textContent =
+            data.granularity === "day" ? "Daily" :
+            data.granularity === "week" ? "Weekly" : "Monthly";
+
+        var ctx = canvas.getContext("2d");
+        var grad = ctx.createLinearGradient(0, 0, 0, 260);
+        grad.addColorStop(0, "rgba(247, 79, 34, 0.35)");
+        grad.addColorStop(1, "rgba(247, 79, 34, 0.02)");
+
+        charts.trend = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.amounts,
+                    borderColor: "#F74F22",
+                    backgroundColor: grad,
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2.5,
+                    pointRadius: 3,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: "#fff",
+                    pointBorderColor: "#F74F22",
+                    pointBorderWidth: 2,
+                }],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: "#1f2937", padding: 10,
+                        callbacks: { label: function (ctx) { return "  ₹" + Number(ctx.parsed.y || 0).toLocaleString("en-IN"); } },
+                    },
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: "#6b7280", font: { size: 11 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+                    y: {
+                        beginAtZero: true, grid: { color: "rgba(0,0,0,0.05)" },
+                        ticks: { color: "#6b7280", font: { size: 11 }, callback: function (v) {
+                            if (v >= 100000) return "₹" + (v / 100000).toFixed(1) + "L";
+                            if (v >= 1000) {
+                                    var k = v / 1000;
+                                    // Show decimal only if not whole number
+                                    return "₹" + (k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)) + "k";
+                                }
+                            return "₹" + v;
+                        } },
+                    },
+                },
+            },
+        });
+    }
+
+    // ---------- Status ----------
+    function renderStatus(bd) {
+        var canvas = document.getElementById("chartStatus");
+        if (!canvas) return;
+        var old = Chart.getChart(canvas); if (old) old.destroy();
+
+        var completed = bd.completed || 0, pending = bd.pending || 0, failed = bd.failed || 0;
+        var total = completed + pending + failed;
+
+        charts.status = new Chart(canvas.getContext("2d"), {
+            type: "doughnut",
+            data: {
+                labels: ["Completed", "Pending", "Failed"],
+                datasets: [{ data: [completed, pending, failed], backgroundColor: ["#10b981", "#f59e0b", "#ef4444"], borderColor: "#fff", borderWidth: 3, hoverOffset: 8 }],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: "68%",
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: { padding: 12, font: { size: 11, weight: "600" }, usePointStyle: true, pointStyle: "circle",
+                            generateLabels: function (chart) {
+                                var d = chart.data;
+                                return d.labels.map(function (label, i) {
+                                    var v = d.datasets[0].data[i];
+                                    var pct = total > 0 ? Math.round((v / total) * 100) : 0;
+                                    return { text: label + " (" + v + " · " + pct + "%)", fillStyle: d.datasets[0].backgroundColor[i], strokeStyle: d.datasets[0].backgroundColor[i], lineWidth: 0, pointStyle: "circle", index: i };
+                                });
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+
+    // ---------- YoY ----------
+    function renderYoY(data) {
+        var canvas = document.getElementById("chartYoY");
+        if (!canvas) return;
+        var old = Chart.getChart(canvas); if (old) old.destroy();
+
+        charts.yoy = new Chart(canvas.getContext("2d"), {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [
+                    { label: data.last_year_label || "Last Year", data: data.last_year, backgroundColor: "rgba(156, 163, 175, 0.7)", borderRadius: 4 },
+                    { label: data.this_year_label || "This Year",  data: data.this_year,  backgroundColor: "rgba(247, 79, 34, 0.9)",  borderRadius: 4 },
+                ],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: "top", labels: { font: { size: 11 }, usePointStyle: true, pointStyle: "circle" } },
+                    tooltip: { backgroundColor: "#1f2937", callbacks: { label: function (ctx) { return "  " + ctx.dataset.label + ": ₹" + Number(ctx.parsed.y || 0).toLocaleString("en-IN"); } } },
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: "#6b7280", font: { size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 12 } },
+                    y: { beginAtZero: true, grid: { color: "rgba(0,0,0,0.05)" }, ticks: { color: "#6b7280", font: { size: 11 }, callback: function (v) {
+                        if (v >= 100000) return "₹" + (v / 100000).toFixed(1) + "L";
+                        if (v >= 1000) {
+                                    var k = v / 1000;
+                                    // Show decimal only if not whole number
+                                    return "₹" + (k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)) + "k";
+                                }
+                        return "₹" + v;
+                    } } },
+                },
+            },
+        });
+    }
+
+    function getDonorModalTitle() {
+    var s = (state.status || "").toLowerCase();
+    if (s === "pending") return "Top Pending Donors";
+    return "Top Donors";
+}
+
+    // ---------- Top Donors Modal ----------
+    function openTopDonorsModal() {
+        var s = state.summary || {};
+        var donors = s.top_donors || [];
+
+        var bodyHtml;
+        if (!donors.length) {
+            bodyHtml = '<div class="an-modal-empty"><i class="fa-solid fa-user-slash"></i><p>No donors in this range.</p></div>';
+        } else {
+            bodyHtml = '<div class="an-donor-list">' + donors.map(function (d, i) {
+                var rank = i + 1;
+                var rankCls = rank === 1 ? "gold" : (rank === 2 ? "silver" : (rank === 3 ? "bronze" : ""));
+                var initial = (d.name || "?").substring(0, 1).toUpperCase();
+                return '<div class="an-donor-row">' +
+                    '<div class="an-donor-rank ' + rankCls + '">' + rank + '</div>' +
+                    '<div class="an-donor-avatar">' + initial + '</div>' +
+                    '<div class="an-donor-info">' +
+                        '<div class="an-donor-name">' + escapeHtml(d.name || "Anonymous") + '</div>' +
+                        (d.email ? '<div class="an-donor-email">' + escapeHtml(d.email) + '</div>' : '') +
+                    '</div>' +
+                    '<div class="an-donor-stats">' +
+                        '<div class="an-donor-total">' + fmtINR(d.total) + '</div>' +
+                        '<div class="an-donor-count">' + (d.count || 1) + ' donation' + (d.count > 1 ? 's' : '') + '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join("") + '</div>';
+        }
+
+// Show the modal:
+window.showModal({
+    title: getDonorModalTitle(),
+    bodyHtml: bodyHtml,
+    size: "large",
+    cancel: "Close",
+    confirm: null,
+});
+    }
+
+    // ---------- Highest Donation Modal ----------
+    function openHighestModal() {
+        var s = state.summary || {};
+        var h = s.highest_details;
+
+        if (!h) {
+            window.showModal({
+                title: "Highest Donation",
+                bodyHtml: '<div class="an-modal-empty"><i class="fa-solid fa-circle-info"></i><p>No completed donations in this range.</p></div>',
+                size: "medium",
+                cancel: "Close",
+                confirm: null,
+            });
+            return;
+        }
+
+        var html = '' +
+            '<div class="an-highest-amount">' + fmtINR(h.amount) + '</div>' +
+            '<div class="an-detail-grid">' +
+                '<div class="an-detail-box"><div class="label">Donor</div><div class="value">' + escapeHtml(h.donor_name || "Anonymous") + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Transaction ID</div><div class="value">' + escapeHtml(h.transaction_id || "—") + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Email</div><div class="value">' + escapeHtml(h.email || "—") + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Phone</div><div class="value">' + escapeHtml(((h.country_code || "") + " " + (h.phone || "—")).trim()) + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Method</div><div class="value">' + escapeHtml(h.payment_method || "—") + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Status</div><div class="value"><span class="pill success">' + escapeHtml(h.status || "—") + '</span></div></div>' +
+                '<div class="an-detail-box"><div class="label">Date</div><div class="value">' + fmtDate(h.created_at) + '</div></div>' +
+                '<div class="an-detail-box"><div class="label">Cause</div><div class="value">' + (h.cause_id ? "Cause #" + h.cause_id : "General") + '</div></div>' +
+            '</div>';
+
+        window.showModal({
+            title: "Highest Donation",
+            bodyHtml: html,
+            size: "large",
+            cancel: "Close",
+            confirm: null,
+        });
+    }
+
+    // ---------- CTA: Open Donations ----------
+    function openDonations() {
+        var params = new URLSearchParams();
+        params.set("range", state.range);
+        if (state.range === "custom" && state.start && state.end) {
+            params.set("start", state.start);
+            params.set("end", state.end);
+        }
+        if (state.status) params.set("status", state.status);
+        window.location.href = "donations.html?" + params.toString();
+    }
+
+    // ---------- Live ----------
+    function startLive() {
+        stopLive();
+        state.liveTimer = setInterval(loadAll, 30000);
+    }
+    function stopLive() {
+        if (state.liveTimer) { clearInterval(state.liveTimer); state.liveTimer = null; }
+    }
+
+    // ---------- Events ----------
+    function bindEvents() {
+        document.querySelectorAll(".an-preset").forEach(function (b) {
+            b.addEventListener("click", function () {
+                state.range = this.getAttribute("data-range");
+                syncFilterUI(); saveFilters(); loadAll();
+            });
+        });
+
+        document.getElementById("dateFrom").addEventListener("change", function () {
+    state.start = this.value;
+    state.range = "custom";
+    updateDateConstraints();
+    saveFilters();
+    if (state.start && state.end) loadAll();
+});
+
+document.getElementById("dateTo").addEventListener("change", function () {
+    state.end = this.value;
+    state.range = "custom";
+    updateDateConstraints();
+    saveFilters();
+    if (state.start && state.end) loadAll();
+});
+        document.getElementById("statusFilter").addEventListener("change", function () {
+            state.status = this.value; saveFilters(); loadAll();
+        });
+
+        document.getElementById("liveToggle").addEventListener("change", function () {
+            if (this.checked) startLive(); else stopLive();
+        });
+
+        // KPI click actions
+        document.querySelectorAll(".an-kpi.clickable").forEach(function (el) {
+            el.addEventListener("click", function () {
+                var action = this.getAttribute("data-action");
+                if (action === "scroll-trend") {
+                    var t = document.getElementById("trendCard");
+                    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+                } else if (action === "go-donations") {
+                    openDonations();
+                } else if (action === "open-top-donors") {
+                    openTopDonorsModal();
+                } else if (action === "open-highest") {
+                    openHighestModal();
+                }
+            });
+        });
+
+        document.getElementById("openDonationsBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            openDonations();
+        });
+    }
+
+    // ---------- Public ----------
+    window.Analytics = { refresh: loadAll };
+
+    // ---------- Init ----------
+    function init() {
+        loadFilters();
+        syncFilterUI();
+        updateDateConstraints();
+        bindEvents();
+        loadAll();
+    }
+
+    Layout.render();
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>
+</body>
+</html>

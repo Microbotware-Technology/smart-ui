@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Child body -->
+  <path d="M14 44 Q14 32 22 32 Q30 32 30 44 Z" fill="#F74F22"/>
+  <rect x="18" y="44" width="3" height="12" rx="1.5" fill="#4A2C1A"/>
+  <rect x="23" y="44" width="3" height="12" rx="1.5" fill="#4A2C1A"/>
+
+  <!-- Child head -->
+  <circle cx="22" cy="22" r="6" fill="#FFCB9A"/>
+  <path d="M16 22 Q16 15 22 15 Q28 15 28 22 Q28 18 22 18 Q16 18 16 22 Z" fill="#4A2C1A"/>
+
+  <!-- Arms -->
+  <path d="M14 36 L10 42" stroke="#FFCB9A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 36 L34 42" stroke="#FFCB9A" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Shield -->
+  <path d="M40 18 L54 18 L54 34 Q54 46 47 50 Q40 46 40 34 Z" fill="#2E7D32"/>
+  <path d="M40 18 L54 18 L54 34 Q54 46 47 50 Q40 46 40 34 Z" fill="none" stroke="#1B5E20" stroke-width="1"/>
+
+  <!-- Heart inside shield -->
+  <path d="M47 30 C 45 27 41 27 41 31 C 41 34 47 38 47 38 C 47 38 53 34 53 31 C 53 27 49 27 47 30 Z" fill="#FFFFFF"/>
+</svg>

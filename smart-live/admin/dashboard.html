@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .stat-card {
+        padding: 12px 14px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+    .stat-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+    .stat-value {
+        font-size: 16px;
+    }
+    .stat-label {
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+    .stat-card-arrow {
+        top: 8px !important;
+        right: 10px !important;
+        font-size: 10px !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Overview of Smart Help Foundation activity</p>
+        </div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+        <!-- filled by JS -->
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+        <div class="card chart-card">
+    <div class="card-title">
+        <span><i class="fa-solid fa-chart-line"></i> Monthly Donations</span>
+        <div class="chart-filter" id="chartFilter">
+            <button type="button" data-months="3" class="chart-filter-btn">3M</button>
+            <button type="button" data-months="6" class="chart-filter-btn">6M</button>
+            <button type="button" data-months="12" class="chart-filter-btn active">12M</button>
+        </div>
+    </div>
+    <div class="chart-total-row">
+        <span class="chart-total" id="chartTotal">—</span>
+    </div>
+    <div class="chart-canvas-wrap">
+        <canvas id="monthlyChart"></canvas>
+    </div>
+</div>
+
+        <div class="card chart-card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-chart-pie"></i> Donation Status</span>
+            </div>
+            <div class="chart-canvas-wrap chart-donut-wrap">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+ 
+
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-indian-rupee-sign"></i> Recent Donations</span>
+                <a href="donations.html" class="btn btn-outline">View All</a>
+            </div>
+            <div id="recentDonations"><div class="table-empty">Loading...</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-envelope"></i> Recent Messages</span>
+                <a href="contacts.html" class="btn btn-outline">View All</a>
+            </div>
+            <div id="recentMessages"><div class="table-empty">Loading...</div></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    function timeAgo(iso) {
+        if (!iso) return "";
+        var d = new Date(iso);
+        var diff = (Date.now() - d.getTime()) / 1000;
+        if (diff < 60) return "just now";
+        if (diff < 3600) return Math.floor(diff / 60) + " min ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+        if (diff < 604800) return Math.floor(diff / 86400) + "d ago";
+        return d.toLocaleDateString();
+    }
+
+    function fmtMoney(n) {
+        if (!n && n !== 0) return "₹0";
+        return "₹" + Number(n).toLocaleString("en-IN");
+    }
+
+        function renderStats(m) {
+        var s = m || {};
+        var cards = [
+            { icon: "fa-solid fa-indian-rupee-sign", cls: "orange", value: fmtMoney(s.total_raised || 0), label: "Total Raised",       href: "donations.html" },
+            { icon: "fa-solid fa-envelope",          cls: "blue",   value: s.unread_messages || 0,       label: "Unread Messages", href: "contacts.html" },
+            { icon: "fa-solid fa-heart",             cls: "green",  value: s.donations_count || 0,       label: "Donations",       href: "donations.html" },
+        ];
+        document.getElementById("statsGrid").innerHTML = cards.map(function (c) {
+            return '<a class="stat-card stat-card-link" href="' + c.href + '">' +
+                '<div class="stat-icon ' + c.cls + '"><i class="' + c.icon + '"></i></div>' +
+                '<div class="stat-info"><div class="stat-value">' + c.value + '</div>' +
+                '<div class="stat-label">' + c.label + '</div></div>' +
+                '<i class="fa-solid fa-arrow-right stat-card-arrow"></i>' +
+                '</a>';
+        }).join("");
+    }
+
+  
+
+    function renderRecentDonations(list) {
+        var el = document.getElementById("recentDonations");
+        list = list || [];
+        if (!list.length) {
+            el.innerHTML = '<div class="table-empty">No donations yet.</div>';
+            return;
+        }
+        el.innerHTML = list.slice(0, 5).map(function (d) {
+            return '<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center;">' +
+                '<div style="flex:1;min-width:0;">' +
+                '<div style="font-weight:600;font-size:13px;">' + (d.donor_name || "Anonymous") + '</div>' +
+                '<div style="font-size:12px;color:var(--muted);">' + (d.cause_id ? "Cause #" + d.cause_id : "General") + '</div>' +
+                '</div>' +
+                '<div style="font-weight:700;color:var(--primary);">' + fmtMoney(d.amount) + '</div>' +
+                '</div>';
+        }).join("");
+    }
+
+    function renderRecentMessages(list) {
+        var el = document.getElementById("recentMessages");
+        list = list || [];
+        if (!list.length) {
+            el.innerHTML = '<div class="table-empty">No messages yet.</div>';
+            return;
+        }
+        el.innerHTML = list.slice(0, 5).map(function (m) {
+            return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">' +
+                '<div style="font-weight:600;font-size:13px;">' + (m.name || "Anonymous") + '</div>' +
+                '<div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (m.subject || m.message || "—") + '</div>' +
+                '</div>';
+        }).join("");
+    }
+
+    function load() {
+        // Dashboard stats
+        API.get("/admin/dashboard")
+            .then(function (d) {
+                renderStats({
+                    total_raised: d.total_donations || d.metrics && d.metrics.total_raised,
+                    donations_count: d.donations_count || 0,
+                    unread_messages: d.unread_messages || 0,
+                });
+                renderRecentDonations(d.recent_donations || []);
+                renderRecentMessages(d.recent_messages || []);
+            })
+            .catch(function () {
+                document.getElementById("statsGrid").innerHTML =
+                    '<div class="table-empty">Failed to load stats.</div>';
+            });
+
+    }
+    // ==========================================================
+    // CHARTS
+    // ==========================================================
+    var charts = { monthly: null, status: null };
+
+    function destroyCharts() {
+        if (charts.monthly) { charts.monthly.destroy(); charts.monthly = null; }
+        if (charts.status)  { charts.status.destroy();  charts.status = null; }
+    }
+
+   function renderMonthlyChart(data) {
+    var canvas = document.getElementById('monthlyChart');
+    if (!canvas) return;
+
+    // 👇 Destroy any existing chart on this canvas (prevents "Canvas is already in use")
+    var existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+    if (charts.monthly) { charts.monthly.destroy(); charts.monthly = null; }
+
+    var ctx = canvas.getContext('2d');
+    var grad = ctx.createLinearGradient(0, 0, 0, 260);
+    grad.addColorStop(0, 'rgba(247, 79, 34, 0.30)');
+    grad.addColorStop(1, 'rgba(247, 79, 34, 0.02)');
+
+    charts.monthly = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Donations (₹)',
+                data: data.amounts,
+                borderColor: '#F74F22',
+                backgroundColor: grad,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#F74F22',
+                pointBorderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1f2937',
+                    titleColor: '#fff',
+                    bodyColor: '#e5e7eb',
+                    padding: 10,
+                    borderColor: '#F74F22',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function (ctx) {
+                            var raw = ctx.parsed.y || 0;
+                            return '  ₹' + Number(raw).toLocaleString('en-IN');
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#6b7280',
+                        font: { size: 11, weight: '500' },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 6
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                    ticks: {
+                        color: '#6b7280',
+                        font: { size: 11 },
+                        precision: 0,
+                        callback: function (v) {
+                            if (v >= 100000) return '₹' + (v / 100000).toFixed(1) + 'L';
+                            if (v >= 1000) {
+                                var k = v / 1000;
+                                return '₹' + (k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)) + 'k';
+                            }
+                            return '₹' + v;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    var total = (data.amounts || []).reduce(function (a, b) { return a + b; }, 0);
+    var el = document.getElementById('chartTotal');
+    if (el) el.textContent = 'Total: ₹' + Number(total).toLocaleString('en-IN');
+}
+
+   function renderStatusChart(bd) {
+    var canvas = document.getElementById('statusChart');
+    if (!canvas) return;
+
+    // 👇 Destroy any existing chart on this canvas
+    var existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+    if (charts.status) { charts.status.destroy(); charts.status = null; }
+
+    var completed = bd.completed || 0;
+    var pending   = bd.pending   || 0;
+    var failed    = bd.failed    || 0;
+    var total = completed + pending + failed;
+
+    charts.status = new Chart(canvas.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Completed', 'Pending', 'Failed'],
+            datasets: [{
+                data: [completed, pending, failed],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                borderColor: '#fff',
+                borderWidth: 3,
+                hoverOffset: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '68%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 14,
+                        font: { size: 12, weight: '600' },
+                        color: '#1f2937',
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        generateLabels: function (chart) {
+                            var data = chart.data;
+                            return data.labels.map(function (label, i) {
+                                var val = data.datasets[0].data[i];
+                                var pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                                return {
+                                    text: label + '  (' + val + ' · ' + pct + '%)',
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    strokeStyle: data.datasets[0].backgroundColor[i],
+                                    lineWidth: 0,
+                                    pointStyle: 'circle',
+                                    hidden: false,
+                                    index: i
+                                };
+                            });
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1f2937',
+                    titleColor: '#fff',
+                    bodyColor: '#e5e7eb',
+                    padding: 10,
+                    callbacks: {
+                        label: function (ctx) {
+                            var val = ctx.parsed || 0;
+                            var pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                            return '  ' + val + ' (' + pct + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+    function loadCharts(months) {
+    months = months || 12;
+
+    // Prevent duplicate fetch while one is in flight
+    if (loadCharts._busy) return Promise.resolve();
+    loadCharts._busy = true;
+
+    return API.get('/admin/charts?months=' + months)
+        .then(function (data) {
+            if (!data) return;
+            renderMonthlyChart(data.monthly || { labels: [], amounts: [], counts: [] });
+            renderStatusChart(data.status_breakdown || {});
+        })
+        .catch(function (err) {
+            console.error('Charts error:', err);
+            var el = document.getElementById('chartTotal');
+            if (el) el.textContent = 'Failed to load';
+        })
+        .finally(function () {
+            loadCharts._busy = false;
+        });
+}
+
+    // Chart filter buttons
+    function bindChartFilters() {
+        var btns = document.querySelectorAll('.chart-filter-btn');
+        btns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                btns.forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                var m = parseInt(this.getAttribute('data-months'), 10) || 12;
+                loadCharts(m);
+            });
+        });
+    }
+    Layout.render();
+    load();
+    loadCharts(12);
+    bindChartFilters();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Smart Help Foundation">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+
+    <title>Donate | Smart Help Foundation</title>
+
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
+    <link href="assets/css/flaticon_aidus.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.css" rel="stylesheet">
+    <link href="assets/css/slick.css" rel="stylesheet">
+    <link href="assets/css/slick-theme.css" rel="stylesheet">
+    <link href="assets/css/swiper.min.css" rel="stylesheet">
+    <link href="assets/css/owl.transitions.css" rel="stylesheet">
+    <link href="assets/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="assets/sass/style.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* Donation page */
+        .direct-donate-section {
+            padding: 80px 0;
+            background: #f8f7f4;
+        }
+
+        .direct-donate-wrapper {
+            max-width: 1080px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 45px rgba(23, 19, 14, 0.10);
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        /* Left information */
+        .direct-donate-info {
+            background: #17130e;
+            color: #fff;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .direct-donate-info .tag {
+            display: inline-block;
+            color: #deb368;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+
+        .direct-donate-info h2 {
+            color: #fff;
+            font-size: 42px;
+            line-height: 1.15;
+            margin: 0 0 20px;
+        }
+
+        .direct-donate-info h2 span {
+            color: #deb368;
+        }
+
+        .direct-donate-info p {
+            color: #d1cec9;
+            font-size: 15px;
+            line-height: 1.8;
+            margin: 0 0 28px;
+        }
+
+        .direct-donate-list {
+            margin: 0 0 30px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .direct-donate-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 16px;
+            color: #e9e6e1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .direct-donate-list li::before {
+            content: "\f004";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #deb368;
+        }
+
+        .direct-donate-list li strong {
+            display: block;
+            color: #deb368;
+            margin-bottom: 3px;
+            font-size: 15px;
+        }
+
+        .direct-instagram {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            width: fit-content;
+            transition: all 0.3s ease;
+        }
+
+        .direct-instagram i {
+            color: #deb368;
+            font-size: 18px;
+        }
+
+        .direct-instagram:hover {
+            color: #deb368;
+        }
+
+        /* Right form */
+        .direct-donate-form {
+            padding: 55px 45px;
+            background: #fff;
+        }
+
+        .direct-donate-form h3 {
+            color: #17130e;
+            font-size: 30px;
+            margin: 0 0 8px;
+        }
+
+        .direct-donate-form .form-subtitle {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .direct-form-group {
+            margin-bottom: 20px;
+        }
+
+        .direct-form-group label {
+            display: block;
+            color: #17130e;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .direct-form-group label .required {
+            color: #d9534f;
+        }
+
+        .direct-form-group input,
+        .direct-form-group textarea,
+        .direct-form-group select {
+            width: 100%;
+            height: auto;
+            min-height: 48px;
+            border: 1px solid #dedbd5;
+            border-radius: 6px;
+            padding: 12px 14px;
+            background: #fff;
+            color: #333;
+            font-size: 14px;
+            outline: none;
+            box-shadow: none;
+            transition: all 0.3s ease;
+        }
+
+        .direct-form-group textarea {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .direct-form-group input:focus,
+        .direct-form-group textarea:focus,
+        .direct-form-group select:focus {
+            border-color: #deb368;
+            box-shadow: 0 0 0 3px rgba(222, 179, 104, 0.12);
+        }
+
+        .direct-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Amount */
+        .direct-amount-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .direct-amount-btn {
+            border: 1px solid #dedbd5;
+            background: #fff;
+            color: #333;
+            min-height: 46px;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .direct-amount-btn:hover,
+        .direct-amount-btn.active {
+            background: #deb368;
+            border-color: #deb368;
+            color: #17130e;
+        }
+
+        .direct-custom-amount {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .direct-custom-amount.active {
+            display: block;
+        }
+
+        /* Submit */
+        .direct-submit {
+            width: 100%;
+            border: 0;
+            background: #17130e;
+            color: #fff;
+            min-height: 50px;
+            padding: 13px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .direct-submit:hover {
+            background: #deb368;
+            color: #17130e;
+        }
+
+        .direct-form-message {
+            display: none;
+            margin-top: 15px;
+            padding: 13px 15px;
+            border-radius: 6px;
+            background: #eef8ee;
+            border: 1px solid #cde5cd;
+            color: #287a28;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Mobile */
+        @media (max-width: 991px) {
+            .direct-donate-section {
+                padding: 60px 0;
+            }
+
+            .direct-donate-wrapper {
+                margin: 0 15px;
+            }
+
+            .direct-donate-info {
+                padding: 45px 35px;
+            }
+
+            .direct-donate-form {
+                padding: 45px 35px;
+            }
+
+            .direct-donate-info h2 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .direct-donate-section {
+                padding: 40px 0;
+            }
+
+            .direct-donate-wrapper {
+                display: block;
+                margin: 0 12px;
+                border-radius: 12px;
+            }
+
+            .direct-donate-info {
+                padding: 38px 25px;
+            }
+
+            .direct-donate-info h2 {
+                font-size: 31px;
+            }
+
+            .direct-donate-info p {
+                font-size: 14px;
+            }
+
+            .direct-donate-form {
+                padding: 35px 25px;
+            }
+
+            .direct-donate-form h3 {
+                font-size: 26px;
+            }
+
+            .direct-form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .direct-donate-info {
+                padding: 32px 20px;
+            }
+
+            .direct-donate-form {
+                padding: 30px 20px;
+            }
+
+            .direct-donate-info h2 {
+                font-size: 28px;
+            }
+
+            .direct-donate-form h3 {
+                font-size: 24px;
+            }
+
+            .direct-amount-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- start page-wrapper -->
+    <div class="page-wrapper">
+
+        <!-- start preloader -->
+        <!-- <div class="preloader">
+            <div class="vertical-centered-box">
+                <div class="content">
+                    <div class="loader-circle"></div>
+                    <div class="loader-line-mask">
+                        <div class="loader-line"></div>
+                    </div>
+                    <img src="assets/images/icon.png" alt="">
+                </div>
+            </div>
+        </div> -->
+        <!-- end preloader -->
+
+        <!-- Start header -->
+        <div id="site-header"></div>
+        <!-- end of header -->
+
+        <!-- start breadcrumb -->
+        <div class="breadcumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcumb-wrap">
+                            <h2>Smart Help Foundation</h2>
+                            <h3>Donate Now</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shape">
+                <svg width="128" height="357" viewBox="0 0 128 357" fill="none">
+                    <path
+                        d="M-9.73063 357C-11.832 304.262 -1.65343 268.562 21.3305 247.878C27.4705 242.355 34.4642 238.095 41.2608 233.944C44.6099 231.887 48.0903 229.757 51.4066 227.519C63.6866 219.217 71.3041 210.301 74.5875 200.338C75.1457 198.713 75.5397 196.981 75.7695 195.212C68.2505 198.569 62.1762 199.688 56.5944 198.749C50.5201 197.703 43.5592 193.19 41.6548 185.43C40.3086 179.871 42.2787 173.987 46.974 169.691C52.5229 164.601 60.1405 163.23 65.8865 166.262C74.686 170.882 78.4948 181.639 78.0679 191.783C98.3923 181.603 114.58 162.002 121.77 138.72C129.289 114.318 126.695 86.4868 114.809 64.2508C110.048 55.3348 103.711 46.9963 97.6043 38.9466C86.375 24.1467 74.7845 8.87758 72.6831 -10.3623C70.8116 -28.1583 78.0679 -46.4596 91.2016 -57L92.3508 -55.2312C79.7753 -45.124 72.8473 -27.6529 74.686 -10.6511C76.6889 7.93905 87.6227 22.3419 99.1475 37.5388C105.32 45.6607 111.69 54.0714 116.55 63.1318C128.698 85.8731 131.358 114.39 123.675 139.369C116.221 163.591 99.2131 183.913 77.9366 194.201C77.6739 196.584 77.1814 198.894 76.4591 201.06C72.9786 211.528 65.1313 220.769 52.4573 229.36C49.1082 231.634 45.5949 233.764 42.213 235.821C35.5148 239.9 28.5868 244.16 22.5782 249.538C0.0867844 269.753 -9.82913 304.839 -7.76058 356.856L-9.73063 357ZM59.3525 166.767C55.1825 166.767 51.1111 168.716 48.2873 171.315C44.2159 175.033 42.4757 180.087 43.6249 184.816C45.2994 191.638 51.5379 195.645 56.9556 196.584C62.1762 197.486 67.955 196.367 75.1457 193.154C75.4412 193.01 75.7695 192.866 76.065 192.721C76.7217 182.975 73.1756 172.398 65.0656 168.139C63.2269 167.2 61.2568 166.767 59.3525 166.767Z"
+                        fill="white"
+                        fill-opacity="0.18" />
+                </svg>
+            </div>
+
+            <div class="shape-s2">
+                <img src="assets/images/slider/shape-3.svg" alt="">
+            </div>
+
+            <div class="shape-s3">
+                <img src="assets/images/donate-2.svg" alt="">
+            </div>
+        </div>
+        <!-- end breadcrumb -->
+
+        <!-- start donation section -->
+        <section class="direct-donate-section">
+            <div class="container">
+
+                <div class="direct-donate-wrapper">
+
+                    <!-- Left information -->
+                    <section class="direct-donate-info">
+
+                        <span class="tag">Smart Help Foundation</span>
+
+                        <h2>
+                            Your Support Can
+                            <span>Create Hope.</span>
+                        </h2>
+
+                        <p>
+                            Every contribution can help us support people and
+                            communities in need. Your kindness can become food,
+                            essential support and hope for someone who needs it.
+                        </p>
+
+                        <ul class="direct-donate-list">
+                            <li>
+                                <strong>Food Support</strong>
+                                Help provide nutritious meals to people in need.
+                            </li>
+
+                            <li>
+                                <strong>Community Support</strong>
+                                Support meaningful initiatives for local communities.
+                            </li>
+
+                            <li>
+                                <strong>Every Contribution Matters</strong>
+                                Small acts of kindness can create meaningful change.
+                            </li>
+                        </ul>
+
+                        <a
+                            href="https://www.instagram.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="direct-instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                            Follow us on Instagram
+                        </a>
+
+                    </section>
+
+                    <!-- Right donation form -->
+                    <section class="direct-donate-form">
+
+                        <h3>Donation Details</h3>
+
+                        <p class="form-subtitle">
+                            Fill in your details and choose your contribution.
+                        </p>
+
+                        <form id="donationForm">
+
+                            <div class="direct-form-row">
+
+                                <div class="direct-form-group">
+                                    <label for="name">
+                                        Name <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Enter your name"
+                                        required>
+                                </div>
+
+                                <div class="direct-form-group">
+                                    <label for="phone">
+                                        Phone <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="10-digit mobile number"
+                                        maxlength="10"
+                                        inputmode="numeric"
+                                        required>
+                                </div>
+
+                            </div>
+
+                            <div class="direct-form-group">
+
+                                <label for="address">
+                                    Address <span class="required">*</span>
+                                </label>
+
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    placeholder="Enter your address"
+                                    required></textarea>
+
+                            </div>
+
+                            <div class="direct-form-group">
+
+                                <label>
+                                    Donation Amount
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="direct-amount-options">
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-amount="100">
+                                        ₹100
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-amount="300">
+                                        ₹300
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-amount="500">
+                                        ₹500
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-amount="1000">
+                                        ₹1,000
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-amount="2000">
+                                        ₹2,000
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="direct-amount-btn"
+                                        data-custom="true">
+                                        Custom
+                                    </button>
+
+                                </div>
+
+                                <input
+                                    type="number"
+                                    id="customAmount"
+                                    class="direct-custom-amount"
+                                    placeholder="Enter custom amount"
+                                    min="1">
+
+                                <input
+                                    type="hidden"
+                                    id="amount"
+                                    name="amount">
+
+                            </div>
+
+                            <div class="direct-form-group">
+
+                                <label for="purpose">
+                                    Purpose
+                                </label>
+
+                                <select
+                                    id="purpose"
+                                    name="purpose">
+
+                                    <option value="">
+                                        Select purpose
+                                    </option>
+
+                                    <option value="food">
+                                        Food Support
+                                    </option>
+
+                                    <option value="education">
+                                        Education Support
+                                    </option>
+
+                                    <option value="community">
+                                        Community Support
+                                    </option>
+
+                                    <option value="essential-needs">
+                                        Essential Needs
+                                    </option>
+
+                                    <option value="general">
+                                        General Donation
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="direct-submit">
+                                Continue Donation
+                            </button>
+
+                            <div
+                                id="formMessage"
+                                class="direct-form-message">
+                                Your donation details are ready.
+                                Payment integration can be connected here later.
+                            </div>
+
+                        </form>
+
+                    </section>
+
+                </div>
+
+            </div>
+        </section>
+        <!-- end donation section -->
+
+        <!-- start footer -->
+        <div id="site-footer"></div>
+        <!-- end footer -->
+
+    </div>
+    <!-- end page-wrapper -->
+
+    <!-- JavaScript -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="assets/js/jquery.dlmenu.js"></script>
+    <script src="assets/js/jquery-plugin-collection.js"></script>
+    <script src="assets/js/common-includes.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/api-client.js?v=20260903-2"></script>
+
+    
+<script>
+    const amountButtons = document.querySelectorAll('.direct-amount-btn');
+    const amountInput = document.getElementById('amount');
+    const customAmount = document.getElementById('customAmount');
+    const donationForm = document.getElementById('donationForm');
+    const formMessage = document.getElementById('formMessage');
+    const phoneInput = document.getElementById('phone');
+
+    function selectAmount(amount) {
+        amountButtons.forEach(function (button) {
+            button.classList.remove('active');
+        });
+
+        const matchingButton = document.querySelector(
+            '.direct-amount-btn[data-amount="' + amount + '"]'
+        );
+
+        if (matchingButton) {
+            matchingButton.classList.add('active');
+            customAmount.classList.remove('active');
+            customAmount.value = '';
+        } else {
+            const customButton = document.querySelector(
+                '.direct-amount-btn[data-custom="true"]'
+            );
+
+            if (customButton) {
+                customButton.classList.add('active');
+            }
+
+            customAmount.classList.add('active');
+            customAmount.value = amount;
+        }
+
+        amountInput.value = amount;
+    }
+
+    amountButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            if (this.dataset.custom === 'true') {
+                amountButtons.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+
+                this.classList.add('active');
+                customAmount.classList.add('active');
+                customAmount.focus();
+                amountInput.value = customAmount.value;
+                return;
+            }
+
+            selectAmount(this.dataset.amount);
+        });
+    });
+
+    customAmount.addEventListener('input', function () {
+        amountInput.value = this.value;
+    });
+
+    phoneInput.addEventListener('input', function () {
+        this.value = this.value
+            .replace(/\D/g, '')
+            .slice(0, 10);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const urlAmount = params.get('amount');
+
+    if (urlAmount && Number(urlAmount) > 0) {
+        selectAmount(urlAmount);
+    } else {
+        selectAmount('100');
+    }
+
+    donationForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const phone = phoneInput.value.trim();
+        const amount = amountInput.value.trim();
+
+        if (!/^[6-9]\d{9}$/.test(phone)) {
+            alert('Please enter a valid 10-digit mobile number.');
+            phoneInput.focus();
+            return;
+        }
+
+        if (!amount || Number(amount) <= 0) {
+            alert('Please select or enter a donation amount.');
+            return;
+        }
+
+        formMessage.style.display = 'block';
+
+        formMessage.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

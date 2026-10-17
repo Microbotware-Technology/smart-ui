@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<style>
+.pill.info { background:#e0f2fe; color:#0369a1; }
+.pill.success { background:#dcfce7; color:#166534; }
+.pill.warning { background:#fef3c7; color:#92400e; }
+.pill[data-id] { cursor:pointer; transition:transform .15s, box-shadow .15s; }
+.pill[data-id]:hover { transform:scale(1.05); box-shadow:0 2px 6px rgba(0,0,0,.12); }
+
+/* Inline dropdown */
+.status-select {
+    border: none;
+    outline: none;
+    border-radius: 999px;
+    padding: 4px 24px 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 10px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    transition: box-shadow .15s;
+}
+.status-select:focus { box-shadow: 0 0 0 2px rgba(0,0,0,.15); }
+.status-select.saving { opacity:.5; pointer-events:none; }
+
+.status-select.is-pending  { background-color:#fef3c7; color:#92400e; }
+.status-select.is-read     { background-color:#e0f2fe; color:#0369a1; }
+.status-select.is-replied  { background-color:#dcfce7; color:#166534; }
+.status-select.is-resolved { background-color:#dcfce7; color:#166534; }
+/* Viewer: plain read-only status pill */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;      /* disable all mouse events */
+    user-select: none;
+    cursor: default;
+    opacity: 0.95;
+}
+.status-pill.is-pending  { background-color:#fef3c7; color:#92400e; }
+.status-pill.is-read     { background-color:#e0f2fe; color:#0369a1; }
+.status-pill.is-replied  { background-color:#dcfce7; color:#166534; }
+.status-pill.is-resolved { background-color:#dcfce7; color:#166534; }
+@media (max-width: 640px) {
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-bar .search-input,
+    .filter-bar .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .table-wrap {
+        overflow-x: visible;
+        background: transparent;
+        box-shadow: none;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .table-wrap table {
+        min-width: 0;
+        display: block;
+        background: transparent;
+    }
+
+    .table-wrap thead { display: none; }
+
+    .table-wrap tbody { display: block; }
+
+    .table-wrap tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 12px;
+        padding: 14px;
+        margin-bottom: 10px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .table-wrap tr:hover td { background: transparent; }
+
+    .table-wrap td {
+        padding: 0;
+        border: 0;
+        display: block;
+    }
+
+    /* Name + email cell */
+    .table-wrap td:nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .table-wrap td:nth-child(1) > div:first-child {
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Status cell — top right */
+    .table-wrap td:nth-child(4) {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        text-align: right;
+    }
+
+    /* Subject — full width row 2 */
+    .table-wrap td:nth-child(2) {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-top: 2px;
+    }
+
+    /* Message preview — full width row 3 */
+    .table-wrap td:nth-child(3) {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        font-size: 12px;
+        color: var(--muted);
+        max-width: 100% !important;
+        overflow: visible !important;
+        white-space: normal !important;
+        text-overflow: clip !important;
+        line-height: 1.4;
+        margin-top: 4px;
+    }
+
+    /* Date — full width row 4, small muted */
+    .table-wrap td:nth-child(5) {
+        grid-column: 1 / -1;
+        grid-row: 4;
+        font-size: 11px;
+        color: var(--muted);
+        text-align: right;
+        margin-top: 6px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--border);
+    }
+}
+</style>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Contact Messages</h1>
+            <p>Messages submitted via the contact form</p>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <input type="text" class="search-input" id="search" placeholder="Search by name, email or subject...">
+        <button class="btn btn-primary" id="refreshBtn"><i class="ti-reload"></i> Refresh</button>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <!-- <th>#</th> -->
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="6" class="table-empty">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    var allMessages = [];
+
+    var STATUS_OPTIONS = ["pending", "read", "replied", "resolved"];
+    var STATUS_LABEL = {
+        pending:  "Pending",
+        read:     "Read",
+        replied:  "Replied",
+        resolved: "Resolved"
+    };
+
+    function statusIndex(s) {
+        var i = STATUS_OPTIONS.indexOf((s || "").toLowerCase());
+        return i === -1 ? 0 : i;
+    }
+
+    // ---------- Format date in IST ----------
+    function fmtDate(iso) {
+        if (!iso) return "—";
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(' ', 'T') + 'Z';
+        }
+        var d = new Date(str);
+        return d.toLocaleDateString("en-IN", {
+            timeZone: 'Asia/Kolkata',
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function escapeHtml(t) {
+        if (!t) return "";
+        return String(t).replace(/[&<>"']/g, function (c) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+    }
+
+    // ---------- Status cell (dropdown for editors, plain pill for viewers) ----------
+    function renderStatus(m) {
+        var current = (m.status || (m.is_read ? "read" : "pending")).toLowerCase();
+        if (STATUS_OPTIONS.indexOf(current) === -1) current = "pending";
+
+        // Viewer → plain read-only pill
+        var canEdit = window.API && window.API.isEditor && window.API.isEditor();
+        if (!canEdit) {
+            return '<span class="status-pill is-' + current + '" ' +
+                   'aria-label="Read-only status">' +
+                   escapeHtml(STATUS_LABEL[current] || "Pending") +
+                   '</span>';
+        }
+
+        // Editor / Super Admin → dropdown (existing one-way logic)
+        var currentIdx = statusIndex(current);
+
+        var opts = STATUS_OPTIONS.map(function (s, idx) {
+            var isCurrent = (s === current);
+            var isPast    = (idx < currentIdx);
+            var dis       = isPast ? ' disabled' : '';
+            var sel       = isCurrent ? ' selected' : '';
+            var label     = STATUS_LABEL[s] + (isPast ? ' ✓' : '');
+            return '<option value="' + s + '"' + sel + dis + '>' + label + '</option>';
+        }).join("");
+
+        return '<select class="status-select is-' + current + '" ' +
+               'data-id="' + m.id + '" data-status="' + current + '">' +
+               opts +
+               '</select>';
+    }
+
+    // ---------- Render table ----------
+    function renderTable() {
+        var q = (document.getElementById("search").value || "").toLowerCase();
+        var filtered = allMessages.filter(function (m) {
+            if (!q) return true;
+            return (m.name || "").toLowerCase().indexOf(q) !== -1
+                || (m.email || "").toLowerCase().indexOf(q) !== -1
+                || (m.subject || "").toLowerCase().indexOf(q) !== -1;
+        });
+
+        var body = document.getElementById("tableBody");
+        if (!filtered.length) {
+            body.innerHTML = '<tr><td colspan="6" class="table-empty">No messages found.</td></tr>';
+            return;
+        }
+
+        body.innerHTML = filtered.map(function (m) {
+            var preview = (m.message || "").substring(0, 60);
+            if ((m.message || "").length > 60) preview += "...";
+            return '<tr>' +
+                // '<td>#' + m.id + '</td>' +
+                '<td><div style="font-weight:600;">' + escapeHtml(m.name) + '</div>' +
+                '<div style="font-size:12px;color:var(--muted);">' + escapeHtml(m.email) + '</div></td>' +
+                '<td>' + escapeHtml(m.subject || "—") + '</td>' +
+                '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(preview) + '</td>' +
+                '<td>' + renderStatus(m) + '</td>' +
+                '<td>' + fmtDate(m.created_at) + '</td>' +
+                '</tr>';
+        }).join("");
+    }
+
+    // ---------- Load messages ----------
+    function load() {
+        var btn = document.getElementById("refreshBtn");
+        var originalHTML = btn.innerHTML;
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> Loading...';
+
+        API.get("/contact")
+            .then(function (list) {
+                allMessages = list || [];
+                renderTable();
+            })
+            .catch(function () {
+                document.getElementById("tableBody").innerHTML =
+                    '<tr><td colspan="6" class="table-empty">Failed to load messages.</td></tr>';
+            })
+            .finally(function () {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            });
+    }
+
+    // ---------- Init ----------
+    Layout.render();
+
+    document.getElementById("search").addEventListener("input", renderTable);
+    document.getElementById("refreshBtn").addEventListener("click", load);
+
+    // ---------- Status change (forward-only, editors only) ----------
+    document.getElementById("tableBody").addEventListener("change", function (e) {
+        var sel = e.target.closest(".status-select");
+        if (!sel) return;
+
+        
+        if (!(window.API && window.API.isEditor && window.API.isEditor())) {
+            return;
+        }
+
+        var id = sel.getAttribute("data-id");
+        var previous = (sel.getAttribute("data-status") || "pending").toLowerCase();
+        var next = (sel.value || "").toLowerCase();
+
+        if (next === previous) return;
+
+        if (STATUS_OPTIONS.indexOf(next) === -1) {
+            sel.value = previous;
+            return;
+        }
+
+        // 🚫 Block backward movement
+        if (statusIndex(next) < statusIndex(previous)) {
+            sel.value = previous;
+            alert("Cannot go back from " + STATUS_LABEL[previous] +
+                  " to " + STATUS_LABEL[next] + ".");
+            return;
+        }
+
+        sel.classList.add("saving");
+
+        API.patch("/admin/contact/" + id + "/status", { status: next })
+            .then(function (updated) {
+                for (var i = 0; i < allMessages.length; i++) {
+                    if (allMessages[i].id === updated.id) {
+                        allMessages[i] = updated;
+                        break;
+                    }
+                }
+                renderTable();
+            })
+            .catch(function (err) {
+                sel.value = previous;
+                sel.classList.remove("saving");
+                alert("Failed to update status: " +
+                      ((err && err.detail) ? err.detail : "unknown error"));
+            });
+    });
+
+    load();
+})();
+</script>
+</body>
+</html>

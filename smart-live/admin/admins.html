@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admins — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Manage Admins</h1>
+            <p>Add, edit, or remove admin accounts</p>
+        </div>
+        <button class="btn btn-primary" id="addAdminBtn">
+            <i class="fa-solid fa-user-plus"></i> Add Admin
+        </button>
+    </div>
+
+    <div class="adm-table-card">
+        <div class="adm-table-wrap">
+            <table class="adm-table">
+                <thead>
+                    <tr>
+                        <th>Admin</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th class="hide-mobile">Last Login</th>
+                        <th class="hide-mobile">Created</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminsBody">
+                    <tr><td colspan="6" class="table-empty">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    var state = { admins: [] };
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function fmtDate(iso) {
+        if (!iso) return "—";
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(" ", "T") + "Z";
+        }
+        var d = new Date(str);
+        if (isNaN(d.getTime())) return "—";
+        return d.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            day: "2-digit", month: "short", year: "numeric",
+            hour: "2-digit", minute: "2-digit", hour12: true,
+        });
+    }
+
+    function escapeHtml(t) {
+        if (t == null) return "";
+        return String(t)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function initials(name) {
+        if (!name) return "?";
+        return name.substring(0, 2).toUpperCase();
+    }
+
+    function roleLabel(r) {
+        return r === "super_admin" ? "Super Admin"
+             : r === "editor"      ? "Editor"
+             : "Viewer";
+    }
+
+    // Custom toast (uses showModal — no browser alert)
+    function toast(type, title, message, onClose) {
+        window.showModal({
+            type: type || "info",
+            title: title || "Info",
+            message: message || "",
+            confirm: null,
+            cancel: "OK",
+            onCancel: onClose,
+        });
+    }
+
+    // ============================================================
+    // LOAD
+    // ============================================================
+    function loadAdmins() {
+        var tbody = document.getElementById("adminsBody");
+        tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Loading...</td></tr>';
+
+        return API.get("/admin/admins")
+            .then(function (list) {
+                state.admins = list || [];
+                renderTable();
+            })
+            .catch(function (err) {
+                console.error(err);
+                var msg = (err && err.detail) || "Failed to load admins";
+                tbody.innerHTML = '<tr><td colspan="6" class="table-empty">' + escapeHtml(msg) + '</td></tr>';
+            });
+    }
+
+    // ============================================================
+    // RENDER TABLE
+    // ============================================================
+    function renderTable() {
+        var tbody = document.getElementById("adminsBody");
+        var myUsername = window.API.getUser();
+
+        if (!state.admins.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">No admins found.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = state.admins.map(function (a) {
+            var isSelf = a.username === myUsername;
+            var roleCls = a.role || "viewer";
+            var statusCls = a.is_active ? "active" : "inactive";
+            var statusTxt = a.is_active ? "Active" : "Inactive";
+
+            // Action buttons:
+            //   - Role change   → disabled for self
+            //   - Reset password → disabled for self (they use "Change My Password")
+            //   - Toggle active → disabled for self
+            //   - Delete        → disabled for self
+            var roleBtnAttrs   = isSelf
+                ? 'disabled title="You cannot change your own role"'
+                : 'title="Change role"';
+            var resetBtnAttrs  = isSelf
+                ? 'disabled title="Use Change My Password for your own account"'
+                : 'title="Reset password"';
+
+            return '<tr>' +
+                '<td><div class="adm-user">' +
+                    '<div class="adm-avatar">' + escapeHtml(initials(a.username)) + '</div>' +
+                    '<div><div class="adm-username">' + escapeHtml(a.username) +
+                        (isSelf ? ' <span style="color:var(--muted);font-weight:500;font-size:11px;">(you)</span>' : '') +
+                    '</div></div>' +
+                '</div></td>' +
+                '<td><span class="adm-role-pill ' + roleCls + '">' + escapeHtml(roleLabel(a.role)) + '</span></td>' +
+                '<td><span class="adm-status ' + statusCls + '"><span class="dot"></span>' + statusTxt + '</span></td>' +
+                '<td class="hide-mobile">' + fmtDate(a.last_login) + '</td>' +
+                '<td class="hide-mobile">' + fmtDate(a.created_at) + '</td>' +
+                '<td><div class="adm-actions">' +
+
+                    // Self: show "Change My Password" instead of role/reset buttons
+                    (isSelf
+                        ? '<button type="button" class="adm-action-btn" title="Change my password" data-action="self-password" data-id="' + a.id + '"><i class="fa-solid fa-key"></i></button>'
+                        : '<button type="button" class="adm-action-btn" ' + roleBtnAttrs + ' data-action="role" data-id="' + a.id + '"><i class="fa-solid fa-user-tag"></i></button>'
+                    ) +
+
+                    (!isSelf
+                        ? '<button type="button" class="adm-action-btn" ' + resetBtnAttrs + ' data-action="reset" data-id="' + a.id + '"><i class="fa-solid fa-unlock-keyhole"></i></button>'
+                        : ''
+                    ) +
+
+                    '<button type="button" class="adm-action-btn" title="' + (a.is_active ? 'Deactivate' : 'Activate') + '" data-action="toggle" data-id="' + a.id + '"' + (isSelf ? ' disabled' : '') + '><i class="fa-solid ' + (a.is_active ? 'fa-toggle-on' : 'fa-toggle-off') + '"></i></button>' +
+                    '<button type="button" class="adm-action-btn danger" title="Delete" data-action="delete" data-id="' + a.id + '"' + (isSelf ? ' disabled' : '') + '><i class="fa-solid fa-trash"></i></button>' +
+
+                '</div></td>' +
+            '</tr>';
+        }).join("");
+
+        // Bind action buttons
+        tbody.querySelectorAll("[data-action]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                if (this.disabled) return;
+                var action = this.getAttribute("data-action");
+                var id = parseInt(this.getAttribute("data-id"), 10);
+                var admin = state.admins.find(function (x) { return x.id === id; });
+                if (!admin) return;
+
+                if (action === "role")            openRoleModal(admin);
+                else if (action === "reset")      openResetPasswordModal(admin);
+                else if (action === "self-password") openSelfPasswordModal(admin);
+                else if (action === "toggle")     toggleActive(admin);
+                else if (action === "delete")     confirmDelete(admin);
+            });
+        });
+    }
+
+    // ============================================================
+    // ADD ADMIN
+    // ============================================================
+    function openAddModal() {
+        var html = '' +
+            '<div class="adm-form-row"><label>Username</label>' +
+                '<input type="text" id="newUsername" placeholder="e.g. siva" autocomplete="off">' +
+                '<div class="adm-form-note">At least 3 characters</div></div>' +
+            '<div class="adm-form-row"><label>Password</label>' +
+                '<input type="text" id="newPassword" placeholder="At least 8 characters" autocomplete="off"></div>' +
+            '<div class="adm-form-row"><label>Role</label>' +
+                '<select id="newRole">' +
+                    '<option value="viewer">Viewer — read only</option>' +
+                    '<option value="editor">Editor — reply chats &amp; update donations</option>' +
+                    '<option value="super_admin">Super Admin — full access</option>' +
+                '</select></div>';
+
+        window.showModal({
+            type: "info",
+            title: "Add New Admin",
+            bodyHtml: html,
+            size: "medium",
+            confirm: "Create Admin",
+            cancel: "Cancel",
+            onConfirm: function () {
+                var username = (document.getElementById("newUsername").value || "").trim();
+                var password = (document.getElementById("newPassword").value || "").trim();
+                var role = document.getElementById("newRole").value;
+
+                if (username.length < 3) {
+                    toast("warning", "Invalid Username", "Username must be at least 3 characters.");
+                    return;
+                }
+                if (password.length < 8) {
+                    toast("warning", "Invalid Password", "Password must be at least 8 characters.");
+                    return;
+                }
+
+                API.post("/admin/admins", { username: username, password: password, role: role })
+                    .then(function (newAdmin) {
+                        loadAdmins();
+                        toast("success", "Admin Created", "Successfully created admin '" + (newAdmin.username || username) + "' with role: " + roleLabel(role) + ".");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not create admin.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // CHANGE ROLE (for OTHER admins only)
+    // ============================================================
+    function openRoleModal(admin) {
+        var html = '' +
+            '<div class="adm-form-row"><label>Change Role for ' + escapeHtml(admin.username) + '</label>' +
+                '<select id="changeRole">' +
+                    '<option value="viewer"' + (admin.role === "viewer" ? " selected" : "") + '>Viewer</option>' +
+                    '<option value="editor"' + (admin.role === "editor" ? " selected" : "") + '>Editor</option>' +
+                    '<option value="super_admin"' + (admin.role === "super_admin" ? " selected" : "") + '>Super Admin</option>' +
+                '</select></div>';
+
+        window.showModal({
+            type: "warning",
+            title: "Change Role",
+            bodyHtml: html,
+            size: "medium",
+            confirm: "Update",
+            cancel: "Cancel",
+            onConfirm: function () {
+                var role = document.getElementById("changeRole").value;
+                API.patch("/admin/admins/" + admin.id + "/role", { role: role })
+                    .then(function () {
+                        loadAdmins();
+                        toast("success", "Role Updated", "'" + admin.username + "' is now " + roleLabel(role) + ".");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not update role.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // RESET PASSWORD (for OTHER admins only)
+    // ============================================================
+    function openResetPasswordModal(admin) {
+        var html = '' +
+            '<div class="adm-form-row"><label>New Password for ' + escapeHtml(admin.username) + '</label>' +
+                '<input type="text" id="resetPwd" placeholder="At least 8 characters" autocomplete="off">' +
+                '<div class="adm-form-note">The admin can change this later after logging in.</div></div>';
+
+        window.showModal({
+            type: "warning",
+            title: "Reset Password",
+            bodyHtml: html,
+            size: "medium",
+            confirm: "Reset Password",
+            cancel: "Cancel",
+            onConfirm: function () {
+                var pwd = (document.getElementById("resetPwd").value || "").trim();
+                if (pwd.length < 8) {
+                    toast("warning", "Invalid Password", "Password must be at least 8 characters.");
+                    return;
+                }
+                API.post("/admin/admins/" + admin.id + "/reset-password", { new_password: pwd })
+                    .then(function () {
+                        toast("success", "Password Reset", "New password set for '" + admin.username + "'. They can change it after logging in.");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not reset password.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // SELF PASSWORD CHANGE (for own account)
+    // ============================================================
+    function openSelfPasswordModal(admin) {
+        var html = '' +
+            '<div class="adm-form-row"><label>Current Password</label>' +
+                '<input type="password" id="selfOldPwd" placeholder="Enter current password" autocomplete="current-password"></div>' +
+            '<div class="adm-form-row"><label>New Password</label>' +
+                '<input type="password" id="selfNewPwd" placeholder="At least 8 characters" autocomplete="new-password"></div>' +
+            '<div class="adm-form-row"><label>Confirm New Password</label>' +
+                '<input type="password" id="selfNewPwd2" placeholder="Re-enter new password" autocomplete="new-password"></div>';
+
+        window.showModal({
+            type: "info",
+            title: "Change My Password",
+            bodyHtml: html,
+            size: "medium",
+            confirm: "Update Password",
+            cancel: "Cancel",
+            onConfirm: function () {
+                var oldPwd = (document.getElementById("selfOldPwd").value || "").trim();
+                var newPwd = (document.getElementById("selfNewPwd").value || "").trim();
+                var newPwd2 = (document.getElementById("selfNewPwd2").value || "").trim();
+
+                if (!oldPwd) {
+                    toast("warning", "Missing", "Please enter your current password.");
+                    return;
+                }
+                if (newPwd.length < 8) {
+                    toast("warning", "Invalid Password", "New password must be at least 8 characters.");
+                    return;
+                }
+                if (newPwd !== newPwd2) {
+                    toast("warning", "Mismatch", "New passwords do not match.");
+                    return;
+                }
+                if (oldPwd === newPwd) {
+                    toast("warning", "Same Password", "New password must be different from current.");
+                    return;
+                }
+
+                API.post("/admin/change-password", {
+                    old_password: oldPwd,
+                    new_password: newPwd
+                })
+                    .then(function () {
+                        toast("success", "Password Changed", "Your password has been updated successfully. Keep it safe.");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not change password.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // TOGGLE ACTIVE
+    // ============================================================
+    function toggleActive(admin) {
+        var verb = admin.is_active ? "Deactivate" : "Activate";
+        window.showModal({
+            type: admin.is_active ? "danger" : "info",
+            title: verb + " " + admin.username + "?",
+            message: admin.is_active
+                ? "This admin will not be able to log in until reactivated."
+                : "This admin will be able to log in again.",
+            confirm: verb,
+            cancel: "Cancel",
+            onConfirm: function () {
+                API.post("/admin/admins/" + admin.id + "/toggle-active")
+                    .then(function () {
+                        loadAdmins();
+                        toast("success", verb + "d", "'" + admin.username + "' is now " + (admin.is_active ? "inactive" : "active") + ".");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not update status.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // DELETE
+    // ============================================================
+    function confirmDelete(admin) {
+        window.showModal({
+            type: "danger",
+            title: "Delete " + admin.username + "?",
+            message: "This will permanently remove this admin account. This action cannot be undone.",
+            confirm: "Yes, Delete",
+            cancel: "Cancel",
+            onConfirm: function () {
+                API.del("/admin/admins/" + admin.id)
+                    .then(function () {
+                        loadAdmins();
+                        toast("success", "Deleted", "'" + admin.username + "' has been removed.");
+                    })
+                    .catch(function (err) {
+                        toast("danger", "Failed", (err && err.detail) || "Could not delete admin.");
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    function init() {
+        document.getElementById("addAdminBtn").addEventListener("click", openAddModal);
+        loadAdmins();
+    }
+
+    Layout.render();
+
+    if (!window.API.isSuperAdmin || !window.API.isSuperAdmin()) {
+        window.location.href = "dashboard.html";
+    } else {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
+        }
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Smart Help Foundation">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <title>Contact Us - Smart Help Foundation</title>
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
+    <link href="assets/css/flaticon_aidus.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.css" rel="stylesheet">
+    <link href="assets/css/slick.css" rel="stylesheet">
+    <link href="assets/css/slick-theme.css" rel="stylesheet">
+    <link href="assets/css/swiper.min.css" rel="stylesheet">
+    <link href="assets/css/owl.transitions.css" rel="stylesheet">
+    <link href="assets/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="assets/sass/style.css" rel="stylesheet">
+
+    <!-- ===== Custom styles ===== -->
+   <style>
+    /* =========================================================
+       1) OFFICE INFO CARDS — icon on top, equal height, smooth animation
+       ========================================================= */
+
+    /* Smooth colour change for the card AND everything inside it */
+    .office-info-item,
+    .office-info-item * {
+        transition: background-color .6s cubic-bezier(.4, 0, .2, 1),
+                    color            .6s cubic-bezier(.4, 0, .2, 1),
+                    border-color     .6s cubic-bezier(.4, 0, .2, 1),
+                    box-shadow       .6s cubic-bezier(.4, 0, .2, 1),
+                    fill             .6s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* Make all columns in the row flex containers → equal height */
+    .office-info .row > [class*="col-"] {
+        display: flex;
+    }
+
+    /* Each card takes full height, icon on top + text below */
+    .office-info-item {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;   /* icon on top, text below */
+        align-items: center;      /* horizontally center */
+        text-align: center;       /* text center */
+        box-sizing: border-box;
+    }
+
+    /* Some bottom margin for the icon */
+    .office-info-item .office-info-icon {
+        margin-bottom: 15px;
+    }
+
+    /* Text block full width, long email should wrap */
+    .office-info-item .office-info-text {
+        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;             /* prevent long email overflow */
+    }
+
+    .office-info-text a {
+        word-break: break-word;
+    }
+
+    /* Prevent card jump on hover */
+    .office-info-item:hover {
+        transform: none !important;
+    }
+
+    .office-info-text a {
+        color: inherit;
+        text-decoration: none;
+        display: inline-block;
+        transition: color .25s ease, text-shadow .25s ease;
+    }
+
+    .office-info-text a:hover,
+    .office-info-text a:focus {
+        color: #ffffff;
+        text-shadow: 0 0 1px #ffffff,
+                     0 0 1px #ffffff,
+                     0 2px 10px rgba(0, 0, 0, .35);
+        text-decoration: none;
+        outline: none;
+    }
+
+    /* ---------- Field error: underline only, red ---------- */
+    #contactForm .input-item.shf-error input,
+    #contactForm .input-item.shf-error textarea {
+        border-color: transparent !important;
+        border-bottom: 2px solid #ef4444 !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Smooth transition for border change */
+    #contactForm .input-item input,
+    #contactForm .input-item textarea {
+        transition: border-color .2s ease, border-bottom-color .2s ease;
+    }
+</style>
+</head>
+
+<body>
+
+    <!-- start page-wrapper -->
+    <div class="page-wrapper">
+
+        <!-- start preloader -->
+        <!-- <div class="preloader">
+            <div class="vertical-centered-box">
+                <div class="content">
+                    <div class="loader-circle"></div>
+                    <div class="loader-line-mask">
+                        <div class="loader-line"></div>
+                    </div>
+                    <img src="assets/images/icon.png" alt="">
+                </div>
+            </div>
+        </div> -->
+        <!-- end preloader -->
+
+        <!-- Start header -->
+        <div id="site-header"></div>
+        <!-- end of header -->
+
+
+        <!-- start of breadcumb -->
+        <div class="breadcumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcumb-wrap">
+                            <h2>Smart Help Foundation</h2>
+                            <h3>Contact Us</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shape">
+                <svg width="128" height="357" viewBox="0 0 128 357" fill="none">
+                    <path
+                        d="M-9.73063 357C-11.832 304.262 -1.65343 268.562 21.3305 247.878C27.4705 242.355 34.4642 238.095 41.2608 233.944C44.6099 231.887 48.0903 229.757 51.4066 227.519C63.6866 219.217 71.3041 210.301 74.5875 200.338C75.1457 198.713 75.5397 196.981 75.7695 195.212C68.2505 198.569 62.1762 199.688 56.5944 198.749C50.5201 197.703 43.5592 193.19 41.6548 185.43C40.3086 179.871 42.2787 173.987 46.974 169.691C52.5229 164.601 60.1405 163.23 65.8865 166.262C74.686 170.882 78.4948 181.639 78.0679 191.783C98.3923 181.603 114.58 162.002 121.77 138.72C129.289 114.318 126.695 86.4868 114.809 64.2508C110.048 55.3348 103.711 46.9963 97.6043 38.9466C86.375 24.1467 74.7845 8.87758 72.6831 -10.3623C70.8116 -28.1583 78.0679 -46.4596 91.2016 -57L92.3508 -55.2312C79.7753 -45.124 72.8473 -27.6529 74.686 -10.6511C76.6889 7.93905 87.6227 22.3419 99.1475 37.5388C105.32 45.6607 111.69 54.0714 116.55 63.1318C128.698 85.8731 131.358 114.39 123.675 139.369C116.221 163.591 99.2131 183.913 77.9366 194.201C77.6739 196.584 77.1814 198.894 76.4591 201.06C72.9786 211.528 65.1313 220.769 52.4573 229.36C49.1082 231.634 45.5949 233.764 42.213 235.821C35.5148 239.9 28.5868 244.16 22.5782 249.538C0.0867844 269.753 -9.82913 304.839 -7.76058 356.856L-9.73063 357ZM59.3525 166.767C55.1825 166.767 51.1111 168.716 48.2873 171.315C44.2159 175.033 42.4757 180.087 43.6249 184.816C45.2994 191.638 51.5379 195.645 56.9556 196.584C62.1762 197.486 67.955 196.367 75.1457 193.154C75.4412 193.01 75.7695 192.866 76.065 192.721C76.7217 182.975 73.1756 172.398 65.0656 168.139C63.2269 167.2 61.2568 166.767 59.3525 166.767Z"
+                        fill="white" fill-opacity="0.18" />
+                </svg>
+            </div>
+            <div class="shape-s2">
+                <img src="assets/images/slider/shape-3.svg" alt="">
+            </div>
+            <div class="shape-s3">
+                <img src="assets/images/donate-2.svg" alt="">
+            </div>
+
+        </div>
+        <!-- end of breadcumb-->
+
+        <!--start of contact-page -->
+        <section class="contact-page section-padding">
+            <div class="container">
+                <div class="office-info">
+                    <div class="row">
+                        <div class="col col-lg-4 col-md-6 col-12">
+                            <div class="office-info-item">
+                                <div class="office-info-icon">
+                                    <div class="icon">
+                                        <i class="fi flaticon-home-address"></i>
+                                    </div>
+                                </div>
+                                <div class="office-info-text">
+                                    <h2>Visit Us</h2>
+                                    <p>Chinthamani, Ayyuragaram
+                                        <br> Villupuram, Tamil Nadu 605601, India</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg-4 col-md-6 col-12">
+                            <div class="office-info-item active">
+                                <div class="office-info-icon">
+                                    <div class="icon">
+                                        <i class="fi flaticon-phone-call"></i>
+                                    </div>
+                                </div>
+                                <div class="office-info-text">
+                                    <h2>Call Us</h2>
+                                    <p>
+                                        <a href="tel:+917397186602">+91 73971 86602</a><br>
+                                        <a href="tel:+917639866602">+91 76398 66602</a><br>
+                                        <a href="tel:+917601866602">+91 76018 66602</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg-4 col-md-6 col-12">
+                            <div class="office-info-item">
+                                <div class="office-info-icon">
+                                    <div class="icon">
+                                        <i class="fi flaticon-mail-1"></i>
+                                    </div>
+                                </div>
+                                <div class="office-info-text">
+                                    <h2>Email Us</h2>
+                                    <p>
+                                        <a href="mailto:smarthelpfoundation2021@gmail.com">
+                                            smarthelpfoundation2021@gmail.com
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-wrap">
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <div class="contact-left">
+                                <h2>Get in touch</h2>
+                                <p>Have a question, want to volunteer, or partner with us? Reach out to
+                                    Smart Help Foundation and our team will respond within one working day.</p>
+                                <div class="map">
+                                    <iframe
+                                        src="https://www.google.com/maps?q=SMART+HELP+FOUNDATION+TRUST&z=17&output=embed"
+                                        width="100%"
+                                        height="450"
+                                        style="border:0;"
+                                        allowfullscreen=""
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="contact-right">
+                                <div class="title">
+                                    <h2>Send Us a Message</h2>
+                                    <p>Your email address will not be published. Required fields are marked *</p>
+                                </div>
+                                <form id="contactForm" class="contact-form" novalidate>
+                                    <div class="input-item">
+                                        <input id="name" name="name" class="fild" type="text" placeholder="Your Name*">
+                                        <label><i class="flaticon-user"></i></label>
+                                    </div>
+                                    <div class="input-item">
+                                        <input id="email" name="email" class="fild" type="email" placeholder="Email Address*">
+                                        <label><i class="flaticon-email"></i></label>
+                                    </div>
+                                    <div class="input-item">
+                                        <textarea id="message" name="message" class="fild textarea"
+                                            placeholder="Enter Your Message here"></textarea>
+                                        <label><i class="flaticon-edit"></i></label>
+                                    </div>
+                                    <div class="input-item submitbtn">
+                                        <input class="fild" type="submit" value="Get In Touch">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--end of contact-page -->
+
+
+        <!-- start footer -->
+        <div id="site-footer"></div>
+        <!-- end footer -->
+
+    </div>
+    <!-- end of page-wrapper -->
+
+    <!-- All JavaScript files
+    ================================================== -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugins for this template -->
+    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="assets/js/jquery.dlmenu.js"></script>
+    <script src="assets/js/jquery-plugin-collection.js"></script>
+    <script src="assets/js/common-includes.js"></script>
+    <!-- Custom script for this template -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/api-client.js?v=20260903-2"></script>
+
+    <!-- =========================================================
+         OFFICE CARD HIGHLIGHT ANIMATION
+         Cycles the .active (orange) state: Visit → Call → Email → …
+         ========================================================= -->
+    <script>
+    (function () {
+        "use strict";
+
+        var DELAY = 3000;           // 3s on each card
+
+        function init() {
+            var items = Array.prototype.slice.call(
+                document.querySelectorAll('.office-info .office-info-item')
+            );
+            if (items.length < 2) return;
+
+            // Reduced-motion users: just keep whatever is active now
+            if (window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                return;
+            }
+
+            // Start from the card that already has .active (Call Us)
+            var current = items.findIndex(function (el) {
+                return el.classList.contains('active');
+            });
+            if (current < 0) {
+                current = 0;
+                items[0].classList.add('active');
+            }
+
+            var timer = null;
+            var paused = false;
+
+            function step() {
+                items[current].classList.remove('active');
+                current = (current + 1) % items.length;
+                items[current].classList.add('active');
+            }
+
+            function start() {
+                if (timer || paused) return;
+                timer = setInterval(function () {
+                    if (document.hidden) return;
+                    step();
+                }, DELAY);
+            }
+
+            function stop() {
+                if (timer) { clearInterval(timer); timer = null; }
+            }
+
+            start();
+
+            // Pause while the user is hovering the cards (so links stay steady)
+            var wrap = document.querySelector('.office-info');
+            if (wrap) {
+                wrap.addEventListener('mouseenter', function () {
+                    paused = true;
+                    stop();
+                });
+                wrap.addEventListener('mouseleave', function () {
+                    paused = false;
+                    start();
+                });
+            }
+
+            // Pause when the browser tab is not visible (saves CPU)
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) { stop(); } else { start(); }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+
+    <!-- ===== Contact-form custom validation (runs BEFORE api-client handler) ===== -->
+    <script>
+    (function () {
+        "use strict";
+
+        /* ---------- Toast (matches api-client style, bottom-right) ---------- */
+        function showToast(message, type) {
+            type = type || 'error';
+            var container = document.getElementById('aidus-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'aidus-toast-container';
+                container.style.cssText =
+                    'position:fixed;bottom:24px;right:24px;z-index:9999;' +
+                    'display:flex;flex-direction:column;gap:10px;';
+                document.body.appendChild(container);
+            }
+            var bg = type === 'success' ? '#10b981'
+                   : type === 'error'   ? '#ef4444'
+                   : '#ff5528';
+            var toast = document.createElement('div');
+            toast.style.cssText =
+                'background:' + bg + ';color:#fff;padding:14px 22px;border-radius:12px;' +
+                "font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;" +
+                'box-shadow:0 10px 30px rgba(0,0,0,0.3);opacity:0;' +
+                'transform:translateY(20px);transition:all .3s cubic-bezier(0.4,0,0.2,1);' +
+                'max-width:340px;line-height:1.4;';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(function () {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+            setTimeout(function () {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(function () { toast.remove(); }, 300);
+            }, 4000);
+        }
+
+        /* ---------- Helpers ---------- */
+        var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+        function setError(el) {
+            var item = el.closest('.input-item');
+            if (item) item.classList.add('shf-error');
+        }
+        function clearError(el) {
+            var item = el.closest('.input-item');
+            if (item) item.classList.remove('shf-error');
+        }
+
+        /* ---------- Attach capture-phase validator ---------- */
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('contactForm');
+            if (!form) return;
+
+            var nameEl  = document.getElementById('name');
+            var emailEl = document.getElementById('email');
+            var msgEl   = document.getElementById('message');
+
+            // Clear red underline as user types
+            [nameEl, emailEl, msgEl].forEach(function (el) {
+                if (!el) return;
+                el.addEventListener('input', function () { clearError(el); });
+            });
+
+            /* ------------------------------------------------------------
+               Capture-phase listener on document:
+               fires BEFORE api-client.js form submit handler.
+               If validation fails → preventDefault + stopPropagation,
+               api-client handler never runs.
+               If validation passes → nothing, api-client handles it.
+            ------------------------------------------------------------ */
+            document.addEventListener('submit', function (e) {
+                if (e.target !== form) return;
+
+                var name    = (nameEl.value  || '').trim();
+                var email   = (emailEl.value || '').trim();
+                var message = (msgEl.value   || '').trim();
+
+                // Name
+                if (!name) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(nameEl); nameEl.focus();
+                    return showToast('Please enter your name.', 'error');
+                }
+                if (name.length < 2) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(nameEl); nameEl.focus();
+                    return showToast('Name must be at least 2 characters.', 'error');
+                }
+
+                // Email
+                if (!email) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(emailEl); emailEl.focus();
+                    return showToast('Please enter your email address.', 'error');
+                }
+                if (!EMAIL_RE.test(email)) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(emailEl); emailEl.focus();
+                    return showToast('Please enter a valid email address.', 'error');
+                }
+
+                // Message
+                if (!message) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(msgEl); msgEl.focus();
+                    return showToast('Please enter your message.', 'error');
+                }
+                if (message.length < 10) {
+                    e.preventDefault(); e.stopPropagation();
+                    setError(msgEl); msgEl.focus();
+                    return showToast('Message must be at least 10 characters.', 'error');
+                }
+
+                // ✅ Valid — let it bubble to api-client.js → POST /api/contact
+            }, true);
+        });
+    })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- thank-you.html — consistent with donate.html -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="wpOceans">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <title>Thank You — SmartHelp Foundation</title>
+
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
+    <link href="assets/css/flaticon_aidus.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.css" rel="stylesheet">
+    <link href="assets/css/slick.css" rel="stylesheet">
+    <link href="assets/css/slick-theme.css" rel="stylesheet">
+    <link href="assets/css/swiper.min.css" rel="stylesheet">
+    <link href="assets/css/owl.transitions.css" rel="stylesheet">
+    <link href="assets/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="assets/sass/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --green: #1e824c;
+            --bg: #f6f7fb;
+            --card: #fff;
+            --accent: #ff5528;
+            --text: #222;
+            --text-dim: #6b7a6f;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Arial;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .containeree {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        /* Success card — matches .carde style from donate.html */
+        .ty-card {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, .07);
+            padding: 40px 32px;
+            margin: 30px 0 16px;
+            border: 2px solid var(--accent);
+            text-align: center;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: tyFadeUp .55s ease-out;
+        }
+
+        @keyframes tyFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Green success ring — matches .totalee green language */
+        .ty-icon-wrap {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #eaf7ef;
+            border: 2px solid #cfe9d7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: tyPop .5s ease-out .15s both;
+        }
+
+        @keyframes tyPop {
+            0%   { transform: scale(.5); opacity: 0; }
+            60%  { transform: scale(1.08); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .ty-icon-wrap::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid var(--pulse-color, rgba(30, 130, 76, .25));
+            animation: tyPulse 2s ease-out infinite;
+        }
+
+        @keyframes tyPulse {
+            0%   { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.35); opacity: 0; }
+        }
+
+        .ty-icon-wrap i {
+            font-size: 40px;
+            color: var(--green);
+        }
+
+        .ty-card h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 10px;
+            color: var(--text);
+        }
+
+        .ty-subtitle {
+            color: var(--text-dim);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0 0 26px;
+        }
+
+        /* Reference ID box — matches .payment-gatewayee language */
+        .ty-ref-box {
+            background: #eaf7ef;
+            border: 1px solid #cfe9d7;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 26px;
+            display: none;
+            text-align: center;
+        }
+
+        .ty-ref-box.show { display: block; }
+
+        .ty-ref-box .label {
+            color: #1b5e20;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .ty-ref-box .value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--green);
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            letter-spacing: .5px;
+        }
+
+        /* Buttons */
+        .ty-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .ty-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 750;
+            font-size: 14.5px;
+            text-decoration: none;
+            cursor: pointer;
+            border: 0;
+            transition: all .2s;
+            min-width: 180px;
+        }
+
+        .ty-btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(255, 85, 40, .25);
+        }
+
+        .ty-btn-primary:hover {
+            background: #ff6f00;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .ty-btn-ghost {
+            background: #fff;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .ty-btn-ghost:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .ty-footer-note {
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: var(--text-dim);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .ty-footer-note i {
+            color: var(--accent);
+            margin-right: 4px;
+        }
+
+        .ty-footer-note strong {
+            color: var(--text);
+        }
+
+        @media (max-width: 600px) {
+            .ty-card { padding: 30px 22px; }
+            .ty-card h2 { font-size: 22px; }
+            .ty-btn { width: 100%; min-width: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- start page-wrapper -->
+    <div class="page-wrapper">
+
+        <!-- start preloader -->
+        <!-- <div class="preloader">
+            <div class="vertical-centered-box">
+                <div class="content">
+                    <div class="loader-circle"></div>
+                    <div class="loader-line-mask">
+                        <div class="loader-line"></div>
+                    </div>
+                    <img src="assets/images/icon.png" alt="">
+                </div>
+            </div>
+        </div> -->
+        <!-- end preloader -->
+
+        <!-- Start header -->
+        <div id="site-header"></div>
+        <!-- end of header -->
+
+        <!-- start of breadcumb -->
+        <div class="breadcumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcumb-wrap">
+                            <h2>trusted non profit</h2>
+                            <h3>Thank You</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of breadcumb -->
+
+        <section class="donate-11">
+            <div class="containeree">
+
+                <div class="ty-card">
+                    <div class="ty-icon-wrap">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <h2>Thank You for Your Donation!</h2>
+                    <p class="ty-subtitle">
+                        Your generous contribution has been received successfully.
+                        Together, we're making a real difference in the lives of those who need it most.
+                    </p>
+
+                    <div class="ty-ref-box" id="tyRefBox">
+                        <div class="label">Reference ID</div>
+                        <div class="value" id="tyRefValue">—</div>
+                    </div>
+
+                    <div class="ty-actions">
+                        <a href="/" class="ty-btn ty-btn-primary">
+                            <i class="fa-solid fa-house"></i> Back to Home
+                        </a>
+                        <a href="/donate.html" class="ty-btn ty-btn-ghost">
+                            <i class="fa-solid fa-heart"></i> Donate Again
+                        </a>
+                    </div>
+
+                    <div class="ty-footer-note">
+                        <i class="fa-solid fa-envelope"></i>
+                        A confirmation will be sent shortly. For queries, contact us at
+                        <strong>support@smarthelp.org</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- start footer -->
+        <div id="site-footer"></div>
+        <!-- end footer -->
+
+    </div>
+    <!-- end of page-wrapper -->
+
+    <!-- All JavaScript files
+    ================================================== -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="assets/js/jquery.dlmenu.js"></script>
+    <script src="assets/js/jquery-plugin-collection.js"></script>
+    <script src="assets/js/common-includes.js"></script>
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status') || 'success';
+
+    const iconWrap = document.querySelector('.ty-icon-wrap');
+    const icon = iconWrap.querySelector('i');
+    const title = document.querySelector('.ty-card h2');
+    const subtitle = document.querySelector('.ty-subtitle');
+
+    if (status === 'verifying') {
+        // Amber/warning state
+        iconWrap.style.background = '#fef3c7';
+        iconWrap.style.borderColor = '#fcd34d';
+        iconWrap.style.setProperty('--pulse-color', 'rgba(245, 158, 11, .25)');
+        icon.className = 'fa-solid fa-clock';
+        icon.style.color = '#d97706';
+        title.textContent = 'Payment Received — Verification in Progress';
+        subtitle.textContent =
+            'We received your payment. Our team is confirming it with the bank. ' +
+            'You will get a confirmation email shortly. Reference below.';
+    }
+
+    // Reference ID
+    const refId = sessionStorage.getItem('smarthelp_last_donation_id');
+    if (refId) {
+        const box = document.getElementById('tyRefBox');
+        const val = document.getElementById('tyRefValue');
+        if (box && val) {
+            val.textContent = refId;
+            box.classList.add('show');
+        }
+    }
+});
+    </script>
+
+</body>
+</html>

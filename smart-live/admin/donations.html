@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================
+           DONATIONS PAGE — LOCAL STYLES
+           ========================================================== */
+
+        /* Metrics grid */
+        .don-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .don-metric {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .don-metric:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .don-metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .don-metric.total .don-metric-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .don-metric.count .don-metric-icon { background: var(--grad); }
+        .don-metric.today .don-metric-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .don-metric.pending .don-metric-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .don-metric-info { min-width: 0; flex: 1; }
+        .don-metric-value {
+            font-family: "Nunito", sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .don-metric-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* Table wrapper */
+        .don-table-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .don-table-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .don-table-head h3 {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+        }
+        .don-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .don-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 14px;
+            width: 260px;
+            max-width: 100%;
+            transition: border-color .2s;
+        }
+        .don-search:focus-within { border-color: var(--primary); }
+        .don-search i { color: var(--muted); font-size: 14px; }
+        .don-search input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            width: 100%;
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .don-search input::placeholder { color: #9ca3af; }
+
+        /* Table */
+        .don-table-wrap { overflow-x: auto; }
+        .don-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 700px;
+        }
+        .don-table th {
+            background: #f9fafb;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .don-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .don-table tr.data-row { cursor: pointer; transition: background .15s; }
+        .don-table tr.data-row:hover td { background: #fafbfc; }
+
+        .don-txn {
+            background: rgba(247, 79, 34, 0.08);
+            color: var(--primary);
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: "Inter", monospace;
+        }
+        .don-amount {
+            color: var(--success);
+            font-weight: 700;
+            font-family: "Nunito", sans-serif;
+        }
+        .don-chevron {
+            color: var(--muted);
+            transition: transform .25s ease;
+            display: inline-block;
+            font-size: 12px;
+        }
+        .don-chevron.open {
+            transform: rotate(90deg);
+            color: var(--primary);
+        }
+
+        /* Details row */
+        .details-row { display: none; }
+        .details-row.open { display: table-row; }
+        .details-cell {
+            background: #fafbfc;
+            padding: 0 !important;
+            border-bottom: 1px solid var(--border) !important;
+        }
+        .details-inner {
+            padding: 20px 22px;
+            border-left: 3px solid var(--primary);
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .detail-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+        }
+        .detail-box .label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .detail-box .value {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .detail-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .detail-section-title i { color: var(--primary); }
+
+        .special-request-box {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+        }
+        .special-request-box .label {
+            color: #9a3412;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .special-request-box .value { color: #7c2d12; font-size: 13px; }
+
+        .photo-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .photo-grid a {
+            display: block;
+            width: 90px;
+            height: 90px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform .2s;
+        }
+        .photo-grid a:hover { transform: scale(1.05); }
+        .photo-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .items-tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .items-tbl th {
+            background: #f9fafb;
+            padding: 8px 12px;
+            font-size: 10px;
+            text-align: left;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--border);
+        }
+        .items-tbl td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .items-tbl tr:last-child td { border-bottom: 0; }
+
+        .grand-total {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, rgba(247, 79, 34, 0.05), rgba(238, 9, 121, 0.05));
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .grand-total .label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .grand-total .amount {
+            font-family: "Nunito", sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .don-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+        .don-empty i {
+            font-size: 42px;
+            opacity: 0.25;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .hide-mobile { display: none; }
+            .don-search { width: 100%; }
+            .don-metric { padding: 14px; }
+            .don-metric-value { font-size: 18px; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+                /* Admin action box (mark completed/failed) */
+        .don-action-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 16px;
+        }
+        .don-action-box.completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(5, 150, 105, 0.06));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .don-action-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .don-action-box.completed .don-action-title { color: var(--success); }
+        .don-action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .don-action-note {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        @media (max-width: 768px) {
+    .don-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .don-metric {
+        padding: 12px 14px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+    .don-metric-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+    .don-metric-value {
+        font-size: 17px;
+    }
+    .don-metric-label {
+        font-size: 10px;
+    }
+}
+
+/* ===== Photo grid (4 columns on desktop) ===== */
+.photo-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.photo-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* horizontal center */
+}
+.photo-card-label {
+    min-height: 32px;             /* reserve space for 2-line labels */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+.photo-card-label i { color: var(--primary); flex-shrink: 0; }
+.photo-card > a {
+    display: block;
+    width: 50%;                /* same as one grid cell */
+    max-width: 50%;
+    aspect-ratio: 1;
+    margin: 0 auto;            /* center it */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.photo-card > a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.photo-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);   /* 2 per row — same cell size as single-photo width */
+    gap: 6px;
+    width: 100%;
+}
+.photo-card-grid a {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.photo-card-grid a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 640px) {
+    .photo-section {
+        grid-template-columns: repeat(2, 1fr);   /* 2 per row on mobile */
+        gap: 8px;
+    }
+    .photo-card {
+        padding: 8px;
+        border-radius: 8px;
+    }
+    .photo-card-label {
+        min-height: 26px;
+        font-size: 9px;
+        letter-spacing: 0.2px;
+        margin-bottom: 4px;
+        gap: 4px;
+        line-height: 1.2;
+    }
+    .photo-card-label i {
+        font-size: 11px;
+    }
+    .photo-card > a {
+        border-radius: 6px;
+    }
+    .photo-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3px;
+    }
+    .photo-card-grid a {
+        border-radius: 4px;
+    }
+}
+
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Donations</h1>
+            <p>All donation records from the platform</p>
+        </div>
+        <button class="btn btn-primary" onclick="loadDonations()">
+            <i class="ti-reload"></i> Refresh
+        </button>
+    </div>
+
+    <!-- Metrics -->
+    <div class="don-metrics">
+    <div class="don-metric total">
+        <div class="don-metric-icon"><i class="ti-wallet"></i></div>
+        <div class="don-metric-info">
+            <div class="don-metric-value" id="metric-total">₹0</div>
+            <div class="don-metric-label" data-kpi="label-total">Total Received</div>
+        </div>
+    </div>
+    <div class="don-metric count">
+        <div class="don-metric-icon"><i class="ti-heart"></i></div>
+        <div class="don-metric-info">
+            <div class="don-metric-value" id="metric-count">0</div>
+            <div class="don-metric-label" data-kpi="label-count">Total Donations</div>
+        </div>
+    </div>
+    <div class="don-metric today">
+        <div class="don-metric-icon"><i class="ti-calendar"></i></div>
+        <div class="don-metric-info">
+            <div class="don-metric-value" id="metric-today">0</div>
+            <div class="don-metric-label" data-kpi="label-today">Today</div>
+        </div>
+    </div>
+    <div class="don-metric pending">
+        <div class="don-metric-icon"><i class="ti-time"></i></div>
+        <div class="don-metric-info">
+            <div class="don-metric-value" id="metric-pending">0</div>
+            <div class="don-metric-label" data-kpi="label-concern">Pending</div>
+        </div>
+    </div>
+</div>
+
+    <!-- Table -->
+    <div class="don-table-card">
+        <div class="don-table-head">
+            <h3><i class="ti-list"></i> All Donations</h3>
+            <div class="don-filters">
+    <select class="filter-select" id="dateRange" onchange="applyFilters()">
+        <option value="all">All Time</option>
+        <option value="7d">Last 7 days</option>
+        <option value="30d" selected>Last 30 days</option>
+        <option value="90d">Last 90 days</option>
+        <option value="1y">Last 1 year</option>
+    </select>
+    <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+        <option value="">All Status</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+        <option value="failed">Failed</option>
+    </select>
+    <div class="don-search">
+        <i class="ti-search"></i>
+        <input type="text" id="searchInput" placeholder="Search donor, TXN, method...">
+    </div>
+    <button type="button" class="btn btn-outline" id="exportBtn" disabled>
+        <i class="fa-solid fa-download"></i> Export CSV
+    </button>
+</div>
+        </div>
+        <div class="don-table-wrap">
+            <table class="don-table">
+                <thead>
+                    <tr>
+                        <th style="width:32px;"></th>
+                        <th>TXN ID</th>
+                        <th>Donor</th>
+                        <th class="hide-mobile">Phone</th>
+                        <th>Amount</th>
+                        <th class="hide-mobile">Payment</th>
+                        <th class="hide-mobile">Occasion</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="donations-tbody">
+                    <tr><td colspan="9" class="don-empty">Loading donations...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    let allDonations = [];
+    // let expandedId = null;
+
+    // ---------- Helpers ----------
+    function fmtINR(n) {
+        return '₹' + (parseFloat(n) || 0).toLocaleString('en-IN', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Format date in IST timezone
+    function fmtDate(s) {
+        if (!s) return '—';
+        try {
+            var str = String(s);
+            // If no timezone info, treat as UTC (append Z)
+            if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+                str = str.replace(' ', 'T') + 'Z';
+            }
+            return new Date(str).toLocaleString('en-IN', {
+                timeZone: 'Asia/Kolkata',
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            });
+        } catch (_) { return s; }
+    }
+
+    function statusBadge(status) {
+        const s = (status || 'Pending').toLowerCase();
+        let cls = 'warning';
+        if (s.includes('complet') || s.includes('success')) cls = 'success';
+        else if (s.includes('fail') || s.includes('cancel')) cls = 'danger';
+        return `<span class="pill ${cls}">${escapeHtml(status || 'Pending')}</span>`;
+    }
+
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+    // ---------- Date range helper ----------
+    function withinDateRange(iso, range) {
+        if (range === 'all' || !range) return true;
+        if (!iso) return false;
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(' ', 'T') + 'Z';
+        }
+        var d = new Date(str);
+        if (isNaN(d.getTime())) return false;
+        var now = new Date();
+        var diffDays = (now - d) / (1000 * 60 * 60 * 24);
+        if (range === '7d')  return diffDays <= 7;
+        if (range === '30d') return diffDays <= 30;
+        if (range === '90d') return diffDays <= 90;
+        if (range === '1y')  return diffDays <= 365;
+        return true;
+    }
+
+    // ---------- URL params (from Analytics CTA) ----------
+    function readURLParams() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            var range = p.get('range');
+            var status = p.get('status');
+            if (range) {
+                var dr = document.getElementById('dateRange');
+                if (dr) dr.value = range;
+            }
+            if (status !== null && status !== undefined) {
+                var sf = document.getElementById('statusFilter');
+                if (sf) sf.value = status;
+            }
+        } catch (_) {}
+    }
+    // ---------- Load donations from API ----------
+       window.loadDonations = async function () {
+        const tbody = document.getElementById('donations-tbody');
+        tbody.innerHTML = '<tr><td colspan="9" class="don-empty">Loading donations...</td></tr>';
+        // expandedId = null;
+
+        try {
+            const data = await API.get('/donations?limit=500');
+            allDonations = Array.isArray(data) ? data : [];
+
+           
+            window.applyFilters();
+            updateExportButtonState();
+        } catch (err) {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="9" class="don-empty" style="color:var(--danger);">Failed to load donations. <button class="btn btn-outline" onclick="loadDonations()" style="margin-left:8px;">Retry</button></td></tr>';
+        }
+    };
+
+    // ---------- Calculate metric cards (date-range + status aware) ----------
+function updateMetrics(dateFiltered, statusFilter) {
+    statusFilter = (statusFilter || '').toLowerCase();
+
+    function isCompleted(d) {
+        var s = (d.status || '').toLowerCase();
+        return s.indexOf('complet') !== -1 || s.indexOf('success') !== -1 || s.indexOf('paid') !== -1;
+    }
+    function isPending(d) {
+        var s = (d.status || '').toLowerCase();
+        return s.indexOf('pending') !== -1 || s === '';
+    }
+    function isFailed(d) {
+        var s = (d.status || '').toLowerCase();
+        return s.indexOf('fail') !== -1 || s.indexOf('cancel') !== -1;
+    }
+
+    var completedList = dateFiltered.filter(isCompleted);
+    var pendingList   = dateFiltered.filter(isPending);
+    var failedList    = dateFiltered.filter(isFailed);
+
+    // ---- Card 1: Amount (dynamic label + value) ----
+    var amountValue, amountLabel;
+    if (statusFilter === 'pending') {
+        amountValue = pendingList.reduce(function (s, d) { return s + (parseFloat(d.amount) || 0); }, 0);
+        amountLabel = 'Pending Amount';
+    } else if (statusFilter === 'failed') {
+        amountValue = failedList.reduce(function (s, d) { return s + (parseFloat(d.amount) || 0); }, 0);
+        amountLabel = 'Failed Amount';
+    } else {
+        amountValue = completedList.reduce(function (s, d) { return s + (parseFloat(d.amount) || 0); }, 0);
+        amountLabel = 'Total Received';
+    }
+
+    // ---- Card 2: Total Donations (all statuses in date range) ----
+    var totalDonations = dateFiltered.length;
+
+    // ---- Card 3: Today (all statuses in date range) ----
+    var todayStr = new Date().toDateString();
+    var todayCount = dateFiltered.filter(function (d) {
+        var dt = d.created_at ? new Date(d.created_at).toDateString() : '';
+        return dt === todayStr;
+    }).length;
+
+    // ---- Card 4: Pending, or Failed when filtering by failed ----
+    var concernValue, concernLabel;
+    if (statusFilter === 'failed') {
+        concernValue = failedList.length;
+        concernLabel = 'Failed';
+    } else {
+        concernValue = pendingList.length;
+        concernLabel = 'Pending';
+    }
+
+    // ---- Apply ----
+    document.getElementById('metric-total').textContent   = fmtINR(amountValue);
+    document.getElementById('metric-count').textContent   = totalDonations;
+    document.getElementById('metric-today').textContent   = todayCount;
+    document.getElementById('metric-pending').textContent = concernValue;
+
+    var el;
+    el = document.querySelector('[data-kpi="label-total"]');
+    if (el) el.textContent = amountLabel;
+    el = document.querySelector('[data-kpi="label-count"]');
+    if (el) el.textContent = 'Total Donations';
+    el = document.querySelector('[data-kpi="label-today"]');
+    if (el) el.textContent = 'Today';
+    el = document.querySelector('[data-kpi="label-concern"]');
+    if (el) el.textContent = concernLabel;
+}
+
+    // ---------- Render donation table ----------
+   function renderDonations(list) {
+    const tbody = document.getElementById('donations-tbody');
+
+    if (!list.length) {
+        tbody.innerHTML = `
+            <tr><td colspan="9">
+                <div class="don-empty">
+                    <i class="ti-inbox"></i>
+                    <div>No donations found.</div>
+                </div>
+            </td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = list.map(function (d) {
+        return `
+        <tr class="data-row" data-id="${d.id}" onclick="openDonationDetails(${d.id})">
+            <td><i class="ti-angle-right don-chevron"></i></td>
+            <td><span class="don-txn">${escapeHtml(d.transaction_id || 'N/A')}</span></td>
+            <td><strong>${escapeHtml(d.donor_name || '—')}</strong></td>
+            <td class="hide-mobile">${escapeHtml(((d.country_code || '') + ' ' + (d.phone || '—')).trim())}</td>
+            <td><span class="don-amount">${fmtINR(d.amount)}</span></td>
+            <td class="hide-mobile">${escapeHtml(d.payment_method || '—')}</td>
+            <td class="hide-mobile">${escapeHtml(d.occasion || '—')}</td>
+            <td>${fmtDate(d.created_at)}</td>
+            <td>${statusBadge(d.status)}</td>
+        </tr>`;
+    }).join('');
+}
+
+// ============================================================
+// Robust JSON array parser
+//   Handles:
+//     - real arrays      → [url1, url2]
+//     - JSON strings     → '["url1","url2"]'
+//     - Python repr      → "['url1', 'url2']"   (the bug!)
+//     - single URL string → '/uploads/x.jpg'
+// ============================================================
+function parseJsonArray(raw) {
+    if (!raw) return [];
+    if (Array.isArray(raw)) return raw.filter(Boolean);
+    if (typeof raw !== 'string') return [];
+
+    var s = raw.trim();
+    if (!s) return [];
+
+    // 1) Try strict JSON
+    try {
+        var p = JSON.parse(s);
+        if (Array.isArray(p)) return p.filter(Boolean);
+    } catch (_) {}
+
+    // 2) Try Python-repr fallback (single quotes → double quotes)
+    try {
+        var fixed = s
+            .replace(/'/g, '"')
+            .replace(/\bTrue\b/g, 'true')
+            .replace(/\bFalse\b/g, 'false')
+            .replace(/\bNone\b/g, 'null');
+        var p2 = JSON.parse(fixed);
+        if (Array.isArray(p2)) return p2.filter(Boolean);
+    } catch (_) {}
+
+    // 3) Fallback — single URL string
+    if (s.startsWith('/') || s.startsWith('http')) return [s];
+
+    return [];
+}
+
+    // ---------- Build expanded details HTML ----------
+    function buildDetailsHtml(d) {
+        let items = [];
+        try { items = JSON.parse(d.items_json || '[]'); } catch (_) { items = []; }
+        // Extended photos
+        const parcelPhoto = d.parcel_photo || null;
+        const cakePhoto   = d.cake_photo   || null;
+
+ // Print photos — robust parse + fall back to single URL
+let printPhotos = parseJsonArray(d.print_photos_json);
+if (!printPhotos.length && d.print_photo) printPhotos = [d.print_photo];
+
+// Banner photos — robust parse
+let bannerPhotos = parseJsonArray(d.banner_photos_json);
+
+
+        // ---- Items table (robust — handles FREE + multiple key formats) ----
+const itemsHtml = items.length
+    ? `<table class="items-tbl">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th style="text-align:center;">Qty</th>
+                <th style="text-align:right;">Price</th>
+                <th style="text-align:right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${items.map(function (it) {
+                // -------- Normalize name --------
+                var rawName = it.name || it.title || it.item_name || ('Item ' + (it.id != null ? it.id : ''));
+
+                // -------- Free flag (support all variants) --------
+                var isFree = !!(it.is_free || it.isFree || it.free);
+
+                // Strip trailing " - FREE" / " (FREE)" from name if we detected free
+                if (isFree) {
+    // Strip trailing FREE variants — repeat until clean
+    var prev;
+    do {
+        prev = rawName;
+        rawName = String(rawName)
+            .replace(/\s*[-–—]\s*FREE\s*$/i, '')   // " - FREE"
+            .replace(/\s*\(FREE\)\s*$/i, '')       // " (FREE)"
+            .replace(/\s+FREE\s*$/i, '')           // " FREE"
+            .trim();
+    } while (rawName !== prev);
+}
+                var name = rawName;
+
+                // -------- Quantity (support qty / quantity / qtyLabel) --------
+                var qty = it.quantity;
+                if (qty == null) qty = it.qty;
+                if (qty == null && typeof it.qtyLabel === 'string') {
+                    var m = it.qtyLabel.match(/(\d+(?:\.\d+)?)/);
+                    qty = m ? parseFloat(m[1]) : 1;
+                }
+                if (qty == null || isNaN(qty)) qty = 1;
+
+                // -------- Price --------
+                var price = parseFloat(it.price);
+                if (isNaN(price)) price = parseFloat(it.unit_price);
+                if (isNaN(price)) price = 0;
+
+                // -------- Line total (0 must NOT fall back!) --------
+                var lineTotal;
+                if (it.total != null)          lineTotal = parseFloat(it.total);
+                else if (it.lineTotal != null) lineTotal = parseFloat(it.lineTotal);
+                else if (isFree)               lineTotal = 0;
+                else                           lineTotal = price * qty;
+                if (isNaN(lineTotal)) lineTotal = 0;
+
+                // -------- Render cells --------
+                var FREE_BADGE = '<span style="color:#10b981;font-weight:800;letter-spacing:.5px;">FREE</span>';
+
+                var qtyCell  = escapeHtml(String(qty));
+                var priceCell = isFree ? FREE_BADGE : fmtINR(price);
+                var totalCell = isFree
+                    ? FREE_BADGE
+                    : '<strong>' + fmtINR(lineTotal) + '</strong>';
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(name)}</td>
+                        <td style="text-align:center;">${qtyCell}</td>
+                        <td style="text-align:right;">${priceCell}</td>
+                        <td style="text-align:right;">${totalCell}</td>
+                    </tr>
+                `;
+            }).join('')}
+        </tbody>
+    </table>`
+    : '<div style="color:var(--muted);padding:12px;background:#fff;border-radius:10px;border:1px solid var(--border);font-size:13px;">No item breakdown available.</div>';
+
+        // ---- Photo card helpers (3-col grid) ----
+        function photoCardHtml(url, label, icon) {
+            if (!url) return '';
+            return `
+                <div class="photo-card">
+                    <div class="photo-card-label"><i class="${icon}"></i> ${label}</div>
+                    <a href="${escapeHtml(url)}" target="_blank" rel="noopener">
+                        <img src="${escapeHtml(url)}" alt="${escapeHtml(label)}">
+                    </a>
+                </div>`;
+        }
+        function multiPhotoCardHtml(arr, label, icon) {
+            if (!arr || !arr.length) return '';
+
+            // Single photo → render like a normal single-photo card (full width)
+            if (arr.length === 1) {
+                return photoCardHtml(arr[0], label, icon);
+            }
+
+            // 2+ photos → 2-col grid, exactly as before
+            return `
+                <div class="photo-card">
+                    <div class="photo-card-label"><i class="${icon}"></i> ${label} (${arr.length})</div>
+                    <div class="photo-card-grid">
+                        ${arr.map(url => `
+                            <a href="${escapeHtml(url)}" target="_blank" rel="noopener">
+                                <img src="${escapeHtml(url)}" alt="${escapeHtml(label)}">
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        // ---- Cake combined box ----
+        let cakeBoxHtml = '';
+        if (d.cake_name || d.cake_qty || d.cake_shape) {
+            const parts = [];
+            if (d.cake_name) parts.push(escapeHtml(d.cake_name));
+            if (d.cake_qty)  parts.push(d.cake_qty + ' kg');
+            if (d.cake_shape) parts.push(d.cake_shape);
+            cakeBoxHtml = `<div class="detail-box"><div class="label">Cake</div><div class="value">${parts.join(' · ')}</div></div>`;
+        }
+
+        const specialHtml = d.special_requests
+            ? `<div class="special-request-box">
+                   <div class="label">Special Requests</div>
+                   <div class="value">${escapeHtml(d.special_requests)}</div>
+               </div>`
+            : '';
+
+        // ---- Photo sections (new + legacy) ----
+        const hasAnyPhoto = parcelPhoto || printPhotos.length || cakePhoto || bannerPhotos.length;
+        const printLabel = d.print_size
+            ? 'Print (' + d.print_size + ')'
+            : 'Print';
+
+        const photoBlocks = hasAnyPhoto
+            ? `<div class="photo-section">
+                   ${photoCardHtml(parcelPhoto,  'Food Parcel',  'ti-image')}
+                   ${multiPhotoCardHtml(printPhotos, printLabel, 'ti-printer')}
+                   ${multiPhotoCardHtml(bannerPhotos, 'Banner',  'ti-gallery')}
+                   ${photoCardHtml(cakePhoto,    'Cake',         'ti-cake')}
+               </div>`
+            : '';
+
+        return `
+            <div class="detail-grid">
+                <div class="detail-box"><div class="label">Donor Name</div><div class="value">${escapeHtml(d.donor_name || '—')}</div></div>
+                <div class="detail-box"><div class="label">Phone</div><div class="value">${escapeHtml(((d.country_code || '') + ' ' + (d.phone || '—')).trim())}</div></div>
+                <div class="detail-box"><div class="label">Email</div><div class="value">${escapeHtml(d.email || '—')}</div></div>
+                <div class="detail-box"><div class="label">Instagram</div><div class="value">${escapeHtml(d.instagram || '—')}</div></div>
+                <div class="detail-box"><div class="label">State</div><div class="value">${escapeHtml(d.state || '—')}</div></div>
+                <div class="detail-box"><div class="label">City</div><div class="value">${escapeHtml(d.city || '—')}</div></div>
+                <div class="detail-box"><div class="label">Occasion</div><div class="value">${escapeHtml(d.occasion || '—')}</div></div>
+                <div class="detail-box"><div class="label">Occasion Date</div><div class="value">${escapeHtml(d.occasion_date || '—')}</div></div>
+                <div class="detail-box"><div class="label">Food Parcel Name</div><div class="value">${escapeHtml(d.label_name || '—')}</div></div>
+                <div class="detail-box"><div class="label">Banner Name</div><div class="value">${escapeHtml(d.banner_name || '—')}</div></div>
+                <div class="detail-box"><div class="label">Cake Name</div><div class="value">${escapeHtml(d.cake_name || '—')}</div></div>
+                ${cakeBoxHtml}
+                <div class="detail-box"><div class="label">Service Date</div><div class="value">${escapeHtml(d.service_date || '—')}</div></div>
+                <div class="detail-box"><div class="label">Created</div><div class="value">${fmtDate(d.created_at)}</div></div>
+            </div>
+
+            ${specialHtml}
+            ${photoBlocks}
+
+            <div class="detail-section-title"><i class="ti-shopping-cart"></i> Items Breakdown</div>
+            ${itemsHtml}
+
+            ${buildActionHtml(d)}
+
+            <div class="grand-total">
+                <div class="label">Grand Total</div>
+                <div class="amount">${fmtINR(d.amount)}</div>
+            </div>
+        `;
+    }
+
+    // ---------- Action buttons (mark completed / failed) ----------
+    function buildActionHtml(d) {
+    if (window.API && !window.API.isEditor()) return '';
+
+    var s = (d.status || '').toLowerCase();
+    var isCompleted = s.includes('complet') || s.includes('success');
+    var isPending = s.includes('pending') || s === '';
+    var isFailed = s.includes('fail') || s.includes('cancel');
+
+    // Completed → locked
+    if (isCompleted) {
+        return `
+            <div class="don-action-box completed">
+                <div class="don-action-title">
+                    <i class="fa-solid fa-circle-check"></i> Payment Verified
+                </div>
+                <div class="don-action-note">
+                    Status is locked. Use a direct DB query to revert if required.
+                </div>
+            </div>`;
+    }
+
+    // Failed → only "Mark Completed" (recovery path)
+    if (isFailed) {
+        return `
+            <div class="don-action-box">
+                <div class="don-action-title">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Payment Failed — Verify & Recover
+                </div>
+                <div class="don-action-buttons">
+                    <button type="button" class="btn btn-primary"
+                            onclick="event.stopPropagation(); markCompleted(${d.id}, this)">
+                        <i class="fa-solid fa-circle-check"></i> Mark as Completed
+                    </button>
+                </div>
+                <div class="don-action-note">
+                    Only use this after verifying the payment in the Razorpay dashboard or bank statement.
+                </div>
+            </div>`;
+    }
+
+    // Pending → both buttons
+    return `
+        <div class="don-action-box">
+            <div class="don-action-title">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Admin Actions
+            </div>
+            <div class="don-action-buttons">
+                <button type="button" class="btn btn-primary"
+                        onclick="event.stopPropagation(); markCompleted(${d.id}, this)">
+                    <i class="fa-solid fa-circle-check"></i> Mark as Completed
+                </button>
+                <button type="button" class="btn btn-danger"
+                        onclick="event.stopPropagation(); markFailed(${d.id}, this)">
+                    <i class="fa-solid fa-circle-xmark"></i> Mark as Failed
+                </button>
+            </div>
+            <div class="don-action-note">
+                Use this after verifying the payment in the Razorpay dashboard (UPI @handle flow).
+            </div>
+        </div>`;
+}
+
+    // ---------- Toggle row details ----------
+    // Exposed on window so HTML onclick attributes can call it
+    // window.toggleDetails = function (id) {
+    //     // Close the previously opened row
+    //     if (expandedId !== null && expandedId !== id) {
+    //         const prevRow = document.querySelector(`tr.data-row[data-id="${expandedId}"]`);
+    //         const prevDetails = document.getElementById('details-' + expandedId);
+    //         if (prevRow) {
+    //             const c = prevRow.querySelector('.don-chevron');
+    //             if (c) c.classList.remove('open');
+    //         }
+    //         if (prevDetails) prevDetails.classList.remove('open');
+    //     }
+
+    //     const row = document.querySelector(`tr.data-row[data-id="${id}"]`);
+    //     const details = document.getElementById('details-' + id);
+    //     if (!row || !details) return;
+
+    //     const chev = row.querySelector('.don-chevron');
+    //     const isOpening = !details.classList.contains('open');
+
+    //     details.classList.toggle('open', isOpening);
+    //     if (chev) chev.classList.toggle('open', isOpening);
+
+    //     expandedId = isOpening ? id : null;
+    // };
+      
+    // ---------- Open donation details modal ----------
+window.openDonationDetails = function (id) {
+    var d = allDonations.find(function (x) { return x.id === id; });
+    if (!d) return;
+
+    window.showModal({
+        title: 'Donation ' + (d.transaction_id || '#' + d.id),
+        bodyHtml: buildDetailsHtml(d),
+        size: 'large',
+        cancel: 'Close',
+        confirm: null,
+        hideIcon: true
+    });
+};
+    // ---------- Mark as Completed ----------
+    window.markCompleted = function (id, btn) {
+        window.showModal({
+            type: 'warning',
+            title: 'Mark as Completed?',
+            message: 'Confirm that the payment was received. This action cannot be reverted from the UI.',
+            confirm: 'Yes, Complete',
+            cancel: 'Cancel',
+            onConfirm: function () { changeDonationStatus(id, 'Completed', btn); }
+        });
+    };
+
+    // ---------- Mark as Failed ----------
+    window.markFailed = function (id, btn) {
+        window.showModal({
+            type: 'danger',
+            title: 'Mark as Failed?',
+            message: 'This will mark the donation as failed. You can still mark it as completed later.',
+            confirm: 'Yes, Mark Failed',
+            cancel: 'Cancel',
+            onConfirm: function () { changeDonationStatus(id, 'Failed', btn); }
+        });
+    };
+
+    // ---------- Shared: call API + refresh ----------
+    async function changeDonationStatus(id, newStatus, btn) {
+    var originalHTML = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+    }
+
+    try {
+        await API.post('/donations/' + id + '/status', { status: newStatus });
+        await loadDonations();
+        var row = document.querySelector('tr.data-row[data-id="' + id + '"]');
+        if (row) row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    } catch (err) {
+        var msg = (err && err.detail) || 'Failed to update status';
+        alert(msg);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+        }
+    }
+}
+
+    // ---------- Search + status filter ----------
+    // Exposed on window so HTML onchange/oninput can call it
+       window.applyFilters = function () {
+    const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    const status = (document.getElementById('statusFilter').value || '').toLowerCase();
+    const rangeEl = document.getElementById('dateRange');
+    const range = rangeEl ? rangeEl.value : 'all';
+
+    // ---- Step 1: date-filter (used by both KPI and table) ----
+    let dateFiltered = allDonations.filter(function (d) {
+        if (range !== 'all' && !withinDateRange(d.created_at, range)) return false;
+        return true;
+    });
+
+    // ---- Step 2: update KPI cards with dateFiltered + status ----
+    updateMetrics(dateFiltered, status);
+
+    // ---- Step 3: apply search filter for table ----
+    let filtered = dateFiltered;
+    if (q) {
+        filtered = filtered.filter(function (d) {
+            var hay = [
+                d.transaction_id, d.donor_name, d.phone, d.email, d.razorpay_payment_id,
+                d.occasion, d.label_name, d.instagram, d.payment_method, d.razorpay_order_id
+            ].filter(Boolean).join(' ').toLowerCase();
+            return hay.indexOf(q) !== -1;
+        });
+    }
+
+    // ---- Step 4: apply status filter for table ----
+    if (status) {
+        filtered = filtered.filter(function (d) {
+            var s = (d.status || 'pending').toLowerCase();
+            if (status === 'completed') return s.indexOf('complet') !== -1 || s.indexOf('success') !== -1 || s.indexOf('paid') !== -1;
+            if (status === 'pending')   return s.indexOf('pending') !== -1 || s === '';
+            if (status === 'failed')    return s.indexOf('fail') !== -1 || s.indexOf('cancel') !== -1;
+            return true;
+        });
+    }
+
+    renderDonations(filtered);
+    updateExportButtonState();
+};
+
+    // ---------- Export CSV ----------
+       // ---------- Export button state toggle ----------
+    function updateExportButtonState() {
+        var btn = document.getElementById('exportBtn');
+        if (!btn) return;
+
+        // Determine how many records match current filters
+        var q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+        var status = (document.getElementById('statusFilter').value || '').toLowerCase();
+        var rangeEl = document.getElementById('dateRange');
+        var range = rangeEl ? rangeEl.value : 'all';
+
+        var count = allDonations.filter(function (d) {
+            if (range !== 'all' && !withinDateRange(d.created_at, range)) return false;
+            if (status) {
+                var s = (d.status || 'pending').toLowerCase();
+                if (status === 'completed' && !(s.indexOf('complet') !== -1 || s.indexOf('success') !== -1 || s.indexOf('paid') !== -1)) return false;
+                if (status === 'pending' && !(s.indexOf('pending') !== -1 || s === '')) return false;
+                if (status === 'failed' && !(s.indexOf('fail') !== -1 || s.indexOf('cancel') !== -1)) return false;
+            }
+            if (q) {
+                var hay = [d.transaction_id, d.razorpay_payment_id,
+                 d.razorpay_order_id, d.donor_name, d.phone, d.email, d.occasion, d.payment_method].filter(Boolean).join(' ').toLowerCase();
+                if (hay.indexOf(q) === -1) return false;
+            }
+            return true;
+        }).length;
+
+        if (count === 0) {
+            btn.disabled = true;
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.5';
+            btn.title = 'No data to export';
+        } else {
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+            btn.title = 'Export ' + count + ' record' + (count > 1 ? 's' : '') + ' as CSV';
+        }
+    }
+
+    // ---------- Export CSV ----------
+    window.exportDonationsCSV = function () {
+        var btn = document.getElementById('exportBtn');
+        // Safety: bail out silently if disabled
+        if (btn && btn.disabled) return;
+
+        const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+        const status = (document.getElementById('statusFilter').value || '').toLowerCase();
+        const rangeEl = document.getElementById('dateRange');
+        const range = rangeEl ? rangeEl.value : 'all';
+
+        var list = allDonations.filter(function (d) {
+            if (range !== 'all' && !withinDateRange(d.created_at, range)) return false;
+            if (status) {
+                var s = (d.status || 'pending').toLowerCase();
+                if (status === 'completed' && !(s.indexOf('complet') !== -1 || s.indexOf('success') !== -1 || s.indexOf('paid') !== -1)) return false;
+                if (status === 'pending' && !(s.indexOf('pending') !== -1 || s === '')) return false;
+                if (status === 'failed' && !(s.indexOf('fail') !== -1 || s.indexOf('cancel') !== -1)) return false;
+            }
+            if (q) {
+                var hay = [d.transaction_id,
+                d.razorpay_payment_id, d.razorpay_order_id, d.donor_name, 
+                d.phone, d.email, d.occasion, d.payment_method].filter(Boolean).join(' ').toLowerCase();
+                if (hay.indexOf(q) === -1) return false;
+            }
+            return true;
+        });
+
+        // No data → silent return (button should already be disabled)
+        if (!list.length) return;
+
+        var headers = [
+            'ID',
+            'TXN ID',
+            'Donor',
+            'Email',
+            'Phone',
+            'Instagram',
+            'State',
+            'City',
+            'Occasion',
+            'Occasion Date',
+            'Food Parcel Name',
+            'Banner Name',
+            'Cake Name',
+            'Cake Qty (kg)',
+            'Cake Shape',
+            'Service Date',
+            'Special Requests',
+            'Amount',
+            'Currency',
+            'Payment Method',
+            'Razorpay Payment ID',
+            'Razorpay Order ID',
+            'Parcel Photo',
+            'Print Size',
+            'Print Photo',
+            'Banner Photos',
+            'Cake Photo',
+            'Status',
+            'Date'
+        ];
+
+        var rows = list.map(function (d) {
+            // Banner photos — array or JSON string
+            var bannerArr = [];
+            try {
+                var raw = d.banner_photos_json;
+                if (Array.isArray(raw)) bannerArr = raw;
+                else if (typeof raw === 'string' && raw.trim()) bannerArr = JSON.parse(raw);
+            } catch (_) { bannerArr = []; }
+
+            return [
+                d.id,
+                d.transaction_id || '',
+                d.donor_name || '',
+                d.email || '',
+                ((d.country_code || '') + ' ' + (d.phone || '')).trim(),
+                d.instagram || '',
+                d.state || '',
+                d.city || '',
+                d.occasion || '',
+                d.occasion_date || '',
+                d.label_name || '',
+                d.banner_name || '',
+                d.cake_name || '',
+                d.cake_qty != null ? d.cake_qty : '',
+                d.cake_shape || '',
+                d.service_date || '',
+                d.special_requests || '',
+                d.amount,
+                d.currency || 'INR',
+                d.payment_method || '',
+                d.razorpay_payment_id || '',
+                d.razorpay_order_id || '',
+                d.parcel_photo || '',
+                d.print_size || '',
+                d.print_photo || '',
+                bannerArr.join(' | '),      // multiple URLs joined by " | "
+                d.cake_photo || '',
+                d.status || '',
+                // Force Excel to treat as plain text (avoid ####### from column-width)
+                '="' + fmtDate(d.created_at).replace(/"/g, '""') + '"',
+            ];
+        });
+
+        function csvCell(c) {
+            if (c == null) return '';
+            var s = String(c);
+            // Already wrapped as Excel text-formula → emit as-is
+            if (s.length > 2 && s.substring(0, 2) === '="') return s;
+            if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+                s = '"' + s.replace(/"/g, '""') + '"';
+            }
+            return s;
+        }
+
+        var csv = [headers].concat(rows).map(function (r) {
+            return r.map(csvCell).join(',');
+        }).join('\r\n');
+
+        var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'donations-' + new Date().toISOString().slice(0, 10) + '.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    // ---------- Init ----------
+    // 1. Render layout first (it replaces #app inner HTML)
+    Layout.render();
+
+    // 2. Read URL params (from Analytics CTA)
+    readURLParams();
+
+    // 3. Bind listeners to new DOM
+    document.getElementById('searchInput').addEventListener('input', window.applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', window.applyFilters);
+
+    var drEl = document.getElementById('dateRange');
+    if (drEl) drEl.addEventListener('change', window.applyFilters);
+
+    var exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) exportBtn.addEventListener('click', window.exportDonationsCSV);
+
+    // 4. Finally load data
+    loadDonations();
+})();
+</script>
+</body>
+</html>

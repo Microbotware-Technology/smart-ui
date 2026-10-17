@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity — Smart Help Admin</title>
+    <link href="/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+@media (max-width: 768px) {
+    .ac-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .ac-stat {
+        padding: 12px 14px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+    .ac-stat-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+    .ac-stat-value {
+        font-size: 16px;
+    }
+    .ac-stat-label {
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+    .ac-stat-total {
+        top: 8px;
+        right: 10px;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .ac-table-wrap { overflow-x: visible; }
+
+    .ac-table {
+        min-width: 0;
+        display: block;
+    }
+
+    .ac-table thead { display: none; }
+
+    .ac-table tbody {
+        display: block;
+        padding: 12px;
+    }
+
+    .ac-table tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px 12px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+    }
+
+    .ac-table tr:hover td { background: transparent; }
+
+    .ac-table td {
+        padding: 0;
+        border: 0;
+    }
+
+    /* Type pill — row 1 left */
+    .ac-table td:nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    /* Time + ago — row 1 right */
+    .ac-table td:nth-child(6) {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: right;
+    }
+
+    /* Page — row 2 full width */
+    .ac-table td:nth-child(2) {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        margin-top: 4px;
+    }
+
+    @media (max-width: 640px) {
+
+    /* Un-hide session / IP / device cells on mobile */
+    .ac-table td.hide-mobile {
+        display: block !important;
+    }
+
+    /* Session — row 3, left */
+    .ac-table td:nth-child(3) {
+        grid-column: 1;
+        grid-row: 3;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--border);
+    }
+
+    /* IP — row 3, right */
+    .ac-table td:nth-child(4) {
+        grid-column: 2;
+        grid-row: 3;
+        text-align: right;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--border);
+    }
+
+    /* Device — row 4, full width */
+    .ac-table td:nth-child(5) {
+        grid-column: 1 / -1;
+        grid-row: 4;
+        font-size: 12px;
+        color: var(--text);
+    }
+
+    /* Labels */
+    .ac-table td:nth-child(3)::before,
+    .ac-table td:nth-child(4)::before,
+    .ac-table td:nth-child(5)::before {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-right: 4px;
+    }
+
+    .ac-table td:nth-child(3)::before { content: "Session"; }
+    .ac-table td:nth-child(4)::before { content: "IP"; }
+    .ac-table td:nth-child(5)::before { content: "Device"; }
+
+    /* Value styling */
+    .ac-table td:nth-child(3) .ac-session,
+    .ac-table td:nth-child(4) .ac-ip {
+        font-family: "Inter", monospace;
+        font-size: 12px;
+        color: var(--text);
+    }
+}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="page-head">
+        <div>
+            <h1>Activity</h1>
+            <p>Track user clicks on Call, Email and WhatsApp</p>
+        </div>
+        <button class="btn btn-primary" id="refreshBtn">
+            <i class="fa-solid fa-rotate"></i> Refresh
+        </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="ac-stats-grid" id="statsGrid">
+        <div class="ac-stat">
+            <div class="ac-stat-icon call"><i class="fa-solid fa-phone"></i></div>
+            <div class="ac-stat-body">
+                <div class="ac-stat-value" id="stat-call-today">0</div>
+                <div class="ac-stat-label">Calls Today</div>
+            </div>
+            <div class="ac-stat-total" id="stat-call-total">0 total</div>
+        </div>
+        <div class="ac-stat">
+            <div class="ac-stat-icon email"><i class="fa-solid fa-envelope"></i></div>
+            <div class="ac-stat-body">
+                <div class="ac-stat-value" id="stat-email-today">0</div>
+                <div class="ac-stat-label">Emails Today</div>
+            </div>
+            <div class="ac-stat-total" id="stat-email-total">0 total</div>
+        </div>
+        <div class="ac-stat">
+            <div class="ac-stat-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="ac-stat-body">
+                <div class="ac-stat-value" id="stat-wa-today">0</div>
+                <div class="ac-stat-label">WhatsApp Today</div>
+            </div>
+            <div class="ac-stat-total" id="stat-wa-total">0 total</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="ac-filter-bar">
+        <div class="ac-tabs">
+            <button type="button" class="ac-tab active" data-type="">All</button>
+            <button type="button" class="ac-tab" data-type="call">
+                <i class="fa-solid fa-phone"></i> Calls
+            </button>
+            <button type="button" class="ac-tab" data-type="email">
+                <i class="fa-solid fa-envelope"></i> Emails
+            </button>
+            <button type="button" class="ac-tab" data-type="whatsapp">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </button>
+        </div>
+        <select class="filter-select" id="rangeFilter">
+            <option value="7d">Last 7 days</option>
+            <option value="30d" selected>Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+            <option value="1y">Last 1 year</option>
+            <option value="all">All Time</option>
+        </select>
+    </div>
+
+    <!-- Table -->
+    <div class="ac-table-card">
+        <div class="ac-table-wrap">
+            <table class="ac-table">
+                <thead>
+                    <tr>
+                        <!-- <th style="width:60px;">#</th> -->
+                        <th>Type</th>
+                        <th>Page</th>
+                        <th class="hide-mobile">Session</th>
+                        <th class="hide-mobile">IP</th>
+                        <th class="hide-mobile">Device</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="activityBody">
+                    <tr><td colspan="7" class="ac-empty">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="ac-count-bar">
+            <span id="activityCount">0 records</span>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    var state = {
+        type: "",
+        range: "30d",
+    };
+
+    // ---------- Helpers ----------
+    function fmtDate(iso) {
+        if (!iso) return "—";
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(" ", "T") + "Z";
+        }
+        var d = new Date(str);
+        if (isNaN(d.getTime())) return "—";
+        return d.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            day: "2-digit", month: "short",
+            hour: "2-digit", minute: "2-digit", hour12: true,
+        });
+    }
+
+    function timeAgo(iso) {
+        if (!iso) return "";
+        var str = String(iso);
+        if (!/[Zz]|[+-]\d{2}:?\d{2}$/.test(str)) {
+            str = str.replace(" ", "T") + "Z";
+        }
+        var d = new Date(str);
+        if (isNaN(d.getTime())) return "";
+        var diff = (Date.now() - d.getTime()) / 1000;
+        if (diff < 60) return "just now";
+        if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+        if (diff < 604800) return Math.floor(diff / 86400) + "d ago";
+        return "";
+    }
+
+    function escapeHtml(t) {
+        if (t == null) return "";
+        return String(t)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function typeIcon(type) {
+        if (type === "call") return '<span class="ac-pill call"><i class="fa-solid fa-phone"></i> Call</span>';
+        if (type === "email") return '<span class="ac-pill email"><i class="fa-solid fa-envelope"></i> Email</span>';
+        if (type === "whatsapp") return '<span class="ac-pill whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</span>';
+        return '<span class="ac-pill muted">' + escapeHtml(type) + '</span>';
+    }
+
+    function deviceFromUA(ua) {
+        if (!ua) return "—";
+        var s = String(ua).toLowerCase();
+        if (s.indexOf("mobile") !== -1 || s.indexOf("android") !== -1 || s.indexOf("iphone") !== -1) return "Mobile";
+        if (s.indexOf("tablet") !== -1 || s.indexOf("ipad") !== -1) return "Tablet";
+        return "Desktop";
+    }
+
+    function shortenPage(url) {
+        if (!url) return "—";
+        var s = String(url);
+        // Strip query string for cleaner display
+        var q = s.indexOf("?");
+        if (q !== -1) s = s.slice(0, q);
+        // Remove leading slash
+        if (s.charAt(0) === "/") s = s.slice(1);
+        if (!s) s = "home";
+        return s;
+    }
+
+    // ---------- Load Stats ----------
+    function loadStats() {
+        return API.get("/admin/contact/activities/stats")
+            .then(function (s) {
+                document.getElementById("stat-call-today").textContent    = s.today_call || 0;
+                document.getElementById("stat-call-total").textContent    = (s.total_call || 0) + " total";
+                document.getElementById("stat-email-today").textContent   = s.today_email || 0;
+                document.getElementById("stat-email-total").textContent   = (s.total_email || 0) + " total";
+                document.getElementById("stat-wa-today").textContent      = s.today_whatsapp || 0;
+                document.getElementById("stat-wa-total").textContent      = (s.total_whatsapp || 0) + " total";
+            })
+            .catch(function () {});
+    }
+
+    // ---------- Load Activity List ----------
+    function loadActivities() {
+        var tbody = document.getElementById("activityBody");
+        tbody.innerHTML = '<tr><td colspan="7" class="ac-empty">Loading...</td></tr>';
+
+        var p = [];
+        if (state.type) p.push("type=" + encodeURIComponent(state.type));
+        p.push("range=" + encodeURIComponent(state.range));
+        p.push("limit=500");
+
+        return API.get("/admin/contact/activities?" + p.join("&"))
+            .then(function (list) {
+                list = list || [];
+                document.getElementById("activityCount").textContent =
+                    list.length + " record" + (list.length === 1 ? "" : "s");
+
+                if (!list.length) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="ac-empty">No activity found for this filter.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = list.map(function (a) {
+                    var ago = timeAgo(a.created_at);
+                    return '<tr>' +
+                        // '<td>#' + a.id + '</td>' +
+                        '<td>' + typeIcon(a.activity_type) + '</td>' +
+                        '<td><span class="ac-page">' + escapeHtml(shortenPage(a.page_url)) + '</span></td>' +
+                        '<td class="hide-mobile"><span class="ac-session">' + escapeHtml((a.session_id || "—").substring(0, 8)) + '</span></td>' +
+                        '<td class="hide-mobile"><span class="ac-ip">' + escapeHtml(a.ip_address || "—") + '</span></td>' +
+                        '<td class="hide-mobile">' + escapeHtml(deviceFromUA(a.user_agent)) + '</td>' +
+                        '<td><div class="ac-time">' + fmtDate(a.created_at) + '</div>' +
+                            (ago ? '<div class="ac-ago">' + ago + '</div>' : '') + '</td>' +
+                        '</tr>';
+                }).join("");
+            })
+            .catch(function (err) {
+                console.error(err);
+                tbody.innerHTML = '<tr><td colspan="7" class="ac-empty">Failed to load activity.</td></tr>';
+            });
+    }
+
+    function loadAll() {
+        return Promise.all([loadStats(), loadActivities()]);
+    }
+
+    // ---------- Events ----------
+    function bindEvents() {
+        document.querySelectorAll(".ac-tab").forEach(function (b) {
+            b.addEventListener("click", function () {
+                document.querySelectorAll(".ac-tab").forEach(function (x) { x.classList.remove("active"); });
+                this.classList.add("active");
+                state.type = this.getAttribute("data-type") || "";
+                loadActivities();
+            });
+        });
+
+        document.getElementById("rangeFilter").addEventListener("change", function () {
+            state.range = this.value;
+            loadActivities();
+        });
+
+        document.getElementById("refreshBtn").addEventListener("click", loadAll);
+    }
+
+    function init() {
+        bindEvents();
+        loadAll();
+        // Auto-refresh every 60s
+        setInterval(loadAll, 60000);
+    }
+
+    Layout.render();
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>
+</body>
+</html>
