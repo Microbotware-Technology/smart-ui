@@ -3088,3 +3088,13 @@ table tr:hover td { background: #fafbfc; }
     .shf-modal-scroll .items-tbl td:nth-child(4)::before { content: "Total: "; font-weight: 600; }
     .shf-modal-scroll .items-tbl td:nth-child(4) strong { color: var(--text); font-weight: 800; }
 }
+.adm-form-error {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fdecec;
+    color: #b42318;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+}

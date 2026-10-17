@@ -48,9 +48,6 @@
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/layout.js"></script>
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/layout.js"></script>
 <script>
 (function () {
     "use strict";
@@ -214,11 +211,12 @@
             '<div class="adm-form-row"><label>Password</label>' +
                 '<input type="text" id="newPassword" placeholder="At least 8 characters" autocomplete="off"></div>' +
             '<div class="adm-form-row"><label>Role</label>' +
-                '<select id="newRole">' +
-                    '<option value="viewer">Viewer — read only</option>' +
-                    '<option value="editor">Editor — reply chats &amp; update donations</option>' +
-                    '<option value="super_admin">Super Admin — full access</option>' +
-                '</select></div>';
+    '<select id="newRole">' +
+        '<option value="viewer">Viewer — read only</option>' +
+        '<option value="editor">Editor — update donations</option>' +
+        '<option value="super_admin">Super Admin — full access</option>' +
+    '</select></div>' +
+'<div class="adm-form-error" id="addAdminError" hidden></div>';
 
         window.showModal({
             type: "info",
@@ -228,28 +226,47 @@
             confirm: "Create Admin",
             cancel: "Cancel",
             onConfirm: function () {
-                var username = (document.getElementById("newUsername").value || "").trim();
-                var password = (document.getElementById("newPassword").value || "").trim();
-                var role = document.getElementById("newRole").value;
+            var errEl = document.getElementById("addAdminError");
+            var uEl   = document.getElementById("newUsername");
+            var pEl   = document.getElementById("newPassword");
+            var rEl   = document.getElementById("newRole");
 
-                if (username.length < 3) {
-                    toast("warning", "Invalid Username", "Username must be at least 3 characters.");
-                    return;
-                }
-                if (password.length < 8) {
-                    toast("warning", "Invalid Password", "Password must be at least 8 characters.");
-                    return;
-                }
+            errEl.hidden = true;
 
-                API.post("/admin/admins", { username: username, password: password, role: role })
-                    .then(function (newAdmin) {
-                        loadAdmins();
-                        toast("success", "Admin Created", "Successfully created admin '" + (newAdmin.username || username) + "' with role: " + roleLabel(role) + ".");
-                    })
-                    .catch(function (err) {
-                        toast("danger", "Failed", (err && err.detail) || "Could not create admin.");
-                    });
+            var username = (uEl.value || "").trim();
+            var password = (pEl.value || "").trim();
+            var role     = rEl.value;
+
+            // ---- Synchronous inline validation ----
+            if (username.length < 3) {
+                errEl.textContent = "Username must be at least 3 characters.";
+                errEl.hidden = false;
+                uEl.focus();
+                return false;
             }
+            if (password.length < 8) {
+                errEl.textContent = "Password must be at least 8 characters.";
+                errEl.hidden = false;
+                pEl.focus();
+                return false;
+            }
+
+            // ---- Return Promise — modal stays open on API error ----
+            return API.post("/admin/admins", { username: username, password: password, role: role })
+                .then(function (newAdmin) {
+                    loadAdmins();
+                    // Defer toast to next tick — layout closes modal first, then toast opens fresh
+                    setTimeout(function () {
+                        toast("success", "Admin Created", "Successfully created admin '" + (newAdmin.username || username) + "' with role: " + roleLabel(role) + ".");
+                    }, 0);
+                })
+                .catch(function (err) {
+                    // API error (duplicate username, etc.) — show inline, keep modal open
+                    errEl.textContent = (err && err.detail) || "Could not create admin.";
+                    errEl.hidden = false;
+                    throw err;   // rethrow so layout keeps modal open
+                });
+        }
         });
     }
 
@@ -263,7 +280,8 @@
                     '<option value="viewer"' + (admin.role === "viewer" ? " selected" : "") + '>Viewer</option>' +
                     '<option value="editor"' + (admin.role === "editor" ? " selected" : "") + '>Editor</option>' +
                     '<option value="super_admin"' + (admin.role === "super_admin" ? " selected" : "") + '>Super Admin</option>' +
-                '</select></div>';
+                '</select></div>' +
+                '<div class="adm-form-error" id="changeRoleError" hidden></div>';
 
         window.showModal({
             type: "warning",
@@ -273,14 +291,21 @@
             confirm: "Update",
             cancel: "Cancel",
             onConfirm: function () {
-                var role = document.getElementById("changeRole").value;
-                API.patch("/admin/admins/" + admin.id + "/role", { role: role })
+                var role  = document.getElementById("changeRole").value;
+                var errEl = document.getElementById("changeRoleError");
+                errEl.hidden = true;
+
+                return API.patch("/admin/admins/" + admin.id + "/role", { role: role })
                     .then(function () {
                         loadAdmins();
-                        toast("success", "Role Updated", "'" + admin.username + "' is now " + roleLabel(role) + ".");
+                        setTimeout(function () {
+                            toast("success", "Role Updated", "'" + admin.username + "' is now " + roleLabel(role) + ".");
+                        }, 0);
                     })
                     .catch(function (err) {
-                        toast("danger", "Failed", (err && err.detail) || "Could not update role.");
+                        errEl.textContent = (err && err.detail) || "Could not update role.";
+                        errEl.hidden = false;
+                        throw err;
                     });
             }
         });
@@ -292,8 +317,9 @@
     function openResetPasswordModal(admin) {
         var html = '' +
             '<div class="adm-form-row"><label>New Password for ' + escapeHtml(admin.username) + '</label>' +
-                '<input type="text" id="resetPwd" placeholder="At least 8 characters" autocomplete="off">' +
-                '<div class="adm-form-note">The admin can change this later after logging in.</div></div>';
+    '<input type="text" id="resetPwd" placeholder="At least 8 characters" autocomplete="off">' +
+    '<div class="adm-form-note">The admin can change this later after logging in.</div></div>' +
+'<div class="adm-form-error" id="resetPwdError" hidden></div>';
 
         window.showModal({
             type: "warning",
@@ -303,19 +329,30 @@
             confirm: "Reset Password",
             cancel: "Cancel",
             onConfirm: function () {
-                var pwd = (document.getElementById("resetPwd").value || "").trim();
-                if (pwd.length < 8) {
-                    toast("warning", "Invalid Password", "Password must be at least 8 characters.");
-                    return;
-                }
-                API.post("/admin/admins/" + admin.id + "/reset-password", { new_password: pwd })
-                    .then(function () {
-                        toast("success", "Password Reset", "New password set for '" + admin.username + "'. They can change it after logging in.");
-                    })
-                    .catch(function (err) {
-                        toast("danger", "Failed", (err && err.detail) || "Could not reset password.");
-                    });
-            }
+    var pwdEl = document.getElementById("resetPwd");
+    var errEl = document.getElementById("resetPwdError");
+    errEl.hidden = true;
+
+    var pwd = (pwdEl.value || "").trim();
+    if (pwd.length < 8) {
+        errEl.textContent = "Password must be at least 8 characters.";
+        errEl.hidden = false;
+        pwdEl.focus();
+        return false;
+    }
+
+    return API.post("/admin/admins/" + admin.id + "/reset-password", { new_password: pwd })
+        .then(function () {
+            setTimeout(function () {
+                toast("success", "Password Reset", "New password set for '" + admin.username + "'. They can change it after logging in.");
+            }, 0);
+        })
+        .catch(function (err) {
+            errEl.textContent = (err && err.detail) || "Could not reset password.";
+            errEl.hidden = false;
+            throw err;
+        });
+}
         });
     }
 
@@ -329,7 +366,8 @@
             '<div class="adm-form-row"><label>New Password</label>' +
                 '<input type="password" id="selfNewPwd" placeholder="At least 8 characters" autocomplete="new-password"></div>' +
             '<div class="adm-form-row"><label>Confirm New Password</label>' +
-                '<input type="password" id="selfNewPwd2" placeholder="Re-enter new password" autocomplete="new-password"></div>';
+    '<input type="password" id="selfNewPwd2" placeholder="Re-enter new password" autocomplete="new-password"></div>' +
+'<div class="adm-form-error" id="selfPwdError" hidden></div>';
 
         window.showModal({
             type: "info",
@@ -339,38 +377,44 @@
             confirm: "Update Password",
             cancel: "Cancel",
             onConfirm: function () {
-                var oldPwd = (document.getElementById("selfOldPwd").value || "").trim();
-                var newPwd = (document.getElementById("selfNewPwd").value || "").trim();
-                var newPwd2 = (document.getElementById("selfNewPwd2").value || "").trim();
+    var oldEl  = document.getElementById("selfOldPwd");
+    var newEl  = document.getElementById("selfNewPwd");
+    var new2El = document.getElementById("selfNewPwd2");
+    var errEl  = document.getElementById("selfPwdError");
+    errEl.hidden = true;
 
-                if (!oldPwd) {
-                    toast("warning", "Missing", "Please enter your current password.");
-                    return;
-                }
-                if (newPwd.length < 8) {
-                    toast("warning", "Invalid Password", "New password must be at least 8 characters.");
-                    return;
-                }
-                if (newPwd !== newPwd2) {
-                    toast("warning", "Mismatch", "New passwords do not match.");
-                    return;
-                }
-                if (oldPwd === newPwd) {
-                    toast("warning", "Same Password", "New password must be different from current.");
-                    return;
-                }
+    var oldPwd  = (oldEl.value  || "").trim();
+    var newPwd  = (newEl.value  || "").trim();
+    var newPwd2 = (new2El.value || "").trim();
 
-                API.post("/admin/change-password", {
-                    old_password: oldPwd,
-                    new_password: newPwd
-                })
-                    .then(function () {
-                        toast("success", "Password Changed", "Your password has been updated successfully. Keep it safe.");
-                    })
-                    .catch(function (err) {
-                        toast("danger", "Failed", (err && err.detail) || "Could not change password.");
-                    });
-            }
+    function showErr(msg, el) {
+        errEl.textContent = msg;
+        errEl.hidden = false;
+        if (el) el.focus();
+        return false;
+    }
+
+    if (!oldPwd)            return showErr("Please enter your current password.", oldEl);
+    if (newPwd.length < 8)  return showErr("New password must be at least 8 characters.", newEl);
+    if (newPwd !== newPwd2) return showErr("New passwords do not match.", new2El);
+    if (oldPwd === newPwd)  return showErr("New password must be different from current.", newEl);
+
+    return API.post("/admin/change-password", {
+        old_password: oldPwd,
+        new_password: newPwd
+    })
+        .then(function () {
+            setTimeout(function () {
+                toast("success", "Password Changed", "Your password has been updated successfully. Keep it safe.");
+            }, 0);
+        })
+        .catch(function (err) {
+            errEl.textContent = (err && err.detail) || "Could not change password.";
+            errEl.hidden = false;
+            throw err;
+        });
+}
+
         });
     }
 

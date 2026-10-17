@@ -259,9 +259,28 @@ if (opts.hideIcon) {
             if (typeof opts.onCancel === "function") opts.onCancel();
         });
         newConfirm.addEventListener("click", function () {
-            close();
-            if (typeof opts.onConfirm === "function") opts.onConfirm();
+    if (newConfirm.disabled) return;
+    if (typeof opts.onConfirm !== "function") { close(); return; }
+
+    var result = opts.onConfirm();
+
+    // 1. Synchronous inline validation failed → keep modal open
+    if (result === false) return;
+
+    // 2. onConfirm returned a Promise → wait for it
+    if (result && typeof result.then === "function") {
+        newConfirm.disabled = true;
+        result.then(function () {
+            close();                    // ← API success → close modal
+        }).catch(function () {
+            newConfirm.disabled = false;  // ← API error → keep modal open (inline error already shown)
         });
+        return;
+    }
+
+    // 3. Plain return (no promise) → close immediately
+    close();
+});
 
         root.querySelector("[data-modal-close]").addEventListener("click", function () {
             close();
