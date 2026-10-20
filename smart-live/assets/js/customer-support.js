@@ -8,7 +8,7 @@
     var CFG = {
         phone: "+917601866602",
         phone2: "+917639866602",
-        email: "smarthelpfoundation2021@gmail.com",
+        email: "office@smarthelpfoundation.org",
         whatsapp: "917639866602",
         replyDelayMs: 500,
         storageKey: "shf_chat_messages_v1", // sessionStorage key
@@ -218,7 +218,7 @@
             "📞 *Reach Us*\n\n" +
             "• Call: [+91 7601866602](tel:+917601866602)\n" +
             "• Call: [+91 7639866602](tel:+917639866602)\n" +
-            "• Email: [smarthelpfoundation2021@gmail.com](mailto:smarthelpfoundation2021@gmail.com)\n" +
+            "• Email: [office@smarthelpfoundation.org](mailto:office@smarthelpfoundation.org)\n" +
             "• Chat: [Open WhatsApp](https://wa.me/917639866602)\n" +
             "• Instagram: [@smart_help_foundation](https://www.instagram.com/smart_help_foundation)\n\n" +
             "Tap any number or link to connect instantly.",

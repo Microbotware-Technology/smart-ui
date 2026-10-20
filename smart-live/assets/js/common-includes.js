@@ -24,7 +24,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-12">
                     <ul class="contact-info">
-                        <li><i class="ti-email"></i><span>smarthelpfoundation2021@gmail.com</span></li>
+                        <li><i class="ti-email"></i><span>office@smarthelpfoundation.org</span></li>
                         <li>
                             <a href="tel:+917601866602">
                                 <i class="flaticon-phone"></i><span>+91 7601866602</span>
@@ -169,9 +169,9 @@
         <i class="flaticon-phone"></i>
         <span>+91 7601866602</span>
     </a>
-    <a href="mailto:smarthelpfoundation2021@gmail.com" class="mob-email" aria-label="Email">
+    <a href="mailto:office@smarthelpfoundation.org" class="mob-email" aria-label="Email">
         <i class="ti-email"></i>
-        <span>smarthelpfoundation2021@gmail.com</span>
+        <span>office@smarthelpfoundation.org</span>
     </a>
     <a href="https://wa.me/917601866602" target="_blank" rel="noopener"
        class="mob-pill mob-pill-wa" aria-label="WhatsApp">
@@ -307,7 +307,7 @@
             <div class="widget locations-widget contact-widget wow fadeInUp" data-wow-delay="0.0s">
                 <div class="widget-title"><h3>Contact</h3></div>
                 <ul>
-                    <li><a href="mailto:smarthelpfoundation2021@gmail.com">smarthelpfoundation2021@gmail.com</a></li>
+                    <li><a href="mailto:office@smarthelpfoundation.org">office@smarthelpfoundation.org</a></li>
                     <li><a href="tel:+917601866602">+91 7601866602</a></li>
                 </ul>
             </div>
