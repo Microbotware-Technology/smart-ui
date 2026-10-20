@@ -24,7 +24,11 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-12">
                     <ul class="contact-info">
-                        <li><i class="ti-email"></i><span>office@smarthelpfoundation.org</span></li>
+                        <li>
+    <a href="mailto:office@smarthelpfoundation.org">
+        <i class="ti-email"></i><span>office@smarthelpfoundation.org</span>
+    </a>
+</li>
                         <li>
                             <a href="tel:+917601866602">
                                 <i class="flaticon-phone"></i><span>+91 7601866602</span>
