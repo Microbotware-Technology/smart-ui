@@ -324,7 +324,7 @@
         <div class="container">
             <div class="row">
                 <div class="col col-xs-12">
-                    <p class="copyright"> &copy; 2024 <a href="index.html">Smart Help Foundation</a> - non profit. All rights reserved.</p>
+                    <p class="copyright"> &copy; <span id="current-year">2024</span>  <a href="index.html">Smart Help Foundation</a> - non profit. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -417,6 +417,7 @@ function injectHeaderAndFooter() {
             new WOW({ mobile: true, live: true }).init();
         } catch (e) {}
     }
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 }
 
 /* ============================================================
