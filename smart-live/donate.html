@@ -1284,15 +1284,28 @@
     line-height: 0;
 }
 
+.item-info-popup .info-img-wrap {
+    margin-top: 8px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #111;
+    line-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .item-info-popup .info-img-wrap img {
-    width: 100%;
-    max-height: 220px;
-    object-fit: cover;
     display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 260px;      /* slightly bigger than before */
+    object-fit: contain;    /* ← NO CROP */
 }
 
 .item-info-popup.has-img {
-    max-width: 300px;
+    max-width: 320px;       /* a bit wider for landscape images */
     padding: 10px;
 }
 
@@ -2096,19 +2109,19 @@ const STATIC_INFO_ITEMS = [
         selector: '#printA4Card',
         name: 'A4 Photo Wishes',
         info: 'Personalized A4 print with your photo and wish message.',
-        image: 'assets/images/service/foodService.png'      
+        image: 'assets/images/a4.jpeg'      
     },
     {
         selector: '#printA3Card',
         name: 'A3 Photo Wishes',
         info: 'Personalized A3 print (bigger size) with your photo and wish message.',
-        image: 'assets/images/service/foodService.png'
+        image: 'assets/images/a3.jpeg'
     },
     {
         selector: '#flexBannerItem',
         name: 'Flex Banner',
         info: 'Custom flex banner with your name and message for the event.',
-        image: 'assets/images/service/foodService.png'
+        image: 'assets/images/flex.jpeg'
     }
 ];
             // 📞 Phone digit length per country code
