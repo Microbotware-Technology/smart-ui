@@ -6,3 +6,4 @@ python-dotenv
 cryptography
 python-multipart
 Pillow
+razorpay
